@@ -1,0 +1,36 @@
+<div class="add-image-section">
+  <h5 class="image-title">Add Images</h5>
+  <div class="image-section" [formGroup]="form">
+
+    <!-- image Container-->
+    <div class="image-container" formArrayName="images"
+      *ngFor="let item of form?.get('images')?.controls; let i = index;">
+      <div class="check-container">
+        <input type="radio" value={{i}} name="productImageDefault" id="product{{i}}" (click)="setDefault($event, item)"
+          [checked]="item.value === form.value.defaultImage">
+        <label for="product{{i}}"></label>
+      </div>
+      <img (click)="openModal(imagePopUp, item)" src="{{this.s3baseUrl}}{{item.value}}" alt="Product
+            Image" />
+      <a class="close" title="Delete" (click)="delete(i)">
+        <em class="material-icons">clear</em></a>
+    </div><!-- end image Container-->
+
+    <!-- upload image -->
+    <div class="upload-image-container">
+      <ngx-ui-loader [loaderId]="'upload-loader'" [fgsSize]="20" [hasProgressBar]="false"></ngx-ui-loader>
+      <input [disabled]="form.value.images.length >= imageMaxLength" (change)="uploadProductImage(productImage)" accept="image/*" multiple (click)="productImage.value = null"
+        type="file" name="profilePic" #productImage>
+      <span>Add Image</span>
+    </div><!-- end upload image -->
+
+  </div>
+  <p class="help-text">Select image to set as default. Max 15 images uploaded.</p>
+</div>
+<ng-template #imagePopUp>
+
+  <div class="modal-body">
+    <img class="w-100" src="{{this.s3baseUrl}}{{imageModal}}" alt="Product
+    Image" />
+  </div>
+</ng-template>

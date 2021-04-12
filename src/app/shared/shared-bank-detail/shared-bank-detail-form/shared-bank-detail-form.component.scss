@@ -1,0 +1,87 @@
+@import "~assets/scss/variables";
+.bank-detail-container {
+  .page-title {
+    padding-top: 15px;
+    margin: 0 0 40px 0;
+    @media screen and (max-width: $phone-landscape) {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+  }
+}
+.create-vendor-profile{
+  &.fixed-footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background: #fafafa;
+    border-top: 1px solid #e2e2e2;
+  }
+  .button-container{
+    display: flex;
+    widows: 100%;
+  }
+  .btn.text{
+    font-size: 16px;
+    margin-top: 12px;
+    color: #5067eb;
+  }
+  .btn.link{
+    color: #5067eb;
+    &:hover{
+      color: #FFF;
+    }
+  }
+  .back-arrow{
+    margin-right: 9px;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    .btn {
+      &.link, &.text, &.primary{
+        min-width: 80px;
+      }
+    }
+  }
+
+}
+.edit-profile-form{
+  .btn-space{
+    padding: 23px 15px;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    margin-top: 76px;
+    border-top: 1px solid #e2e2e2;
+    text-align: right;
+    background: transparent;
+    .btn{
+      width: 200px;
+      + .btn{
+        margin-left: 16px;
+      }
+    }
+    @media screen and (max-width: $phone-landscape) {
+      width: calc(100% + 30px);
+      margin-left: -15px;
+      margin-top: 10px;
+      padding: 15px;
+      display: flex;
+      .btn{
+        width: calc(50% - 10px);
+        flex: 1;
+        & + .btn{
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}
+.complete-profile {
+  &.mb-40 {
+    @media screen and (max-width: $phone-landscape) {
+      margin-bottom: 0 !important;
+    }
+  }
+}

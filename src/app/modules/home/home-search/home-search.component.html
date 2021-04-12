@@ -1,0 +1,18 @@
+<section class="carousal-section">
+    <div class="container">
+        <div class="center-content">
+            <h2>Connecting planners with vendors to streamline any event</h2>
+            <p>Search pre-selected vendors for item price quotes, reviews and purchases</p>
+            <form [formGroup]='searchForm'>
+            <div class="home-search-container">
+                <app-shared-product-search [formType]="homeSearch" [form]="searchForm" class="product-search-form"></app-shared-product-search>
+                <div class="input-with-sign">
+                    <app-shared-google-location [form]="searchForm" [isHomePage]="true" class="product-google-location"></app-shared-google-location>
+                </div>
+                <button type="button" class="btn primary" (click)="submitSearch()">Search</button>
+            </div>
+            </form>
+        </div>
+        <img src="../assets/images/carousal-background.png" alt="Carousal 1" class="carousal-item">
+    </div>
+</section>

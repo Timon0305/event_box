@@ -1,0 +1,101 @@
+<div class="vendor-product-container">
+  <div class="title-with-button" *ngIf="isVendor; else admin">
+    <h2 class="page-title">My Products / Services</h2>
+    <div class="action-items" [ngClass]="{'show': productAction}">
+      <div class="action-item-content">
+        <span class="sm-modal-close-btn" (click)="onProductActionBtn()">&#x2715;</span>
+        <button class="btn primary small" type="button" [routerLink]="addProduct">Add Product / Service</button>
+        <button class="btn primary small" type="button" (click)="fetchReport()">Export</button>
+      </div>
+    </div>
+  </div><!-- end title-with-button -->
+  <ng-template #admin>
+    <ng-container *ngIf="route.snapshot.params.companyId; else reportsProductDetail">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/']">
+            <a>Vendor Management</a>
+          </li>
+          <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/view', route.snapshot.params.id]">
+            <a>Profile - {{vendorName}}</a>
+          </li>
+          <li class="breadcrumb-item active" *ngIf="queryParams?.isArchive == 'true'">
+            Inactive Products/Services - {{vendorName}}
+          </li>
+          <li class="breadcrumb-item active" *ngIf="queryParams?.isArchive == 'false'">
+            Active Products/Services - {{vendorName}}
+          </li>
+          <li class="breadcrumb-item active" *ngIf="!queryParams?.isArchive">
+            Products/Services - {{vendorName}}
+          </li>
+        </ol>
+      </nav>
+    </ng-container>
+    <ng-template #reportsProductDetail>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" [routerLink]="['/admin/reports']">
+            <a>Reports</a>
+          </li>
+          <li class="breadcrumb-item active" *ngIf="queryParams?.isArchive == 'true'">
+            Inactive Products/Services
+          </li>
+          <li class="breadcrumb-item active" *ngIf="queryParams?.isArchive == 'false'">
+            Active Products/Services
+          </li>
+          <li class="breadcrumb-item active" *ngIf="!queryParams?.isArchive">
+            Products/Services
+          </li>
+        </ol>
+      </nav>
+    </ng-template>
+
+    <div class="title-with-button">
+      <h2 class="page-title" *ngIf="queryParams?.isArchive == 'true'">Inactive Products / Services</h2>
+      <h2 class="page-title" *ngIf="queryParams?.isArchive == 'false'">Active Products / Services</h2>
+      <h2 class="page-title" *ngIf="!queryParams?.isArchive"> Products / Services</h2>
+      <button class="btn primary medium" type="button" (click)="fetchReport()">Export</button>
+    </div>
+  </ng-template>
+
+
+
+  <div class="tab-content">
+    <div class="tab-content-head product-service-list-head">
+      <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+      <!-- end search-container -->
+      <div class="filter-toggle-icon add-product-filter-icon" (click)="onFilterBtn(true)">
+        <span>Filter</span>
+      </div>
+      <app-product-services-filters [isVendor]="isVendor" [productFilter]="filterAction"
+        (productFilterClose)="onFilterBtn($event)" class="select-list-container add-product-filters"
+        [setCategories]="(categoryObservable$ | async)" (filterChange)="updateQueryParams($event)">
+      </app-product-services-filters>
+    </div><!-- end tab-content-head -->
+    <div class="row radio-btn-wrapper">
+      <div class="form-group">
+        <input type="radio" value="" name="type" id="all" [formControl]="typeControl">
+        <label for="all">All</label>
+      </div>
+      <div class="form-group">
+        <input type="radio" value="{{productType}}" name="type" id="addProduct" [formControl]="typeControl">
+        <label for="addProduct">Product</label>
+      </div>
+
+      <div class="form-group">
+        <input type="radio" value="{{serviceType}}" name="type" id="addService" [formControl]="typeControl">
+        <label for="addService">Service</label>
+      </div>
+    </div>
+    <span class="add-product-action-btn" (click)="onProductActionBtn()"></span>
+    <!-- table start form here -->
+    <ng-container *ngIf="(productServiceList$|async)"></ng-container>
+    <app-product-service-table [productServiceData]="productServiceData" (fetchList)="updateQueryParams($event)"
+      [paramsLength]="paramsLength" [tabType]="tabType" (toggleArchiveEvent)="toggleArchiveEvent($event)"
+      [isVendor]="isVendor">
+    </app-product-service-table>
+    <!-- end table -->
+
+  </div><!-- end tab-content -->
+
+</div>

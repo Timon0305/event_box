@@ -1,0 +1,119 @@
+<div class="modal-header with-sub-header" ngbAutoFocus>
+  <button type="button" (click)="modalService.dismissAll()" class="close modal-close-btn-sm" aria-label="Close">
+      <span class="material-icons">
+          keyboard_backspace
+      </span> Back
+  </button>
+  <h4 class="modal-title">Create your account</h4>
+  <button type="button" class="close big-close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h5 class="modal-sub-title">Sign up as a Planner.</h5>
+</div>
+
+<div class="modal-body">
+  <form class="signup-form" [formGroup]="plannerSignUpForm" autocomplete="off" (submit)="plannerSignUp()">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="firstName">First Name*</label>
+        <input type="text" class="form-control"
+          [ngClass]="{'is-invalid': (plannerSignUpForm?.controls?.firstName?.touched && plannerSignUpForm?.controls?.firstName?.errors)}"
+          id="firstName" aria-describedby="nameHelp" formControlName="firstName" placeholder="Enter your first name"
+          maxlength="50">
+        <ng-container *ngIf="plannerSignUpForm?.controls?.firstName?.touched">
+          <div class="invalid-feedback" *ngIf="plannerSignUpForm?.controls?.firstName?.errors?.required">First name is
+            required.
+          </div>
+        </ng-container>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="lastName">Last Name*</label>
+        <input type="text" class="form-control" id="lastName"
+          [ngClass]="{'is-invalid': (plannerSignUpForm?.controls?.lastName?.touched && plannerSignUpForm?.controls?.lastName?.errors)}"
+          formControlName="lastName" aria-describedby="nameHelp" placeholder="Enter your last name" maxlength="50">
+        <div class="invalid-feedback"
+          *ngIf="(plannerSignUpForm?.controls?.lastName?.touched && plannerSignUpForm?.controls?.lastName?.errors?.required)">
+          Last name is required.
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email Address*</label>
+      <input [readonly]="socialUser?.email || email" type="email" class="form-control" id="email" aria-describedby="emailHelp"
+        placeholder="Enter email address" formControlName="email"
+        [ngClass]="{'is-invalid': (plannerSignUpForm?.controls?.email?.touched && plannerSignUpForm?.controls?.email?.errors)}">
+      <ng-container *ngIf="plannerSignUpForm?.controls?.email?.touched">
+        <div class="invalid-feedback" *ngIf="plannerSignUpForm?.controls?.email?.errors?.required">Email is required.
+        </div>
+        <div class="invalid-feedback" *ngIf="plannerSignUpForm?.controls?.email?.errors?.invalidEmail">Email format is
+          not
+          valid.
+        </div>
+      </ng-container>
+    </div>
+    <div class="form-group input-with-sign">
+      <label for="Password">Password*</label>
+      <input type="{{passwordType.password}}" autocomplete="new-password" class="form-control" id="password" formControlName="password"
+        placeholder="Enter your password"
+        [ngClass]="{'is-invalid': (plannerSignUpForm?.controls?.password?.touched && plannerSignUpForm?.controls?.password?.errors)}">
+      <ng-container *ngIf="plannerSignUpForm?.controls?.password?.touched">
+        <div class="invalid-feedback" *ngIf="plannerSignUpForm?.controls?.password?.errors?.required">Password is
+          required.
+        </div>
+        <div class="invalid-feedback" *ngIf="plannerSignUpForm?.controls?.password?.errors?.minlength">Password minimum
+          length is 7
+          characters.
+        </div>
+        <div class="invalid-feedback" *ngIf="!plannerSignUpForm?.controls?.password?.errors?.minlength && plannerSignUpForm?.controls?.password?.errors?.pattern">A number,
+          special character
+          (@,!,$ etc), uppercase and lowercase letter is required.
+        </div>
+      </ng-container>
+      <em class="material-icons off" *ngIf="passwordType.password === 'password'"
+        (click)="passwordType.password = 'text'">visibility_off</em>
+      <em class="material-icons on" *ngIf="passwordType.password === 'text'"
+        (click)="passwordType.password = 'password'">visibility_on</em>
+    </div>
+    <div class="form-group input-with-sign">
+      <label for="confirmPassword">Confirm Password*</label>
+      <input type="{{passwordType.confirmPassword}}" autocomplete="new-password" class="form-control" id="confirmPassword"
+        formControlName="passwordConfirmation" placeholder="Enter your password"
+        [ngClass]="{'is-invalid': (plannerSignUpForm?.controls?.passwordConfirmation?.touched && (plannerSignUpForm?.controls?.passwordConfirmation?.errors || plannerSignUpForm?.errors?.mismatch))}">
+      <ng-container *ngIf="plannerSignUpForm?.controls?.passwordConfirmation?.touched">
+        <div class="invalid-feedback" *ngIf="plannerSignUpForm?.controls?.passwordConfirmation?.errors?.required">
+          Confirm password is
+          required.
+        </div>
+        <div class="invalid-feedback" *ngIf="plannerSignUpForm?.errors?.mismatch">Confirm password must be same as
+          password.
+        </div>
+      </ng-container>
+      <em class="material-icons off" *ngIf="passwordType.confirmPassword === 'password'"
+        (click)="passwordType.confirmPassword = 'text'">visibility_off</em>
+      <em class="material-icons on" *ngIf="passwordType.confirmPassword === 'text'"
+        (click)="passwordType.confirmPassword = 'password'">visibility_on</em>
+    </div>
+    <div class="form-group agree-checkbox">
+      <input type="checkbox" class="form-check-input" id="staySignin" formControlName="staySignIn">
+      <label for="staySignin">&nbsp;</label>
+      <span class="form-check-label">By clicking "Continue" I agree to the Event Box’s <a class="font-medium" [routerLink]="['/content/terms-of-service']" target="_blank">Terms of
+          Service</a> and <a class="font-medium"  [routerLink]="['/content/privacy-policy']" target="_blank">Privacy Policy.</a></span>
+    </div>
+    <button type="submit" class="btn btn-block primary"
+      [disabled]="!plannerSignUpForm?.valid || !plannerSignUpForm?.controls?.staySignIn?.value">Sign up</button>
+  </form>
+</div>
+<div class="modal-footer">
+  <div class="flex-column text-center w-100">
+    <div class="links">Already have an account? <a (click)="signIn(content)" class="font-medium">Sign in</a></div>
+    <div class="divider"></div>
+    <div class="text">Or Connect with</div>
+    <div class="social-link">
+      <app-google-login [role]='constants?.Role?.PLANNER'> </app-google-login>
+      <app-facebook-login [role]='constants?.Role?.PLANNER'></app-facebook-login>
+    </div>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <app-login></app-login>
+</ng-template>

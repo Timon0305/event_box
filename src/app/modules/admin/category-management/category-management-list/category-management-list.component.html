@@ -1,0 +1,48 @@
+<div class="vendor-list-container">
+    <h2 class="page-title top-first-title">Category List</h2>
+    <div class="space-between-two">
+        <app-shared-search (search)="searchCaregory($event)" class="search-container"></app-shared-search>
+    </div>
+    <div class="table-listing category-table" *ngIf="categoryObservable | async as categoryDocs">
+        <div class="table-head-wrapper" *ngIf="categoryDocs?.docs.length > 0">
+            <div class="table-head">
+                <div class="thead-data">
+                    <div class="shorting-btn">
+                        Events Industry and Type Title
+                    </div>
+                </div>
+                <div class="thead-data">
+                    <div class="shorting-btn">
+                        No. of Sub Categories
+                    </div>
+                </div>
+                <div class="thead-data col-last">
+                    <span>Actions</span>
+                </div>
+            </div>
+        </div>
+        <div class="table-body-wrapper">
+            <div class="table-body" *ngFor="let category of categoryDocs.docs">
+                <!-- repeat this div -->
+                <div class="tbody-data">{{category.name}}</div>
+                <div class="tbody-data">{{category.subCategoryCount}}</div>
+                <div class="tbody-data">
+                    <button class="btn link link-extra-small" type="button" (click)="edit(category._id)">Edit</button>
+                </div>
+            </div>
+        </div>
+        <app-pagination [metaData]="categoryDocs" (pageChange)="pageChange($event)"></app-pagination>
+        <div class="table-listing product-table" *ngIf="categoryDocs?.totalDocs === 0 && !(params > 1)">
+            <div class="no-result">
+                <img src="/assets/images/no-data.svg" alt="No results" />
+                <p class="mt-5">Sorry! No results found :(</p>
+            </div>
+        </div>
+        <div class="table-listing product-table" *ngIf="categoryDocs?.totalDocs === 0 && params > 1">
+            <div class="no-result">
+                <img src="/assets/images/no-data.svg" alt="No results" />
+                <p class="mt-5">Sorry! No results found :(</p>
+            </div>
+        </div>
+    </div><!-- end table -->
+</div>

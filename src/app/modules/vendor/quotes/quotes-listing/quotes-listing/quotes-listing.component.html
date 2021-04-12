@@ -1,0 +1,18 @@
+<div class="event-list-container">
+
+  <h2 class="page-title" *ngIf="priceQuotesNeeded">Price Quotes Needed</h2>
+  <h2 class="page-title" *ngIf="!priceQuotesNeeded">Awaiting Quotes Acceptance</h2>
+  <div class="tab-head">
+    <ul class="nav" >
+      <li class="nav-item" [ngClass]="{'active': priceQuotesNeeded}"  (click)="navigateToUpcoming()">
+        <a class="nav-link" title="Price Quotes Needed">Price Quotes Needed</a>
+      </li>
+      <li class="nav-item" [ngClass]="{'active': !priceQuotesNeeded}" (click)="navigateToUpcoming(constant?.QUOTE_STATUS?.ACCEPT_REJECT_QUOTES)">
+        <a class="nav-link" title="Awaiting Quotes Acceptance">Awaiting Quotes Acceptance</a>
+      </li>
+    </ul>
+  </div>
+  <app-price-quotes-needed *ngIf="priceQuotesNeeded" [paramsLength]="paramsLength" (updatePage)="fetchUpdatedList($event)" (quoteSend)="getUpdatedList($event)" [priceQuotesNeeded] = "(priceQuotesNeededObservable$ | async)"></app-price-quotes-needed>
+  <app-awaiting-quotes-acceptance *ngIf="!priceQuotesNeeded" [paramsLength]="paramsLength" (updatePage)="fetchUpdatedList($event)" (quoteUpdated)="getUpdatedList($event)" [awaitingQuotes] = "(awaitingQuotesObservable$ | async)"></app-awaiting-quotes-acceptance>
+
+</div>

@@ -1,0 +1,7 @@
+<ngb-alert *ngIf="alertService.isSucessShown" [dismissible]="true" type="primary" (close)="close(true)">
+  <img src="../../../../assets/images/alert-confirm.svg" alt="Confirm"  /> {{alertService.message}}
+</ngb-alert>
+
+<ngb-alert *ngIf="alertService.isErrorShown" [dismissible]="true" type="danger" (close)="close(false)">
+  <img src="../../../../assets/images/alert-confirm.svg" alt="Confirm" /> {{alertService.message}}
+</ngb-alert>

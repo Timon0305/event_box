@@ -1,0 +1,61 @@
+@import "~assets/scss/variables";
+.select-modal{
+    padding-top: 65px;
+    padding-bottom: 65px;
+    .confirm-title{
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 45px;
+    }
+    .form-row{
+      margin-bottom: 21px;
+    }
+  }
+  .btn {
+    @media screen and (max-width: $phone-landscape) {
+      height: 40px;
+      font-size: 13px;
+    }
+  }
+  .modal-header {
+    &.with-sub-header {
+      @media screen and (max-width: $phone-landscape) {
+        padding: 15px;
+        .modal-title {
+          font-size: 18px;
+        }
+        .modal-sub-title {
+          font-size: 13px;
+          margin-top: 5px;
+        }
+      }
+    }
+    .close{
+      &.big-close{
+        position: absolute;
+        right: 1.5rem;
+        top: 2rem;
+        @media screen and (max-width: $phone-landscape) {
+          display: none;
+        }
+      }
+    }
+  }
+  .modal-body {
+    @media screen and (max-width: $phone-landscape) {
+      padding: 20px 15px;
+    }
+  }
+  .modal-footer {
+    @media screen and (max-width: $phone-landscape) {
+      .links {
+        font-size: 12px;
+      }
+      .text {
+        font-size: 12px;
+      }
+      .divider {
+        margin: 20px 0 10px 0;
+      }
+    }
+  }

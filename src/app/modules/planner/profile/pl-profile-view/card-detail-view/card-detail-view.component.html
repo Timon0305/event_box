@@ -1,0 +1,63 @@
+<div class="address-section" *ngIf="profile?.payment?.cards?.length">
+  <div class="row">
+    <div class="col-6 col-md-6">
+      <div class="section-title">Saved Cards</div>
+    </div>
+    <div class="col-6 col-md-6 d-flex justify-content-end add-credit-card-wrapper" *ngIf="profile?.payment?.cards?.length">
+      <button type="button" [routerLink]="['/planner/add-credit-card']" class="btn link link-small">Add Credit Card</button>
+    </div>
+    <div class="address-content">
+      <div class="col-lg-12 col-xl-6"  *ngFor="let payment of profile?.payment?.cards; let i = index">
+        <div class="card-outer-container">
+            <div class="check-container">
+              <input type="radio" value="{{i}}" name="savedCard" id="card{{i}}" (change)="changeDefaultCard(payment)" [checked]="payment?.isDefault">
+              <label for="card{{i}}">&nbsp;</label>
+            </div>
+            <div class="card-container">
+              <div class="address-container bank-detail">
+                <div class="col-8 col-md-7">
+                  <div class="user-bank-name text-break">{{payment?.name}} <span class="badge badge-outline-primary" *ngIf="payment?.isDefault">Default</span></div>
+                </div>
+                <div class="col-4 col-md-5">
+                  <div class="action-buttons">
+                    <img src="../../../../assets/images/{{payment?.brand}}.svg" alt="{{payment?.brand}}" class="card-image" />
+                    <a  class="link" *ngIf="!payment?.isDefault" (click)="deleteCreditCard(payment, i)" title="Delete"><span class="icon-delete"></span> Delete</a>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="bank-text">XXXX-XXXX-XXXX-{{payment?.last4}}</div>
+                  <div class="bank-text">Expires: {{payment?.exp_month}}/{{payment?.exp_year}}</div>
+                </div>
+              </div><!-- end address-container -->
+              <div class="address-container">
+                  <div class="col-12">
+                    <div class="billing-title">Billing Info:</div>
+                  </div>
+                <div class="col-md-12">
+                  <div class="text-label">Address</div>
+                  <div class="text-content">{{payment?.address_line1}}</div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-label">City</div>
+                  <div class="text-content">{{payment?.address_city}}</div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-label">State</div>
+                  <div class="text-content">{{payment?.address_state}}</div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-label">Zip Code</div>
+                  <div class="text-content">{{payment?.address_zip}}</div>
+                </div>
+              </div><!-- end address-container -->
+            </div><!-- end card-container -->
+        </div><!-- end card-outer-container -->
+      </div><!-- end col-md-6 -->
+
+
+    </div>
+
+  </div><!-- end row -->
+</div>
+<button  *ngIf="!profile?.payment?.cards?.length" type="button" class="btn primary add-bank-button" [routerLink]="['/planner/add-credit-card']">Add
+  Credit Card</button>

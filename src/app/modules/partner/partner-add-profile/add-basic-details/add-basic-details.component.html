@@ -1,0 +1,176 @@
+<div class="step-form">
+
+  <form [formGroup]="basicDetailsForm">
+    <div class="user-form ">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="firstName">First Name*</label>
+          <input type="text" class="form-control" id="firstName" aria-describedby="nameHelp"
+            [ngClass]="{'is-invalid': (basicDetailsForm?.controls?.firstName?.touched && basicDetailsForm?.controls?.firstName?.errors)}"
+            placeholder="Enter your first name" formControlName="firstName" maxlength="50">
+          <ng-container
+            *ngIf="basicDetailsForm.controls.firstName.touched && basicDetailsForm.controls.firstName.errors">
+            <div class="invalid-feedback">
+              First name is required
+            </div>
+          </ng-container>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="lastName">Last Name*</label>
+          <input [ngClass]="{'is-invalid': 
+                    (basicDetailsForm?.controls?.lastName?.touched
+                     && basicDetailsForm?.controls?.lastName?.errors)}" type="text" class="form-control" id="lastName"
+            aria-describedby="nameHelp" placeholder="Enter your last name" formControlName="lastName" maxlength="50">
+          <ng-container *ngIf="basicDetailsForm.controls.lastName.touched && basicDetailsForm.controls.lastName.errors">
+            <div class="invalid-feedback">
+              Last name is required
+            </div>
+          </ng-container>
+        </div>
+      </div><!-- end form row -->
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="companyName">Partner Business Name*</label>
+          <input type="text" class="form-control" [ngClass]="{'is-invalid': 
+                    (basicDetailsForm?.controls?.businessName?.touched
+                     && basicDetailsForm?.controls?.businessName?.errors)}" id="companyName"
+            aria-describedby="companyHelp" placeholder="Enter partner business name" formControlName="businessName"
+            maxlength="100">
+          <ng-container
+            *ngIf="basicDetailsForm.controls.businessName.touched && basicDetailsForm.controls.businessName.errors">
+            <div class="invalid-feedback">
+              Partner business name is required
+            </div>
+          </ng-container>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="email">Email address*</label>
+          <input [readonly]="activatedRoute.snapshot.params.partnerId" [ngClass]="{'is-invalid': 
+                    (basicDetailsForm?.controls?.email?.touched
+                     && basicDetailsForm?.controls?.email?.errors)}" type="email" class="form-control" id="email"
+            aria-describedby="emailHelp" placeholder="Enter email address" formControlName="email">
+          <ng-container *ngIf="basicDetailsForm.controls.email.touched && basicDetailsForm.controls.email.errors">
+            <div class="invalid-feedback" *ngIf="basicDetailsForm.controls.email.errors.required">
+              Email address is required
+            </div>
+            <div class="invalid-feedback" *ngIf="basicDetailsForm.controls.email.errors.email">
+              Invalid email address
+            </div>
+          </ng-container>
+        </div>
+      </div><!-- end form row -->
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="phoneNumber">Phone Number*</label>
+
+          <div class="phone-number-input-group">
+            <div class="country-input">
+              <ng-container>
+                <app-country-code-input [countryCode]="basicDetailsForm.controls.phoneCountryCode">
+                </app-country-code-input>
+              </ng-container>
+            </div>
+            <div class="number-input">
+              <input type="text" class="form-control" formControlName="phone" id="phoneNumber"
+                aria-describedby="PhoneHelp" placeholder="Enter phone number" mask="(000) 000-0000"
+                [ngClass]="{'is-invalid': (basicDetailsForm?.controls?.phone?.touched && basicDetailsForm?.controls?.phone?.errors)}">
+              <ng-container *ngIf="basicDetailsForm?.controls?.phone?.touched">
+                <div class="invalid-feedback" *ngIf="basicDetailsForm?.controls?.phone?.errors?.required">Phone
+                  number is required.
+                </div>
+                <div class="invalid-feedback" *ngIf="!basicDetailsForm?.controls?.phone?.errors?.required && 
+                                basicDetailsForm?.controls?.phone?.errors">Phone number
+                  should be minimum of 10 digits.
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="phoneNumber">Mobile Number</label>
+
+          <div class="phone-number-input-group">
+            <div class="country-input">
+              <ng-container>
+                <app-country-code-input [countryCode]="basicDetailsForm.controls.mobileCountryCode">
+                </app-country-code-input>
+              </ng-container>
+            </div>
+            <div class="number-input">
+              <input type="text" class="form-control" formControlName="mobile" id="phoneNumber"
+                aria-describedby="PhoneHelp" placeholder="Enter mobile number" mask="(000) 000-0000"
+                [ngClass]="{'is-invalid': (basicDetailsForm?.controls?.mobile?.touched && basicDetailsForm?.controls?.mobile?.errors)}">
+              <ng-container *ngIf="basicDetailsForm?.controls?.mobile?.touched">
+                <div class="invalid-feedback" *ngIf="
+                                basicDetailsForm?.controls?.mobile?.errors">Phone number
+                  should be minimum of 10 digits.
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div><!-- end form row -->
+      <div class="divider form-divider"></div>
+
+      <h5 class="second-title">Partner Location</h5>
+      <div class="company-address-container">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="companyAddress">Address*</label>
+            <input type="text" class="form-control" id="companyAddress" aria-describedby="companyAddressHelp"
+              placeholder="Enter address" formControlName="address" maxlength="100" [ngClass]="{'is-invalid': 
+                            (basicDetailsForm?.controls?.address?.touched
+                             && basicDetailsForm?.controls?.address?.errors)}">
+            <ng-container *ngIf="basicDetailsForm.controls.address.touched && basicDetailsForm.controls.address.errors">
+              <div class="invalid-feedback">
+                Address is required
+              </div>
+            </ng-container>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="companyCity">City*</label>
+            <input type="text" class="form-control" id="companyCity" aria-describedby="companyCityHelp"
+              placeholder="Enter city" formControlName="city" maxlength="50" [ngClass]="{'is-invalid': 
+                            (basicDetailsForm?.controls?.city?.touched
+                             && basicDetailsForm?.controls?.city?.errors)}">
+            <ng-container *ngIf="basicDetailsForm.controls.city.touched && basicDetailsForm.controls.city.errors">
+              <div class="invalid-feedback">
+                City is required
+              </div>
+            </ng-container>
+          </div>
+        </div><!-- end form row -->
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="companyState">State*</label>
+            <app-shared-states [form]="basicDetailsForm" [selectedField]="'state'" [msgErrText]="'State'">
+            </app-shared-states>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="companyZipCode">Zip Code*</label>
+            <input type="text" class="form-control" id="companyZipCode" aria-describedby="companyZipCodeHelp"
+              placeholder="Enter zip code" formControlName="zipCode" maxlength="5" [ngClass]="{'is-invalid': 
+                            (basicDetailsForm?.controls?.zipCode?.touched
+                             && basicDetailsForm?.controls?.zipCode?.errors)}" appNumberInput>
+            <ng-container *ngIf="basicDetailsForm.controls.zipCode.touched && basicDetailsForm.controls.zipCode.errors">
+              <div class="invalid-feedback" *ngIf="basicDetailsForm.controls.zipCode.errors.required">
+                Zipcode is required
+              </div>
+              <div class="invalid-feedback" *ngIf="basicDetailsForm?.controls?.zipCode?.errors?.maxlength">Zip Code max
+                length is 5
+              </div>
+            </ng-container>
+          </div>
+        </div><!-- end form row -->
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="bottom-btn-space fixed-footer ml-0">
+  <button class="btn link" type="button" [routerLink]="['/admin/partner-management/list']">Cancel</button>
+  <button class="btn primary" type="submit" (click)="submitForm()" [disabled]="!basicDetailsForm?.valid">Save and
+    Continue</button>
+</div>

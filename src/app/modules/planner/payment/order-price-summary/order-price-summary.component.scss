@@ -1,0 +1,47 @@
+@import "~assets/scss/variables";
+.order-summary {
+    width: 340px;
+    box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+    border: solid 1px #e2e2e2;
+    padding: 20px;
+    border-radius: 5px;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 500;
+      color: #000;
+    }
+
+    .count-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+
+      span {
+        font-size: 14px;
+
+        &:last-child {
+          font-weight: 500;
+        }
+      }
+
+      &.total {
+        padding-top: 20px;
+        border-top: 1px solid #e2e2e2;
+        margin-top: 20px;
+
+        span {
+          font-weight: 500;
+
+          &:last-child {
+            font-weight: 600;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: $tablet-landscape) {
+      width: 100%;
+      margin-top: 20px;
+    }
+  }

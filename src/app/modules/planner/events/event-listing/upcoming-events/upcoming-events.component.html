@@ -1,0 +1,93 @@
+<div class="tab-content">
+   <!-- end tab-content-head -->
+   <div class="tab-content-head"  [ngClass]="{'tab-head-with-report-filter': !isPlanner}"
+   *ngIf="!(upcomingEvents?.totalDocs === 0 && !(paramsLength > 1))">
+    <div class="search-container full-search-with-margin" >
+      <app-shared-search  (search)="search($event)"></app-shared-search>
+    </div><!-- end search-container -->
+    <ng-template #admin>
+      <div class="order-report-filter-section"  >
+        <p>Events Report</p>
+        <app-shared-date-range></app-shared-date-range>
+        <button class="btn primary medium" type="button" [disabled]="!dateRangeComponent?.isDateValid"
+          (click)="fetchReport()">Export</button>
+      </div>
+    </ng-template>
+    <app-event-filter (changedSorting)="updateQueryParameters($event)" [isPlanner]="isPlanner" class="select-list-container sm-filter-dropdown"></app-event-filter>
+    <ng-container *ngIf="isPlanner; else admin">
+      <button class="btn primary medium mt-0" type="button" (click)="fetchReport()">Export All</button>
+    </ng-container>
+  </div>
+
+
+    <!-- table start form here -->
+    <div class="table-listing upcoming-event-table" *ngIf="upcomingEvents?.docs?.length">
+      <div class="table-head-wrapper">
+        <div class="table-head">
+          <div class="thead-data">Event Label</div>
+          <div class="thead-data">Event Date</div>
+          <div class="thead-data">Awaiting Vendor Quotes</div>
+          <div class="thead-data">Accept / Reject Quotes</div>
+          <div class="thead-data">Quotes Pending Payment</div>
+          <div class="thead-data"># of Products Purchased</div>
+          <div class="thead-data">Expired Quotes</div>
+          <div class="thead-data">Rejected Quotes</div>
+          <div class="thead-data">Amount Spent</div>
+          <div class="thead-data">Action</div>
+        </div>
+      </div>
+      <div class="table-body-wrapper" >
+        <div class="table-body"  *ngFor="let item of upcomingEvents?.docs"><!-- repeat this div -->
+          <div class="tbody-data" data-label="Event Label">
+            <span>{{item?.label}}</span>
+          </div>
+          <div class="tbody-data" data-label="Event Date">
+            <span>{{item?.startDate | timezoneDateFormat: item?.eventTimezone}}
+              {{timeZoneMap[item?.eventTimezone]}}
+            </span>
+          </div>
+          <div class="tbody-data" data-label="Awaiting Vendor Quotes"><span>{{item?.quotesCount?.AWAITING_VENDOR_QUOTES || '0'}}</span></div>
+          <div class="tbody-data" data-label="Accept / Reject Quotes"><span>{{item?.quotesCount?.ACCEPT_REJECT_QUOTES || '0'}}</span></div>
+          <div class="tbody-data" data-label="Quotes Pending Payment">
+            <span>{{item?.quotesCount?.ACCEPTED_QUOTES || '0'}}</span>
+          </div>
+          <div class="tbody-data" data-label="# of Products Purchased"><span>{{item?.productsPurchased }}</span></div>
+          <div class="tbody-data" data-label="Expired Quotes"><span>{{item?.quotesCount?.EXPIRED_QUOTES || '0'}}</span></div>
+          <div class="tbody-data" data-label="Rejected Quotes"><span>{{item?.quotesCount?.REJECTED_QUOTES || '0'}}</span></div>
+          <div class="tbody-data" data-label="Amount Spent"><span>{{item?.amountSpent | currency:'USD':'symbol':'1.0-2'}}</span></div>
+          <div class="tbody-data table-dropdown-toggle-col">
+            <button class="btn primary" *ngIf="isPlanner; else adminViewEvent" type="button" (click)="plannerViewEvent(item._id)">View Details</button>
+            <ng-template #adminViewEvent>
+              <button class="btn primary" *ngIf="!plannerId" (click)="navigateAdminViewEvent(item._id)" type="button">View Details</button>
+              <button class="btn primary" *ngIf="plannerId" type="button" (click)="navigateAdminPlannerEvent(item._id)">View Details</button>
+            </ng-template>
+            <div ngbDropdown #myDrop="ngbDropdown" class="d-inline-block" placement="bottom-right" *ngIf="isPlanner">
+              <a class="nav-link toggle-dropdown-icon" id="dropdownBasic1" ngbDropdownToggle>
+                <span class="toggle-dots-icon"></span>
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-box-shadow">
+                <button ngbDropdownItem *ngIf="checkCount(item.quotesCount)" [routerLink]="['/planner/event/edit-event', item._id]">Edit Event</button>
+                <button ngbDropdownItem [routerLink]="['/planner/event/duplicate-event', item._id]">Duplicate Event</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <app-pagination [metaData]="upcomingEvents" (pageChange)="pageChange($event)"></app-pagination>
+    </div><!-- end table -->
+    <div class="table-listing upcoming-event-table" *ngIf="upcomingEvents?.totalDocs === 0 && !(paramsLength > 1)">
+      <div class="no-result">
+        <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="table-listing upcoming-event-table" *ngIf="upcomingEvents?.totalDocs === 0 && paramsLength > 1">
+      <div class="no-result">
+        <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+
+
+  </div><!-- end tab-content -->

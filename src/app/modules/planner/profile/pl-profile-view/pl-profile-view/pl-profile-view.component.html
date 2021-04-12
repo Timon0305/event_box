@@ -1,0 +1,4 @@
+<h2 class="page-title top-first-title">Profile</h2>
+<app-shared-profile-view [profile]="(profileDataObservable$ | async)"></app-shared-profile-view>
+<div class="divider"></div>
+<app-card-detail-view [profile]="(profileDataObservable$ | async)"></app-card-detail-view>

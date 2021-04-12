@@ -1,0 +1,47 @@
+<div class="modal-header login-modal-header" ngbAutoFocus>
+    <button type="button" (click)="modalService.dismissAll()" class="close modal-close-btn-sm" aria-label="Close">
+      <span class="material-icons">
+          keyboard_backspace
+      </span> Back
+    </button>
+  <h4 class="modal-title w-100">Sign in to continue</h4>
+</div>
+<div class="modal-body">
+<app-form-login></app-form-login>
+</div>
+<div class="modal-footer">
+  <div class="flex-column text-center w-100 sign-in-footer">
+    <div class="links">
+      <span class="account-text">Don't have an account?</span>
+      <a  (click)="openModal(plannerSignUp)">Planner Sign Up</a> |
+      <a  (click)="openModal(vendorSignUp, true)">Vendor Sign Up</a>
+    </div>
+    <div class="divider"></div>
+    <div class="text">Or Connect with</div>
+    <div class="social-link">
+      <app-google-login [role]=''> </app-google-login>
+      <app-facebook-login [role]='constants?.Role?.PLANNER'></app-facebook-login>
+    </div>
+  </div>
+</div>
+
+
+<!-- Verify Your Email Modal html start from here -->
+<div class="modal-body success-modal d-none">
+  <!-- remove "d-none" when used in Modal -->
+  <img src="../../../../assets/images/verify.svg" alt="Verify Email">
+  <h4 class="confirm-title">Verify Your Email!</h4>
+  <p>Check your email & click the link to activate your account.</p>
+  <a href="/" title="Resend Email" class="link font-medium">Resend Email</a>
+  <button type="submit" class="btn btn-block primary">Back to Sign in</button>
+</div>
+
+<ng-template #plannerSignUp let-modal>
+  <app-planner-signup></app-planner-signup>
+</ng-template>
+
+<ng-template #vendorSignUp let-modal>
+  <app-vendor-signup></app-vendor-signup>
+</ng-template>
+
+

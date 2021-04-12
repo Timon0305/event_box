@@ -1,0 +1,37 @@
+<nav aria-label="breadcrumb" *ngIf="isAdmin">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)" [routerLink]="['/admin/vendor-management']">Vendor
+          Management</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="javascript:void(0)" [routerLink]="['/admin/vendor-management/view/', vendor?._id]">
+        Profile - {{ vendor?.fullName ? (vendor.fullName | titlecase) : blankData }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Ratings & Reviews - {{ vendor?.fullName ? (vendor.fullName | titlecase) : blankData }}</li>
+    </ol>
+  </nav>
+<div class="review-container" *ngIf="productRatingReviewObservable | async as ratingNreviewList">
+    <h2 class="page-title">Ratings & Reviews </h2>
+    <div class="space-between-two" *ngIf="ratingNreviewList?.totalDocs > 0 || (paramsLength > 0)">
+        <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+        <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+        </app-sort-by-filter>
+    </div>    
+    <div class="table-listing review-table">
+        <app-product-rating-review-table-head *ngIf="ratingNreviewList?.totalDocs"  [referrer]="false"></app-product-rating-review-table-head>
+        <app-product-rating-review-list-item [ratingNreviewData]="ratingNreviewList" [referrer]="true"></app-product-rating-review-list-item> 
+        <app-pagination [metaData]="ratingNreviewList" (pageChange)="pageChange($event)"></app-pagination>
+
+        <div class="table-listing product-table" *ngIf="ratingNreviewList?.totalDocs === number.zero && !(params > number.one)">
+            <div class="no-result">
+                <img src="assets/images/no-data.svg" alt="No results" />
+                <p class="mt-5">Sorry! No results found :(</p>
+            </div>
+        </div>
+        <div class="table-listing product-table" *ngIf="ratingNreviewList?.totalDocs === number.zero && params > number.one">
+            <div class="no-result">
+                <img src="assets/images/no-data.svg" alt="No results" />
+                <p class="mt-5">Sorry! No results found :(</p>
+            </div>
+        </div>
+    </div>
+</div>

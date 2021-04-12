@@ -1,0 +1,310 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+.text-label {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.69;
+    color: #818181;
+    margin-top: 10px;
+    margin-bottom: 6px;
+  }
+
+  .text-content {
+    font-size: 14px;
+    line-height: 1.57;
+    color: #111210;
+    margin-bottom: 20px;
+    word-break: break-all;
+  }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 15px;
+    margin-bottom: 40px;
+  }
+  .top-first-title{
+    padding-top: 24px;
+    margin-bottom: 40px;
+    margin-top: 0;
+  }
+
+  .profile-image-section {
+    display: flex;
+    width: 200px;
+    align-items: flex-start;
+    margin-right: 60px;
+
+    .upload-image-container {
+      min-width: 200px;
+      height: 200px;
+      background-color: #f0f4ff;
+      position: relative;
+      border-radius: 50%;
+      background-image: url(../../../../../assets/images/image-icon.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+
+      input[type="file"] {
+        height: 44px;
+        width: 44px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-radius: 50%;
+        z-index: 1;
+        cursor: pointer;
+        opacity: 0;
+      }
+
+      img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+        background-color: #f0f4ff;
+      }
+
+      .upload-image {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 64px;
+        height: 64px;
+        border: 1px solid #FFF;
+      }
+    }
+  }
+
+  .view-profile-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    .profile-content {
+      width: calc(100% - 260px - 128px);
+
+      .col-md-6 {
+        &:nth-child(odd) {
+          padding-left: 5px;
+        }
+
+        &:nth-child(even) {
+          padding-right: 5px;
+        }
+      }
+    }
+
+    .user-name {
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1;
+      color: #000000;
+      margin-bottom: 7px;
+      word-break: break-word;
+    }
+
+    .user-email {
+      font-size: 16px;
+      line-height: 1.38;
+      color: #000000;
+      margin-bottom: 20px;
+    }
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: #e2e2e2;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    @media screen and (max-width: $phone-landscape) {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+  }
+
+  .address-section {
+    margin-bottom: 20px;
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.22;
+      color: #111210;
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+
+    .address-content {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+
+      .col-md-6 {
+        &:nth-child(odd) {
+          padding-right: 10px;
+        }
+
+        &:nth-child(even) {
+          padding-left: 10px;
+        }
+      }
+    }
+
+    .address-container {
+      border-radius: 5px;
+      box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+      border: solid 1px #e2e2e2;
+      background-color: #ffffff;
+      padding: 20px 5px 2px;
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+
+      .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+
+        .link {
+          font-size: 13px;
+          display: flex;
+          align-items: center;
+          color: #000;
+
+          &:hover {
+            text-decoration: none;
+          }
+          &:last-child{
+            margin-left: 20px;
+          }
+          span {
+            font-size: 22px;
+            display: inline-block;
+            margin-right: 5px;
+          }
+
+          &.edit {
+            color: #5067eb;
+          }
+        }
+      }
+
+      &.bank-detail {
+        padding-bottom: 12px;
+
+        .user-bank-name {
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 1.5;
+          color: #000;
+          margin-bottom: 8px;
+        }
+
+        .bank-text {
+          font-size: 14px;
+          line-height: 1.57;
+          color: #111210;
+          margin-bottom: 8px;
+          &.with-subscription{
+            justify-content: space-between;
+            display: flex;
+          }
+        }
+      }
+
+      &.package {
+        padding-bottom: 10px;
+
+        .bank-text {
+          margin-bottom: 10px;
+
+          span {
+            font-weight: 500;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: $phone-landscape) {
+      .row {
+        .col-md-6 {
+          & + .col-md-6 {
+            order: 3;
+          }
+          &.add-new-card {
+            justify-content: center !important;
+          }
+        }
+        .address-content {
+          order: 2;
+          .address-container {
+            padding: 2px 5px 10px 5px;
+            &.package {
+              padding: 10px 5px;
+            }
+            .text-label {
+              font-size: 11px;
+            }
+            .text-content {
+              margin-bottom: 5px;
+            }
+            .action-buttons {
+              margin-top: 15px;
+              flex-wrap: wrap;
+              a {
+                & + a {
+                  position: relative;
+                  top: 10px;
+                }
+              }
+            }
+            &.bank-detail {
+              padding-top: 15px;
+            }
+          }
+        }
+      }
+      .section-title {
+        font-size: 16px;
+        margin: 0 0 20px 0;
+      }
+    }
+  }
+
+  .add-bank-button {
+    min-width: 200px;
+    margin-bottom: 20px;
+    @media screen and (max-width: $phone-landscape) {
+      min-width: 100%;
+    }
+  }
+  .cancel-subscription-btn {
+    font-weight: 500;
+    font-size: 13px;
+    color: #fa5c5c;
+    cursor: pointer;
+    line-height: 18px;
+    em {
+      font-size: 20px;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
+      font-style: normal;
+    }
+  }
+.review-container{
+  padding-bottom: 30px;
+  .title-with-button{
+    margin-bottom: 20px;
+    padding-top: 10px;
+    .section-title{
+      font-weight: 600;
+      line-height: 2.57;
+      color: #5a5a5a;
+      font-size: 14px;
+      text-transform: uppercase;
+      @media screen and (max-width: 576px) {
+        line-height: 1.2;
+      }
+    }
+  }
+}

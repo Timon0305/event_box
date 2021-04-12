@@ -1,0 +1,207 @@
+<div class="event-detail-container" *ngIf="(eventDataObservable$ | async)?.data as eventDetail;">
+
+  <app-breadcrumbs *ngIf="!plannerId" [dynamicBreadcrumb]="dynamicBreadcrumb"></app-breadcrumbs>
+  <nav aria-label="breadcrumb" *ngIf="plannerId">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" [routerLink]="['/admin/planner-management']">
+        <a>Planner Management</a>
+      </li>
+      <li class="breadcrumb-item" [routerLink]="['/admin/planner-management/view', plannerId]">
+        <a>Profile - {{plannerName}}</a>
+      </li>
+      <li class="breadcrumb-item" [routerLink]="['../']">
+        <a>Events - {{plannerName}}</a>
+      </li>
+      <li class="breadcrumb-item active">
+        Events Details
+      </li>
+    </ol>
+  </nav>
+  <div class="title-with-button text-with-action-sm">
+    <h2 class="page-title">Event Details</h2>
+    <div>
+      <button class="btn medium link ml-md-3 small-160" type="button" *ngIf="isUpcomingEvent && isPlanner && checkCount(eventDetail?.quotesCount)"
+      [routerLink]="['/planner/event/edit-event', eventDetail?._id]">Edit</button>
+      <button class="btn medium link ml-2 ml-md-3 small-160" *ngIf="isPlanner"
+        [routerLink]="['/planner/event/duplicate-event', eventDetail?._id]" type="button">Duplicate Event</button>
+    </div>
+  </div><!-- end title-with-button -->
+
+  <div class="quote-container">
+
+    <div class="detail-head">
+      <h5>{{eventDetail?.name}}</h5>
+      <p>{{eventDetail?.label}}</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="detail-content">
+
+      <div class="detail-content-left">
+        <div class="row">
+          <div class="col-md-4">
+            <p class="title">Event Type</p>
+            <p class="des">{{eventDetail?.eventType ? eventDetail?.eventType: '-'}}</p>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">No. of guest</p>
+            <p class="des">{{eventDetail?.guestCount ? eventDetail?.guestCount: '-'}}</p>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">On Site Contact Name</p>
+            <p class="des">{{eventDetail?.onSiteName ? eventDetail?.onSiteName: '-'}}</p>            
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">On Site Phone Number</p>
+            <p class="des">{{eventDetail?.onSitePhone ? (eventDetail?.onSitePhone |  formatPhone) : '-'}}</p>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">Event Start Date & Time</p>
+            <p class="des" *ngIf="!eventDetail?.startDate; else startDate">-</p>
+            <ng-template #startDate>
+              <p class="des">
+                {{eventDetail?.startDate | timezoneDateFormat: eventDetail?.eventTimezone }}
+                {{timeZoneMap[eventDetail?.eventTimezone]}}
+              </p>
+            </ng-template>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">Event End Date & Time</p>
+            <p class="des" *ngIf="!eventDetail?.endDate; else endDate">-</p>
+            <ng-template #endDate>
+              <p class="des">
+                {{eventDetail?.endDate | timezoneDateFormat: eventDetail?.eventTimezone}} {{timeZoneMap[eventDetail?.eventTimezone]}}
+              </p>
+            </ng-template>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">Delivery Date & Time From</p>
+            <p class="des" *ngIf="!eventDetail?.deliveryStartDate; else deliveryStartDate">-</p>
+            <ng-template #deliveryStartDate>
+              <p class="des">
+                {{eventDetail?.deliveryStartDate | timezoneDateFormat: eventDetail?.eventTimezone}}
+                {{timeZoneMap[eventDetail?.eventTimezone]}}
+              </p>
+            </ng-template>
+
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">Delivery Date & Time To</p>
+            <p class="des" *ngIf="!eventDetail?.deliveryEndDate; else deliveryEndDate">-</p>
+            <ng-template #deliveryEndDate>
+              <p class="des">
+                {{eventDetail?.deliveryEndDate | timezoneDateFormat : eventDetail?.eventTimezone}}
+                {{timeZoneMap[eventDetail?.eventTimezone]}}
+              </p>
+            </ng-template>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">Set Up Date & Time From</p>
+            <p class="des" *ngIf="!eventDetail?.setUpFromDate; else setUpFromDate">-</p>
+            <ng-template #setUpFromDate>
+              <p class="des">
+                {{eventDetail?.setUpFromDate | timezoneDateFormat: eventDetail?.eventTimezone}}
+                {{timeZoneMap[eventDetail?.eventTimezone]}}
+              </p>
+            </ng-template>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">Set Up Date & Time To</p>
+            <p class="des" *ngIf="!eventDetail?.setUpToDate; else setUpToDate">-</p>
+            <ng-template #setUpToDate>
+              <p class="des">
+                {{eventDetail?.setUpToDate | timezoneDateFormat: eventDetail?.eventTimezone}}
+                {{timeZoneMap[eventDetail?.eventTimezone]}}
+              </p>
+            </ng-template>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">Breakdown Date & Time From</p>
+            <p class="des" *ngIf="!eventDetail?.breakDownStartDate; else breakDownStartDate ">-</p>
+            <ng-template #breakDownStartDate>
+              <p class="des">{{eventDetail?.breakDownStartDate | timezoneDateFormat : eventDetail?.eventTimezone}}
+                {{timeZoneMap[eventDetail?.eventTimezone]}}
+              </p>
+            </ng-template>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-md-4">
+            <p class="title">Breakdown Date & Time To</p>
+            <p class="des" *ngIf="!eventDetail?.breakDownEndDate; else breakDownEndDate ">-</p>
+            <ng-template #breakDownEndDate>
+              <p class="des">{{eventDetail?.breakDownEndDate | timezoneDateFormat: eventDetail?.eventTimezone}}
+                {{timeZoneMap[eventDetail?.eventTimezone]}}
+              </p>
+            </ng-template>
+          </div><!-- end col-md-4 -->
+
+          <div class="col-12" id="dividerToScroll">
+            <p class="title">Overview</p>
+            <p class="des font-weight-normal">{{eventDetail?.details ? eventDetail?.details : '-'}}</p>
+          </div><!-- end col-md-4 -->
+        </div><!-- end row -->
+      </div>
+
+      <div class="detail-content-right">
+        <div class="address-block">
+          <p class="title">Venue Details</p>
+          <p class="des">{{eventDetail?.venueName}}</p>
+          <p class="address">
+            <span>{{eventDetail?.address}}</span>
+            <span>{{eventDetail?.city}}, </span>       
+            <span>{{eventDetail?.state}},</span>
+            <span>{{eventDetail?.zipCode}}</span>            
+          </p>
+        </div>
+      </div>
+
+    </div><!-- end detail-content -->
+    <div class="divider" *ngIf="!isPlanner"></div>
+
+    <div class="row event-detail-container" *ngIf="!isPlanner">
+      <div class="col-3">
+        <p class="title">Planner Name</p>
+        <p class="des" *ngIf="eventDetail?.user?.firstName; else emptyPlannerName">{{eventDetail?.user?.firstName}}
+          {{eventDetail?.user?.lastName}}</p>
+        <ng-template #emptyPlannerName>
+          <p>-</p>
+        </ng-template>
+      </div><!-- end col-md-4 -->
+      <div class="col-3">
+        <p class="title">Planner Company</p>
+        <p class="des" *ngIf="eventDetail?.user?.companyName; else emptyPlannerCompany">
+          {{eventDetail?.user?.companyName}}</p>
+        <ng-template #emptyPlannerCompany>
+          <p>-</p>
+        </ng-template>
+      </div><!-- end col-md-4 -->
+      <div class="col-3">
+        <p class="title">Planner Phone Number</p>
+        <p class="des" *ngIf="eventDetail?.user?.phone; else emptyPhone">{{eventDetail?.user?.phone |  formatPhone}}</p>
+        <ng-template #emptyPhone>
+          <p>-</p>
+        </ng-template>
+      </div><!-- end col-md-4 -->
+      <div class="col-3">
+        <p class="title">Planner Email Address</p>
+        <p class="des" *ngIf="eventDetail?.user?.email; else emptyMail">{{eventDetail?.user?.email}}</p>
+        <ng-template #emptyMail>
+          <p>-</p>
+        </ng-template>
+      </div><!-- end col-md-4 -->
+    </div>
+
+  </div><!-- end quote-container -->
+  <router-outlet></router-outlet>
+</div><!-- end quote-detail-container -->

@@ -1,0 +1,123 @@
+<div class="quote-detail-container">
+  <!--planner Quote sections container-->
+  <ng-container *ngIf="!isEventDetail">
+    <ng-container *ngIf="isAdmin">
+      <ng-container *ngIf="plannerId; else adminQuotesBreadcrumb">
+        <nav aria-label="breadcrumb" *ngIf="!route.snapshot.params.eventViewId" >
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" [routerLink]="['/admin/planner-management']">
+              <a>Planner Management</a>
+            </li>
+            <li class="breadcrumb-item" [routerLink]="['/admin/planner-management/view', plannerId]">
+              <a>Profile - {{plannerName}}</a>
+            </li>
+            <li class="breadcrumb-item active">
+              {{heading}}
+            </li>
+          </ol>
+        </nav>
+      </ng-container>
+      <ng-template #adminQuotesBreadcrumb>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" [routerLink]="[adminReports]">
+              <a>Reports</a>
+            </li>
+            <li class="breadcrumb-item active">
+              {{heading}}
+            </li>
+          </ol>
+        </nav>
+      </ng-template>
+    </ng-container>
+
+
+
+    <h2 class="page-title page-title-spacing-sm" *ngIf="!plannerId">{{heading}}</h2>
+    <h2 class="page-title page-title-spacing-sm" *ngIf="plannerId && !route.snapshot.params.eventViewId">{{heading}} - {{plannerName}}</h2>
+
+    <div class="tab-head quote-tab-head-sm">
+      <ul class="nav multi-tab-buttons button-count-4">
+        <li class="nav-item" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active"
+          [routerLink]="['./accept-reject-quotes/list']">
+          <a class="nav-link" title="Services">Accept / Reject Quotes</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" [routerLink]="['./awaiting-vendor-quotes/list']"
+          [routerLinkActiveOptions]="{exact: false}">
+          <a class="nav-link" title="Products">Awaiting Vendor Quotes</a>
+        </li>
+
+        <li class="nav-item" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active"
+          [routerLink]="['./quote-pending-payment/list']">
+          <a class="nav-link" title="Services">Quotes Pending Payment</a>
+        </li>
+        <li class="nav-item" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active"
+          [routerLink]="['./expired-quotes/list']">
+          <a class="nav-link" title="Services">Expired / Rejected Quotes</a>
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+
+  <!--Admin/Planner event detail tabs-->
+  <div class="tab-head quote-tab-head-sm" id="adminPlannerEventDetails" *ngIf="isEventDetail">
+    <ng-container>
+      <!--Admin event details tab-->
+      <ul class="nav multi-tab-buttons button-count-6" *ngIf="isAdmin">
+        <li class="nav-item" routerLinkActive="active" (click)="scroll()" [routerLink]="['./awaiting-vendor-quotes/list']">
+          <a class="nav-link" title="Products">Awaiting Vendor Quotes</a>
+        </li>
+        <li class="nav-item" (click)="scroll()" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active"
+          [routerLink]="['./accept-reject-quotes/list']">
+          <a class="nav-link" title="Services">Accept / Reject Quotes</a>
+        </li>
+        <li class="nav-item" (click)="scroll()" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active"
+          [routerLink]="['./quote-pending-payment/list']">
+          <a class="nav-link" title="Services">Quotes Pending Payment</a>
+        </li>
+        <li class="nav-item" (click)="scroll()" [routerLink]="['./products-purchased']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: false}">
+          <a class="nav-link" title="Services"># of Products Purchased</a>
+        </li>
+        <li class="nav-item" (click)="scroll()" routerLinkActive="active" [routerLink]="['./expired-quotes/list']">
+          <a class="nav-link" title="Services">Expired Quotes</a>
+        </li>
+        <li class="nav-item" (click)="scroll()" [routerLink]="['./rejected-quotes/list']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: false}">
+          <a class="nav-link" title="Services">Rejected Quotes</a>
+        </li>
+      </ul>
+    </ng-container>
+    <ng-container>
+      <!--Planner event details tab-->
+      <ul class="nav multi-tab-buttons button-count-6" *ngIf="!isAdmin">
+        <li class="nav-item" routerLinkActive="active" [routerLink]="['./awaiting-vendor-quotes/list']">
+          <a class="nav-link" title="Products">Awaiting Vendor Quotes</a>
+        </li>
+        <li class="nav-item" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active"
+          [routerLink]="['./accept-reject-quotes/list']">
+          <a class="nav-link" title="Services">Accept / Reject Quotes</a>
+        </li>
+        <li class="nav-item" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active"
+          [routerLink]="['./quote-pending-payment/list']">
+          <a class="nav-link" title="Services">Quotes Pending Payment</a>
+        </li>
+        <li class="nav-item" [routerLink]="['./products-purchased']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: false}">
+          <a class="nav-link" title="Services"># of Products Purchased</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" [routerLink]="['./expired-quotes/list']">
+          <a class="nav-link" title="Services">Expired Quotes</a>
+        </li>
+        <li class="nav-item" [routerLink]="['./rejected-quotes/list']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: false}">
+          <a class="nav-link" title="Services">Rejected Quotes</a>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+  <div class="tab-content" #adminScroll>
+    <router-outlet></router-outlet>
+  </div><!-- end tab-content -->
+
+</div><!-- end quote-detail-container -->

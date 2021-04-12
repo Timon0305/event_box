@@ -1,0 +1,59 @@
+<!-- table start form here -->
+<div class="table-listing partner-vendor-table" *ngIf="plannerList?.docs?.length">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data">Planner Name</div>
+      <div class="thead-data">Company</div>
+      <div class="thead-data">Email Address</div>
+      <div class="thead-data">Mobile No.</div>
+      <div class="thead-data" *ngIf="sessionService.getRole() !== roles?.VENDOR">Total paid</div>
+      <div class="thead-data" *ngIf="sessionService.getRole() !== roles?.VENDOR && isAdmin ">Event Box Revenue</div>
+      <div class="thead-data" *ngIf="sessionService.getRole() !== roles?.VENDOR && isAdmin ">Partner Revenue</div>
+      <div class="thead-data" *ngIf="sessionService.getRole() === roles?.VENDOR &&  !isAdmin ">Vendor Referral Fee</div>
+
+    </div>
+  </div>
+  <div class="table-body-wrapper">
+    <div class="table-body" *ngFor="let item of plannerList?.docs;let i = index; trackBy: trackByFn">
+      <!-- repeat this div -->
+      <div class="tbody-data" data-label="Planner Name">
+        <div class="form-group mb-0 mt-4" *ngIf="sessionService.getRole() !== roles?.VENDOR && isAdmin ">
+          <input type="checkbox" (change)="toggleCheck($event, item._id)" class="form-check-input" id="productList{{i}}"
+            [checked]="checkList && checkList.indexOf(item._id) >=0">
+          <label class="form-check-label" for="productList{{i}}">&nbsp;</label>
+        </div>
+        <div class="product-col">
+          <em><img appNoImage [src]="item?.imageUrl" alt="Product Image" class="product-image" /></em>
+          <span> {{item?.name}}</span>
+        </div>
+      </div>
+      <div class="tbody-data" data-label="Company">{{item?.companyName || '-'}}</div>
+      <div class="tbody-data" data-label="Email Address">{{item?.email}}</div>
+      <div class="tbody-data" data-label="Mobile No.">
+        {{item?.phone| formatPhone}}
+      </div>
+      <div class="tbody-data" data-label="Total paid" *ngIf="sessionService.getRole() !== roles?.VENDOR">
+        {{(item?.commissions?.totalPaid || '0' ) | currency: 'USD'}}
+      </div>
+      <div class="tbody-data" data-label="Event Box Revenue" *ngIf="sessionService.getRole() !== roles?.VENDOR && isAdmin ">{{(item?.commissions?.eventBoxAmount || '0') | currency: 'USD'}}</div>
+      <div class="tbody-data" data-label="Partner Revenue" *ngIf="sessionService.getRole() !== roles?.VENDOR && isAdmin ">{{(item?.commissions?.partnerAmount || 0) | currency: 'USD'}}</div>
+      <div class="tbody-data" data-label="Vendor Revenue" *ngIf="sessionService.getRole() === roles?.VENDOR && !isAdmin ">{{(item?.commissions?.partnerAmount || 0) | currency: 'USD'}}</div>
+      
+    </div>
+  </div>
+  <app-pagination [metaData]="plannerList" (pageChange)="pageChange($event)"></app-pagination>
+</div><!-- end table -->
+<div class="table-listing product-table" *ngIf="plannerList?.totalDocs === 0 && !loader">
+  <div class="no-result">
+    <img src="assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>
+<div class="fixed-footer" *ngIf="checkList?.length">
+  <div class="container-fluid">
+    <div class="button-container">
+      <button class="btn primary" type="button" (click)="unlink()">Unlink Planner</button>
+      <button class="btn primary" type="button" (click)="initiateAssociationChange()">Change Association</button>
+    </div>
+  </div>
+</div>

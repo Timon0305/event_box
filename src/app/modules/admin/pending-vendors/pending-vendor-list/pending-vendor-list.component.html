@@ -1,0 +1,81 @@
+<div class="vendor-list-container">
+  <h2 class="page-title top-first-title">Pending Vendor Sign Ups </h2>
+  <div class="tab-head">
+    <ul class="nav">
+      <li class="nav-item" [ngClass]="{'active': activeTab === pendingVendorTabs?.pending?.value}"
+        (click)="chnageTabs(pendingVendorTabs.pending.value)">
+        <a class="nav-link" title="Pending Vendors">Pending Vendors</a>
+      </li>
+      <li class="nav-item" [ngClass]="{'active': activeTab === pendingVendorTabs?.rejected?.value}"
+        (click)="chnageTabs(pendingVendorTabs.rejected.value)">
+        <a class="nav-link" title="Rejected Vendors">Rejected Vendors</a>
+      </li>
+    </ul>
+  </div>
+  <ng-container *ngIf="vendorObservable | async"></ng-container>
+  <div >
+    <div class="space-between-two" *ngIf="vendorDocs?.totalDocs > 0 || isFilter">
+      <app-shared-search (search)="searchVendors($event)" class="search-container"></app-shared-search>
+      <app-sort-by-filter [sortByData]="sortingData" (sortFilterChange)=sort($event) class="sort-filter">
+      </app-sort-by-filter>
+    </div>
+
+
+    <div class="table-listing admin-pending-vendor-signup-table">
+      <div class="table-head-wrapper" *ngIf="vendorDocs?.docs.length > 0">
+        <div class="table-head">
+          <div class="thead-data">Company</div>
+          <div class="thead-data">First Name</div>
+          <div class="thead-data">Last Name</div>
+          <div class="thead-data">Email Address</div>
+          <div class="thead-data">Mobile No.</div>
+          <div class="thead-data">Online Links</div>
+          <div class="thead-data">Date and Time Signed Up</div>
+          <div class="thead-data" *ngIf="activeTab !== pendingVendorTabs?.rejected?.value">Action</div>
+        </div>
+      </div>
+      <div class="table-body-wrapper">
+        <div class="table-body" *ngFor="let vendor of vendorDocs?.docs">
+          <!-- repeat this div -->
+          <div class="tbody-data"><span> {{vendor.company?.name | titlecase}}</span></div>
+          <div class="tbody-data">{{ vendor.firstName | titlecase}}</div>
+          <div class="tbody-data">{{vendor.lastName | titlecase}}</div>
+          <div class="tbody-data"><span>{{vendor.email}}</span></div>
+          <div class="tbody-data">
+            <span>{{ vendor.company?.phone ? (vendor.company.phone |  formatPhone) : blankData}}
+            </span></div>
+
+          <div class="tbody-data">
+            <span><a *ngIf="vendor?.company?.website"
+                href="{{((vendor?.company?.website.indexOf('http://') === 0) || (vendor?.company?.website.indexOf('https://') === 0)) ? vendor?.company?.website :'https://'+vendor?.company?.website}}"
+                target="_blank" title="{{vendor?.company?.website}}">View Website</a></span>
+            <span>
+              <a *ngIf="vendor?.company?.facebook"
+                href="{{((vendor?.company?.facebook.indexOf('http://') === 0) || (vendor?.company?.facebook.indexOf('https://') === 0)) ? vendor?.company?.facebook :'https://'+vendor?.company?.facebook}}"
+                target="_blank" title="{{vendor?.company?.facebook}}">View Facebook</a></span>
+            <span><a *ngIf="vendor?.company?.instagram"
+                href="{{((vendor?.company?.instagram.indexOf('http://') === 0) || (vendor?.company?.instagram.indexOf('https://') === 0)) ? vendor?.company?.instagram :'https://www.instagram.com/'+(vendor?.company?.instagram).replace('@', '')}}"
+                target="_blank" title="{{vendor?.company?.instagram}}">View Instagram</a></span></div>
+          <div class="tbody-data"><span>{{vendor.createdAt | date: 'mediumDate'}}
+              <br>
+              {{vendor.createdAt | date:'hh:mm a'}}
+            </span></div>
+          <div class="tbody-data" *ngIf="activeTab !== pendingVendorTabs?.rejected?.value">
+            <div class="table-button-wrapper" *ngIf="vendor.company?.status === vendorStatus.completeProfileDetails">
+              <button class="btn primary" type="button" (click)="acceptVendor(vendor._id)">Accept</button>
+              <button class="btn link" type="button" (click)="rejectVendor(vendor._id)">Reject</button>
+            </div>
+            <div class="table-button-wrapper" *ngIf="vendor.company?.status === vendorStatus.REJECTED">
+              REJECTED
+            </div>
+          </div>
+        </div>
+        <app-pagination [metaData]="vendorDocs" (pageChange)="pageChange($event)"></app-pagination>
+        <div class="table-listing admin-pending-vendor-signup-table" *ngIf="vendorDocs?.totalDocs === 0">
+          <div class="no-result">
+            <img src="/assets/images/no-data.svg" alt="No results" />
+            <p class="mt-5">Sorry! No results found :(</p>
+          </div>
+        </div>
+      </div><!-- end table -->
+    </div>

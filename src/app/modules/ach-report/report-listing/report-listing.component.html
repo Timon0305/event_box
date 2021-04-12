@@ -1,0 +1,65 @@
+<div class="ach-report-container">
+  <div class="title-with-button">
+    <div class="page-title">ACH Report</div>
+    <div class="select-container">
+      <ng-select class="sort-selectbox"  placeholder="Choose Year" [formControl]="yearControl"
+        [items]="yearsList"
+        (change)="changeYear($event)"
+        >
+      </ng-select>
+      <ng-select class="sort-selectbox" placeholder="Choose Month" 
+      bindLabel="text"
+        bindValue="id"
+      [formControl]="monthControl"
+      [items]="monthList"
+      (change)="changeMonth($event)">
+      </ng-select>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="reportList$|async"></ng-container>
+<!-- table start form here -->
+<div class="table-listing ach-table" *ngIf="reportList?.docs.length">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data">Date</div>
+      <div class="thead-data">Amount Payout</div>
+      <div class="thead-data">View Report</div>
+    </div>
+  </div>
+
+  <div class="table-body-wrapper">
+    <div class="table-body"  *ngFor="let item of reportList?.docs;let i = index; trackBy: trackByFn">
+      <div class="tbody-data" data-label="Date">
+        <span>{{item.date | formatDate}}</span>
+      </div>
+      <div class="tbody-data" data-label="Amount Payout">
+        <span>{{(item?.payoutAmount || 0) | currency:'USD':'symbol':'1.2-2' }}</span>
+      </div>
+      <div class="tbody-data"  data-label="Open or Save Report">
+        <a  class="action-items" title="View Report" (click)="openReportAnalytics(item)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+            <g fill="none" fill-rule="evenodd">
+              <path d="M0 0H28V28H0z" transform="translate(-5 -2)" />
+              <path fill="#818181" fill-rule="nonzero"
+                d="M20.788 2c.59 0 1.147.23 1.564.647.418.417.648.972.648 1.562v19.582c0 .59-.23 1.145-.648 1.562-.417.417-.973.647-1.564.647H7.212C5.992 26 5 25.009 5 23.79V7.223c0-.187.074-.365.206-.497l4.525-4.519c.132-.132.311-.206.498-.206zm0 1.406h-9.1V6.47c0 1.218-.993 2.21-2.213 2.21H6.408V23.79c0 .442.361.803.804.803h13.576c.214 0 .416-.084.568-.235.152-.152.236-.354.236-.568V4.209c0-.214-.084-.416-.236-.567-.152-.152-.354-.236-.568-.236zM14 20.076c.389 0 .704.314.704.702 0 .388-.315.703-.704.703H9.475c-.389 0-.704-.315-.704-.703 0-.388.315-.703.704-.703zm4.525-3.014c.389 0 .704.315.704.704 0 .388-.315.703-.704.703h-9.05c-.389 0-.704-.315-.704-.703 0-.389.315-.704.704-.704zm0-3.012c.389 0 .704.315.704.703 0 .388-.315.703-.704.703h-9.05c-.389 0-.704-.315-.704-.703 0-.388.315-.703.704-.703zm0-3.012c.389 0 .704.314.704.703 0 .388-.315.703-.704.703h-9.05c-.389 0-.704-.315-.704-.703 0-.389.315-.703.704-.703zm-8.246-7.39L6.65 7.271h2.826c.443 0 .804-.36.804-.803V3.647z"
+                transform="translate(-5 -2)" />
+            </g>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <app-pagination [metaData]="reportList" (pageChange)="pageChange($event)"></app-pagination>
+
+</div><!-- end table -->
+
+
+<div class="table-listing ach-table" *ngIf="reportList?.totalDocs === 0">
+  <div class="no-result">
+    <img src="assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>
+

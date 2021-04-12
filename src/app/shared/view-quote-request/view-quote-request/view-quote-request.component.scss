@@ -1,0 +1,692 @@
+@import "../../../../assets/scss/variables";
+@import '../../../../assets/scss/table';
+
+.modal-header {
+  &.quote-invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px !important;
+
+    .quote-invoice-image {
+      width: 134px;
+      height: 68px;
+    }
+
+    .quote-invoice-text {
+      padding-left: 30px;
+      text-align: right;
+      margin-left: auto;
+      h2 {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+
+      p {
+        font-size: 14px;
+        font-weight: 500;
+        max-width: 450px;
+        margin-bottom: 0;
+
+        span {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  .big-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}
+
+.invoice-sub-header {
+  margin-bottom: 70px;
+
+  img {
+    height: 47px;
+    width: 47px;
+    margin-bottom: 15px;
+  }
+
+  h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.67;
+    color: #111210;
+
+    span {
+      display: block;
+    }
+  }
+}
+
+
+.invoice-sub-header-detail {
+  text-align: right;
+  padding-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
+
+  .text {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+
+    span {
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.info-section {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  border-radius: 25px;
+  border: solid 1px #cccccc;
+  padding: 50px 5px 18px;
+  margin: 0 15px 33px;
+  width: 100%;
+
+  .info-heading {
+    background: #fff;
+    padding: 5px 15px;
+    font-weight: 600;
+    color: #5a5a5a;
+    text-transform: uppercase;
+    position: absolute;
+    top: -15px;
+    left: 50px;
+  }
+
+  .text {
+    font-size: 15px;
+    text-align: center;
+    display: flex;
+    margin-bottom: 12px;
+
+    span {
+      display: inline-block;
+      text-align: left;
+      word-break: break-word;
+    }
+
+    .heading {
+      font-weight: 600;
+      margin-right: 10px;
+      display: flex;
+      flex-basis: 40%;
+      min-width: 40%;
+      justify-content: flex-end;
+    }
+  }
+
+  &.info-notes {
+    padding-bottom: 0;
+
+    .text {
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+
+      .heading {
+        flex-basis: 100%;
+        min-width: 100%;
+        justify-content: flex-start;
+        margin-right: 0;
+        margin-bottom: 8px;
+
+        span {
+          font-style: italic;
+          font-weight: normal;
+          display: inline-block;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+  &.info-table-section {
+    padding: 30px 0 0;
+    width: auto;
+  }
+}
+
+.vendor-note-textarea {
+  border-radius: 25px;
+  padding: 15px 20px;
+}
+
+.quote-invoice-table {
+  .thead-data {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000 !important;
+  }
+
+  .table-body {
+    flex-wrap: wrap;
+    border: dashed 1px #979797;
+    background-color: #f6f6f6;
+    border-radius: 0;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  .tbody-data {
+    font-size: 15px;
+    font-weight: 500;
+    color: #000;
+    flex-wrap: wrap;
+
+    &.total-price-col {
+      margin-top: 13px;
+    }
+
+    span {
+      display: block;
+      margin-bottom: 10px;
+      color: #000;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .des {
+      font-size: 14px;
+      font-weight: normal;
+      line-height: 1.86;
+      color: #111210;
+      margin-bottom: 0;
+      display: block;
+      width: 100%;
+    }
+
+    .heading {
+      span {
+        font-style: italic;
+        font-weight: normal;
+        display: inline-block;
+      }
+    }
+  }
+
+  .additional-detail {
+    margin-top: 20px;
+    width: 100%;
+
+    .first-level {
+      display: flex;
+      width: 60%;
+      flex-wrap: wrap;
+    }
+
+    .second-level {
+      height: 100%;
+      align-items: flex-end;
+      display: flex;
+      width: 40%;
+      padding: 0 0 0 15px;
+
+      .btn {
+        color: #FFFFFF;
+        border-color: transparent;
+        background: #5067eb;
+        height: 45px;
+      }
+
+      .link {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        color: #000;
+        margin-left: auto;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        span {
+          font-size: 22px;
+          display: inline-block;
+          margin-right: 5px;
+          margin-bottom: 0;
+        }
+      }
+
+      .ng-select {
+        min-width: 219px;
+      }
+    }
+  }
+}
+
+.additional-column {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  .first-level {
+    display: flex;
+    width: 60%;
+    flex-wrap: wrap;
+    padding: 0 5% 0 20px;
+    flex-direction: column;
+
+    .heading {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+
+      span {
+        font-style: italic;
+        font-weight: normal;
+      }
+    }
+
+    .text {
+      font-size: 14px;
+      text-align: left;
+      line-height: 1.71;
+      color: #111210;
+    }
+  }
+
+  .second-level {
+    display: flex;
+    width: 40%;
+    flex-wrap: wrap;
+    padding: 0 70px 0 15px;
+
+    .col-12 {
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+
+      .form-group {
+        width: 48%;
+      }
+    }
+
+    .text {
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.57;
+      color: #111210;
+    }
+
+    .cross-icon {
+      position: absolute;
+      right: -30px;
+      top: 7px;
+      cursor: pointer;
+    }
+  }
+
+  .button-container {
+    width: 100%;
+    margin-bottom: 24px;
+    padding-right: 50px;
+
+    .btn {
+      height: 40px;
+      width: 120px;
+    }
+  }
+
+  &.only-view-details {
+    width: 100%;
+
+    .second-level {
+      .col-12 {
+        align-items: center;
+      }
+    }
+  }
+}
+
+.total-container {
+  border-top: solid 1px #cccccc;
+  padding: 21px 70px 22px;
+  display: flex;
+  width: 100%;
+
+  .price {
+    display: flex;
+    width: 78%;
+    padding-right: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .total {
+    display: flex;
+    width: 22%;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.38;
+    color: #111210;
+  }
+}
+
+.quote-invoice-button-space {
+  padding-bottom: 25px;
+  background: #fff;
+  margin-top: 15px;
+
+  .btn {
+    height: 54px;
+    font-size: 18px;
+    width: 100%;
+  }
+}
+
+.delete-action {
+  position: absolute;
+  right: 0;
+}
+
+.quote-view-status {
+  span {
+    font-size: 24px;
+    font-weight: 600 !important;
+    color: #5066eb;
+    margin-top: 20px;
+    display: inline-block;
+  }
+}
+
+.canceled {
+  color: #ff5c5c !important;
+}
+
+@media screen and (max-width: $desktop) {
+  .info-section {
+    .table-listing {
+      &.quote-invoice-table {
+        .table-body-wrapper {
+          .table-body {
+            width: 100%;
+
+            &:nth-child(1) {
+              width: 100%;
+            }
+
+            .tbody-data {
+              &:nth-child(1) {
+                width: 60%;
+              }
+
+              &:nth-child(2) {
+                width: 13%;
+                padding-left: 13px;
+              }
+
+              &:nth-child(3) {
+                width: 13%;
+                padding-left: 13px;
+              }
+
+              &:nth-child(4) {
+                width: 14%;
+                padding-left: 13px;
+              }
+
+              &:last-child {
+                width: 100%;
+                flex-direction: row;
+
+                .second-level {
+                  .ng-select {
+                    min-width: 100px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $phone-landscape) {
+  .modal-header {
+    &.quote-invoice-header {
+      padding: 15px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 0 !important;
+
+      .quote-invoice-text {
+        width: 100%;
+        padding-left: 0;
+        text-align: left;
+        margin-top: 30px;
+
+        h2 {
+          font-size: 17px;
+          margin-bottom: 5px;
+        }
+
+        p {
+          font-size: 12px;
+          max-width: 100%;
+          margin-bottom: 4px;
+        }
+      }
+    }
+
+    &+.modal-body {
+      padding: 15px;
+
+      .invoice-sub-header {
+        margin-bottom: 30px;
+
+        h3 {
+          font-size: 18px;
+          margin-bottom: 5px;
+        }
+
+        p {
+          font-size: 13px;
+          max-width: 100%;
+          margin-bottom: 4px;
+        }
+      }
+
+      .invoice-sub-header-detail {
+        text-align: left;
+        padding-bottom: 30px;
+        justify-content: flex-start;
+        height: auto;
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .text {
+          width: 100%;
+          font-size: 13px;
+        }
+      }
+
+      .info-section {
+        padding: 20px 5px 18px;
+
+        .info-heading {
+          font-size: 12px;
+          padding: 6px 5px;
+        }
+
+        .text {
+          font-size: 13px;
+          margin-bottom: 7px;
+
+          .heading {
+            flex-basis: auto;
+            min-width: auto;
+            justify-content: flex-start;
+          }
+        }
+        &.info-notes{
+          .text {
+            margin-bottom: 10px;
+            .heading {
+              flex-basis: 100%;
+              min-width: 100%;
+              justify-content: flex-start;
+              margin-bottom: 5px;
+            }
+          }
+        }
+      }
+
+      form {
+        width: 100%;
+      }
+    }
+  }
+
+  .info-section {
+    .table-listing {
+      &.quote-invoice-table {
+        .table-body-wrapper {
+          .table-body {
+            width: 100%;
+
+            &:nth-child(1) {
+              width: 100%;
+            }
+
+            .tbody-data {
+              &:nth-child(1) {
+                width: 100%;
+              }
+
+              &:nth-child(2) {
+                width: 100%;
+                padding-left: 0;
+              }
+
+              &:nth-child(3) {
+                width: 100%;
+                padding-left: 0;
+              }
+
+              &:nth-child(4) {
+                width: 100%;
+                padding-left: 0;
+              }
+
+              &:last-child {
+                width: 100%;
+                flex-direction: row;
+
+                .first-level {
+                  width: 100%;
+                  margin-bottom: 15px;
+                }
+
+                .second-level {
+                  width: 100%;
+                  height: auto;
+                  padding-left: 0;
+
+                  .ng-select {
+                    min-width: 100px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .additional-column {
+      .first-level {
+        display: none
+      }
+
+      .second-level {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      .total-container,
+      .promo-container {
+        padding: 20px;
+
+        .price,
+        .total {
+          font-size: 15px;
+          width: auto;
+        }
+      }
+    }
+  }
+
+  .quote-invoice-button-space {
+    margin-top: 0;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    padding: 15px;
+
+    .btn {
+      height: 44px;
+      font-size: 13px;
+    }
+  }
+}
+
+.promo-container {
+  padding: 0px 54px 17px;
+  display: flex;
+  width: 100%;
+
+  .price {
+    display: flex;
+    width: 78%;
+    padding-right: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .total {
+    display: flex;
+    width: 20%;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.38;
+    color: #111210;
+  }
+}

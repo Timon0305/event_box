@@ -1,0 +1,12 @@
+<div class="upload-image-section" [ngClass]="{'view-profile-logo': fromViewProfile}"><!-- put class when view profile show "view-profile-logo" -->
+    <div class="upload-image-container">
+      <ngx-ui-loader [loaderId]="'upload-loader'" [fgsSize]="20" [hasProgressBar]="false"></ngx-ui-loader>
+      <input (change)="uploadProfileImage($event)" type="file" accept="image/*" name="profilePic" required="" value=""
+        (click)="companyLogo.value = null" #companyLogo>
+      <img *ngIf="fileUrl" src="{{fileUrl}}" (error)="updateUrl()"
+      alt="vendor logo" />
+      <img src="../../../../assets/images/camera-icon.svg" alt="Upload image" class="upload-image" />
+    </div>
+    <div class="help-text">Image size should be maximum 10 MB.<br />File format: jpeg, png.</div>
+  </div>
+  

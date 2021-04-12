@@ -1,0 +1,72 @@
+<!-- table start form here -->
+<div class="table-listing admin-partner-table" *ngIf="partnerListData?.docs.length">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data">Business Name</div>
+      <div class="thead-data">Partner Name</div>
+      <!-- <div class="thead-data">Email Address</div> -->
+      <div class="thead-data">Phone No.</div>
+      <div class="thead-data">Rate</div>
+      <div class="thead-data">Start Date</div>
+      <div class="thead-data">End Date</div>
+
+      <div class="thead-data">Total Vendors</div>
+      <div class="thead-data">Total Planners</div>
+      <div class="thead-data">Total Gross</div>
+
+      <div class="thead-data">Action</div>
+    </div>
+  </div>
+  <div class="table-body-wrapper">
+    <div class="table-body cursor-pointer" (click)="navigateToDashboard(item._id)"
+      *ngFor="let item of partnerListData?.docs;let i = index; trackBy: trackByFn">
+      <div class="tbody-data" data-label="Business Name">
+        {{item?.partnerDetails?.businessName}}
+      </div>
+      <div class="tbody-data capitalize" data-label="Partner Name">{{item?.name}}</div>
+      <div class="tbody-data" data-label="Phone No.">{{item?.phone | formatPhone}}</div>
+      <div class="tbody-data" data-label="% Rate">
+        <ng-container *ngIf="(item?.partnerDetails?.commissionForVendors || (item?.partnerDetails?.commissionForVendors === 0)
+          || item?.partnerDetails?.commissionForPlanners || (item?.partnerDetails?.commissionForPlanners === 0)); else emptyPlannerCommission">
+          {{(item?.partnerDetails?.commissionForVendors)}}%
+          - vendor
+          {{(item?.partnerDetails?.commissionForPlanners) | currency: 'USD'}} - planner
+          <!-- <span></span> -->
+        </ng-container>
+
+        <ng-template #emptyPlannerCommission>
+          -
+        </ng-template>
+      </div>
+      <div class="tbody-data" data-label="Start Date">
+        {{item?.partnerDetails?.startDate | formatDate}}
+      </div>
+      <div class="tbody-data" data-label="End Date">
+        {{item?.partnerDetails?.endDate | formatDate}}
+
+      </div>
+      <div class="tbody-data" data-label="Total Vendors">{{item?.referrals?.vendor || 0}}</div>
+      <div class="tbody-data" data-label="Total Planners">{{item?.referrals?.planner || 0}}</div>
+      <div class="tbody-data" data-label="Total Gross">
+        <span>Vendor Sales: {{(item?.vendorSales || 0) | currency: 'USD'}}</span>
+        <span>Planner Purchases: {{(item?.plannerPurchase || 0) | currency: 'USD'}}</span>
+      </div>
+      <!-- </ng-container> -->
+      <div class="tbody-data" (click)="$event.stopPropagation(); $event.preventDefault()">
+        <div class="table-button-wrapper">
+          <button class="btn link" type="button" [routerLink]="['/admin/partner', item._id]">Edit</button>
+          <button class="btn link" type="button" (click)="deletePartner(item._id, partnerListData.page)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-pagination [metaData]="partnerListData" (pageChange)="pageChange($event)"></app-pagination>
+
+</div><!-- end table -->
+
+<div class="table-listing product-table" *ngIf="partnerListData?.totalDocs === 0">
+  <div class="no-result">
+    <img src="assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>

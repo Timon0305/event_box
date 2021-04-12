@@ -1,0 +1,113 @@
+@import "~assets/scss/variables";
+
+.signin-form{
+  .form-control{
+    height: 50px;
+  }
+}
+.link-forgot{
+  font-size: 15px;
+  color: $black;
+  cursor: pointer;
+  &:hover{
+    color: $theme-color;
+  }
+  &:not([href]):not([tabindex]){
+    cursor: pointer;
+    color: $black;
+    &:hover{
+      color: $theme-color;
+    }
+  }
+}
+.modal-header {
+  &.login-modal-header {
+    @media screen and (max-width: $phone-landscape) {
+      padding: 15px;
+      flex-wrap: wrap;
+      .modal-title {
+        font-size: 18px;
+      }
+      .modal-sub-title {
+        font-size: 13px;
+        margin-top: 5px;
+      }
+    }
+  }
+  .close {
+    &.big-close {
+      @media screen and (max-width: $phone-landscape) {
+        display: none;
+      }
+    }
+  }
+}
+.sign-in-footer{
+  .links{
+    a{
+      font-weight: 500;
+      color: #000;
+      &:hover{
+        color: $theme-color;
+        text-decoration: none;
+      }
+      @media screen and (max-width: $phone-landscape) {
+        color: $theme-color;
+        font-size: 12px;
+      }
+    }
+  }
+}
+// Verify Your Email CSS start from here
+
+.success-modal{
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 50px;
+  img{
+    width: 100px;
+    height: 100px;
+    margin-bottom: 30px;
+  }
+  .confirm-title{
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  p{
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-bottom: 30px;
+  }
+  .link{
+    display: inline-block;
+    text-decoration: underline;
+    margin-bottom: 30px;
+  }
+}
+.account-text{
+  display: inline-block;
+  margin-right: 5px;
+}
+.modal-body {
+  @media screen and (max-width: $phone-landscape) {
+    padding: 20px 15px;
+  }
+}
+.modal-footer {
+  @media screen and (max-width: $phone-landscape) {
+    .links {
+      font-size: 12px;
+    }
+    .account-text{
+      width: 100%;
+      margin-bottom: 5px;
+    }
+    .text {
+      font-size: 12px;
+    }
+    .divider {
+      margin: 20px 0 10px 0;
+    }
+  }
+}

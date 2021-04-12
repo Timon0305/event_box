@@ -1,0 +1,69 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.order-page-wrapper {
+  width: 100%;
+  padding: 112px 0 37px 0;
+  @media screen and (max-width: $tablet-landscape) {
+    padding: 60px 0 37px 0;
+  }
+}
+
+.order-detail-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: $tablet-landscape) {
+    flex-wrap: wrap;
+  }
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 600;
+  margin-top: 30px;
+  margin-bottom: 40px;
+
+  span {
+    font-size: 18px;
+    color: rgba(#000000, 0.5);
+    font-weight: 400;
+  }
+  @media screen and (max-width: $tablet-landscape) {
+    font-size: 20px;
+    margin: 24px 0;
+    span {
+      font-size: 14px;
+    }
+  }
+}
+
+.order-detail-box {
+  width: calc(100% - 360px);
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px #e2e2e2;
+  padding: 20px;
+  border-radius: 5px;
+
+  &.cart-table-box {
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    @media screen and (max-width: $tablet-landscape) {
+      width: 100%;
+      order: 2;
+    }
+  }
+
+  p {
+    font-size: 22px;
+    margin: 20px 0 0;
+    font-weight: 500;
+    padding: 0 0 10px 0;
+  }
+}
+@media screen and (max-width: $tablet-landscape) {
+  .promo-code-wrapper {
+    width: 100%;
+  }
+}

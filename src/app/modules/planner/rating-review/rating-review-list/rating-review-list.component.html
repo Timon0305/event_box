@@ -1,0 +1,60 @@
+<div class="rating-review-container" *ngIf="ratingNReviewList | async as ratingNReviewList">
+  <h2 class="page-title">My Ratings & Reviews</h2>
+
+  <div class="space-between-two" *ngIf="ratingNReviewList?.totalDocs > 0 || (paramsLength > 0)">
+    <div class="search-container" >
+      <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+      </div>
+    <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter sm-filter-dropdown">
+    </app-sort-by-filter>
+  </div>
+
+<!--My Ratings & Reviews-->
+    <!-- table start form here -->
+    <div class="table-listing rating-review-table rating-review-table-col-4">
+      <div class="table-head-wrapper" *ngIf="ratingNReviewList?.totalDocs > 0">
+        <div class="table-head">
+          <div class="thead-data">Product/Service Name</div>
+          <div class="thead-data">Event Label</div>
+          <div class="thead-data">Vendor Name</div>
+          <div class="thead-data">Action</div>
+        </div>
+      </div>
+      <div class="table-body-wrapper" *ngIf="ratingNReviewList?.totalDocs > 0">
+        <div class="table-body" *ngFor="let item of ratingNReviewList?.docs">
+          <div class="tbody-data" data-label="Name">
+            <div class="product-col">
+                <em><img src="{{item?.products?.defaultImageUrl}}" appNoImage alt="Product Image"
+                    class="product-image" /></em>
+                <span>{{item?.products?.name}}</span>
+              </div>
+          </div>
+          <div class="tbody-data" data-label="Event Label"><span>{{item?.events?.label}}</span></div>
+          <div class="tbody-data" data-label="Vendor Name"><span>{{item?.vendors?.name}}</span></div>
+          <div class="tbody-data" >
+            <div class="table-button-wrapper">
+                <button class="btn primary" type="button" *ngIf="!item?.isReviewed" (click)="writeReview(item)">Write Review</button>
+                <button class="btn primary" type="button" *ngIf="item?.isReviewed" (click)="viewRatingNReview(item.products._id, item.events._id)">Review Submitted</button>
+                <button class="btn link" type="button" [routerLink]="['/details/', item.products._id]">View Product/Service Details</button>
+                <button class="btn link" (click)="plannerViewEvent(item.events._id)" type="button">View Event Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-pagination [metaData]="ratingNReviewList" (pageChange)="pageChange($event)"></app-pagination>
+      <div class="table-listing product-table" *ngIf="ratingNReviewList?.totalDocs === number.zero && !(params > number.one)">
+        <div class="no-result">
+          <img src="/assets/images/no-data.svg" alt="No results" />
+          <p class="mt-5">Sorry! No results found :(</p>
+        </div>
+      </div>
+      <div class="table-listing product-table" *ngIf="ratingNReviewList?.totalDocs === number.zero && params > number.one">
+        <div class="no-result">
+          <img src="/assets/images/no-data.svg" alt="No results" />
+          <p class="mt-5">Sorry! No results found :(</p>
+        </div>
+      </div>
+
+    </div><!-- end table -->
+
+  </div><!-- end user-table-container -->

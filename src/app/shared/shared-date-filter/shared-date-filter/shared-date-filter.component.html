@@ -1,0 +1,6 @@
+<ng-select [formControl]="selectedValue" placeholder="Filter" [searchable]="false"
+(change)="dateChange($event)" class="datechangefilter">
+    <ng-option *ngFor="let data of sortByData" [value]="data.id">
+      {{data.text}}
+    </ng-option>
+  </ng-select>

@@ -1,0 +1,60 @@
+.fee-box {
+  width: 100%;
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px #e2e2e2;
+  padding: 20px 20px 0 20px;
+  border-radius: 5px;
+  margin-bottom: 40px;
+  span {
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(#111210, 0.6);
+    margin-bottom: 5px;
+    display: block;
+  }
+  p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111210;
+  }
+}
+.modal-header {
+  &.border-b {
+    border-bottom: 1px solid #e2e2e2;
+    padding: 20px 25px;
+  }
+}
+.order-summary {
+  width: 100%;
+  .count-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+
+    span {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(#000000, 0.8);
+      &:last-child {
+        font-weight: 600;
+      }
+    }
+    &.total {
+      padding-top: 20px;
+      border-top: 1px solid #e2e2e2;
+      margin-top: 30px;
+
+      span {
+        font-weight: 600;
+        font-size: 16px;
+        color: rgba(#000000, 0.8);
+        &:last-child {
+          font-size: 18px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

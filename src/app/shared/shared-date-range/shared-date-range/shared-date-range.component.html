@@ -1,0 +1,22 @@
+<div class="d-flex w-100">
+  <div class="range-input-col">
+    <div class="input-group date-time-picker">
+      <input class="form-control" placeholder="From" #startDate="dpDayPicker" type="text" [dpDayPicker]="startDateConfig"
+      [theme]="'dp-material'" [formControl]="dateFrom" [mode]="'day'" />
+      <div class="input-group-append" (click)="openDatePicker('startDate')">
+        <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+      </div>
+    </div>
+  </div>
+  <div class="range-input-col">
+    <div class="input-group date-time-picker">
+        <input class="form-control" type="text" placeholder="To" #endDate="dpDayPicker"
+        [dpDayPicker]="endDateConfig" (onChange)="endDateChanged($event)" [theme]="'dp-material'" [formControl]="dateTo"
+        [mode]="'day'"  />
+        <div class="input-group-append" (click)="openDatePicker('endDate')">
+          <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+        </div>
+      </div>
+  </div>
+  <button type="button" class="btn  primary range-input-clear" [disabled]="!dateFrom?.value || !dateTo?.value" (click)="clearDate()" *ngIf="showClearAll">Clear All</button>
+</div>

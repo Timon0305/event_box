@@ -1,0 +1,73 @@
+<div class="tab-content-head" *ngIf="awaitingQuotes?.totalDocs > 0 || (!isAdmin ? paramsLength > 3 : paramsLength > 5 )">
+
+  <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+
+  <div class="select-list-container">
+    <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+</div>
+<div class="table-listing vendor-awaited-quote-table" *ngIf="awaitingQuotes?.totalDocs > 0">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data">Product/Service Name</div>
+      <div class="thead-data">Event Name</div>
+      <div class="thead-data">Planner Name</div>
+      <div class="thead-data">Quote Expiration </div>
+      <div class="thead-data">Qty</div>
+      <div class="thead-data">Price Quote</div>
+      <div class="thead-data">Status</div>
+      <div class="thead-data">Action</div>
+    </div>
+  </div>
+  <div class="table-body-wrapper">
+    <div class="table-body" *ngFor="let item of awaitingQuotes?.docs;let i = index; trackBy: trackByFn">
+      <!-- repeat this div -->
+      <div class="tbody-data" data-label="Name">
+        <div class="product-col" (click)="isAdmin ? getQuoteView(item) : ''">
+          <em><img src="{{item?.products?.defaultImageUrl}}" alt="Product Image" class="product-image"
+              onError="this.src='./../assets/images/no-image.png'" />
+          </em>
+          <span> {{item?.products?.name}}</span>
+        </div>
+      </div>
+      <div class="tbody-data" data-label="Event Name"><span>{{item?.events?.name}}</span></div>
+      <div class="tbody-data" data-label="Planner Name"><span>{{item?.planners | formatPlannerName}}</span></div>
+      <div class="tbody-data" data-label="Quote Expiration">
+        <span>{{ item?.quoteExpirationDate ? (item?.quoteExpirationDate | date: 'mediumDate')+ ' |' :'-'}}<br>{{item?.quoteExpirationDate | date: 'hh:mm a'}}
+        </span></div>
+      <div class="tbody-data" data-label="Qty"><span>{{item?.latestReply?.quantity ? item?.latestReply?.quantity : item?.quantity}}</span></div>
+      <div class="tbody-data" data-label="Price Quote"><span>{{item?.totalPrice | currency:'USD'}}</span></div>
+      <div class="tbody-data" data-label="Status"><span>{{quoteStatus[item?.status].status}}</span></div>
+      <div class="tbody-data" *ngIf="!isAdmin">
+        <div class="table-button-wrapper">
+          <button class="btn link" type="button" [ngClass]="{'disabled': item?.latestReply?.status !== constant?.QUOTE_STATUS?.PENDING_REPLIES}" [disabled]="item?.latestReply?.status !== constant?.QUOTE_STATUS?.PENDING_REPLIES" (click)="updateQuoteRequest(item)">Update Quote</button>
+          <button class="btn link" [ngClass]="{'disabled': item?.latestReply?.status !== constant?.QUOTE_STATUS?.PENDING_REPLIES}" type="button" [disabled]="item?.latestReply?.status !== constant?.QUOTE_STATUS?.PENDING_REPLIES"  (click)="cancelQuote(item._id)">Cancel
+              Quote</button>
+          <button class="btn link" (click)="viewQuote(item)" type="button">View
+            Quote</button>
+          <button class="btn link" [routerLink]="['/vendor/quotes/quote-detail', item._id]" type="button">View
+            Details</button>
+        </div>
+      </div>
+      <div class="tbody-data" *ngIf="isAdmin">
+        <div class="table-button-wrapper" (click)="viewQuoteFromAdmin(item)">
+          <button class="btn link" type="button">See Quote</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-pagination [metaData]="awaitingQuotes" (pageChange)="pageChange($event)"></app-pagination>
+</div><!-- end table -->
+<div class="table-listing vendor-awaited-quote-table" *ngIf="awaitingQuotes?.totalDocs === 0 && (paramsLength <= 1)">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>
+<div class="table-listing vendor-awaited-quote-table" *ngIf="awaitingQuotes?.totalDocs === 0 && paramsLength > 1">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<ng-container *ngIf="topSellersFiltered$| async"></ng-container>
+<div class="w-100">
+  <div class="dashboard-head">
+    <h3>Top 10 Sellers</h3>
+    <div class="filter-section">
+      <app-shared-date-filter (filterDateEvent)="quoteDateFilter($event)"></app-shared-date-filter>
+    </div>
+  </div>
+  <div class="card-row-wrapper">
+    <div class="card-row" *ngFor="let topSeller of topFiveSellers">
+      <span>{{topSeller?.name}}</span>
+      <span>{{topSeller?.grossSale | currency:'USD':'symbol':'1.2-2'}}</span>
+    </div>
+    <div class="view-all-row" *ngIf="topSellers?.length > 5" (click)="openViewAll(otherSellers)" >
+      <a href="javascript:void(0)" class="link" title="View all">View all <img src="assets/images/arrow-right.svg"
+          alt="Arrow Righr" /></a>
+    </div>
+  </div>
+</div>
+<ng-template #otherSellers>
+  <div class="card-wrapper sale-card-wrapper">
+    <div class="box  no-image btn-col-2-with-space">
+      <div class="card-row-wrapper">
+        <div class="card-row" *ngFor="let topSeller of topSellers">
+          <span>{{topSeller?.name}}</span>
+          <span>{{topSeller?.grossSale | currency:'USD':'symbol':'1.2-2'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

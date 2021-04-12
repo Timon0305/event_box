@@ -1,0 +1,4 @@
+<div class="rating-container">
+    <span *ngFor="let i of counterStar(constNumber.five, constNumber.one)" class="star {{ (i <= showFullStar)?'active':''}}" [ngClass]="{'half-star': i === showHalfStar}"></span>
+    <span class="rating-count" *ngIf="ratingCount > constNumber.zero">({{ratingCount}})</span>
+</div>

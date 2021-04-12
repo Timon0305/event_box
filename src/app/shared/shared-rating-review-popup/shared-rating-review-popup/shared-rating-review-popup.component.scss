@@ -1,0 +1,15 @@
+.star-checkbox-container{
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  @media screen and (max-width: 576px) {
+    margin-bottom: 15px;
+  }
+  .star-checkbox{
+    margin-right: 9px;
+    font-size: 0;
+    @media screen and (max-width: 576px) {
+      margin-right: 5px;
+    }
+  }
+}

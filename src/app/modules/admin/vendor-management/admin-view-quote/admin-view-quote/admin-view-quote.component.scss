@@ -1,0 +1,21 @@
+@import "../../../../../../assets/scss/variables";
+@import "../../../../../../assets/scss/table";
+
+.table-listing{
+  &.planner-counter-offer-table{
+    min-height: 310px;
+    .table-head,
+    .table-body{
+      justify-content: space-between;
+    }
+    .thead-data,
+    .tbody-data {
+      &:nth-child(3){width: 23%;}
+      &:last-child{
+        width: 15%;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+  }
+}

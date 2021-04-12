@@ -1,0 +1,45 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/']">
+      <a>Vendor Management</a>
+    </li>
+    <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/view', vendorId]">
+      <a>Profile - {{vendorName}}</a>
+    </li>
+    <li class="breadcrumb-item active">
+      <ng-container *ngIf="activeTab === ordersType.NEW_ORDERS">
+        New Orders - {{vendorName}}
+      </ng-container>
+      <ng-container *ngIf="activeTab === ordersType.DAY_OUR_ORDERS">
+        30 Days Out - {{vendorName}}
+      </ng-container>
+      <ng-container *ngIf="activeTab === ordersType.FULFILLED_ORDERS">
+        Fulfilled Orders - {{vendorName}}
+      </ng-container>
+    </li>
+  </ol>
+</nav>
+<div class="event-list-container">
+  <h2 class="page-title" *ngIf="activeTab === ordersType.NEW_ORDERS">New Orders</h2>
+  <h2 class="page-title" *ngIf="activeTab === ordersType.DAY_OUR_ORDERS">
+    30 Days Out</h2>
+  <h2 class="page-title" *ngIf="activeTab === ordersType.FULFILLED_ORDERS">
+    Fulfilled Orders</h2>
+  <div class="tab-head">
+    <ul class="nav multi-tab-buttons button-count-3">
+      <li class="nav-item" (click)="navigateAllOrders(ordersType.NEW_ORDERS)"
+        [ngClass]="{'active': activeTab === ordersType.NEW_ORDERS}">
+        <a class="nav-link" title="Awaiting Quotes Acceptance">New Orders</a>
+      </li>
+      <li class="nav-item" (click)="navigateAllOrders(ordersType.DAY_OUR_ORDERS)"
+        [ngClass]="{'active': activeTab === ordersType.DAY_OUR_ORDERS}">
+        <a class="nav-link" title="Expired/Declined Quotes">30 Days Out</a>
+      </li>
+      <li class="nav-item" (click)="navigateAllOrders(ordersType.FULFILLED_ORDERS)"
+        [ngClass]="{'active': activeTab === ordersType.FULFILLED_ORDERS}">
+        <a class="nav-link" title="Canceled Quotes">Fulfilled Orders</a>
+      </li>
+    </ul>
+  </div>
+  <app-order-listing></app-order-listing>
+</div>

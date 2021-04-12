@@ -1,0 +1,184 @@
+<div class="tab-content-head tab-head-with-report-filter" *ngIf="expiredQuotesListData?.totalDocs || paramsLength>2">
+  <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+  <div class="select-list-container sm-filter-dropdown">
+    <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+  <ng-container>
+    <div class="order-report-filter-section">
+      <p>Quotes Report</p>
+      <app-shared-date-range></app-shared-date-range>
+      <button class="btn primary medium" type="button" [disabled]="!dateRangeComponent?.isDateValid"
+        (click)="fetchReport()">Export</button>
+    </div>
+  </ng-container>
+</div>
+<app-radio-button [radioData]="radioData" *ngIf="!eventDetailPage" [value]="radioTypeValue"
+  (radioChnage)="radioButtonChange($event)">
+</app-radio-button>
+
+<div class="table-listing planner-expired-declined-quotes" [ngClass]="{'admin-expired-rejected-quote-table': isAdmin}"
+  *ngIf="expiredQuotesListData?.totalDocs > 0">
+  <div class="table-head-wrapper" [ngClass]="{'expired-rejected-quote-table-detail': eventDetailPage}">
+    <div class="table-head" *ngIf="!isAdmin; else adminTableHead">
+      <div class="thead-data">Product/Service Name</div>
+      <div class="thead-data" *ngIf="!isRejectedQuotes; else rejectedDate">Quote Expiration</div>
+      <ng-template #rejectedDate>
+        <div class="thead-data">Quote Rejected</div>
+      </ng-template>
+      <div class="thead-data">Vendor Name</div>
+      <div class="thead-data">Vendor Phone</div>
+      <div class="thead-data" *ngIf="!eventDetailPage">Event Label</div>
+      <div class="thead-data">Qty</div>
+      <div class="thead-data">Price Quote</div>
+      <div class="thead-data">Status</div>
+      <div class="thead-data">Action</div>
+    </div>
+    <ng-template #adminTableHead>
+      <div class="table-head">
+        <div class="thead-data">Product/Service Name</div>
+        <div class="thead-data" *ngIf="!eventDetailPage">Event Label</div>
+        <div class="thead-data" *ngIf="!isRejectedQuotes; else rejectedDate">Quote Expired</div>
+        <ng-template #rejectedDate>
+          <div class="thead-data">Quote Rejected</div>
+        </ng-template>
+        <div class="thead-data">Qty</div>
+        <div class="thead-data">Planner Name</div>
+        <div class="thead-data">Planner Phone</div>
+        <div class="thead-data">Vendor Name</div>
+        <div class="thead-data">Price Quote</div>
+        <div class="thead-data">Status</div>
+        <div class="thead-data">Action</div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="table-body-wrapper" [ngClass]="{'expired-rejected-quote-table-detail': eventDetailPage}">
+    <div class="table-body" *ngFor="let item of expiredQuotesListData?.docs;let i = index; trackBy: trackByFn"
+      [ngClass]="{'hidden-row': (item.status === 'REJECTED_BY_VENDOR' || item.status === 'REJECTED_QUOTES')}">
+      <!-- repeat this div -->
+      <ng-container *ngIf="!isAdmin; else adminColumnsValue">
+        <div class="tbody-data" data-label="Name">
+          <div class="product-col">
+            <em><img src="{{item?.products?.defaultImageUrl}}"
+                onError="this.src='../../../../../../assets/images/no-image-table.png'" alt="Product Image"
+                class="product-image" /></em>
+            <span> {{item?.products?.name}}</span>
+          </div>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Quote Expiration" *ngIf="!isRejectedQuotes">
+          <span *ngIf="item?.quoteExpirationDate">{{item?.quoteExpirationDate | date: 'mediumDate'}} |
+            {{item?.quoteExpirationDate | date: 'hh:mm a'}}</span>
+          <span *ngIf="!item?.quoteExpirationDate">-</span>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Quote Expiration" *ngIf="isRejectedQuotes">
+          <span>{{item?.latestReply?.updatedAt | date: 'mediumDate'}} |
+            {{item?.latestReply?.updatedAt | date: 'hh:mm a'}}</span>
+        </div>
+        <div class="tbody-data" data-label="Vendor Name"><span>{{item?.vendors?.name}}</span></div>
+        <div class="tbody-data" data-label="Vendor Phone"><span>{{item?.vendors?.phone | formatPhone}}</span>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Event Label" *ngIf="!eventDetailPage"><span><a
+              [routerLink]="['/planner/event/event-detail', item.events._id]" [queryParams]="{navigationId: 3}">
+              {{item?.events?.label}}</a></span></div>
+
+
+        <div class="tbody-data data-col-10" data-label="Qty">
+          <span>{{item?.latestReply?.quantity ? item?.latestReply?.quantity : item?.quantity}}</span></div>
+        <div class="tbody-data data-col-10" data-label="Price Quote">
+          <span>{{item.replies.length ?(item?.totalPrice | currency:'USD') : '-'}}</span></div>
+        <div class="tbody-data" data-label="Status">
+          <span>{{quoteStatus[item?.status]?.status}}</span>
+        </div>
+        <div class="tbody-data">
+          <div class="table-button-wrapper">
+            <button class="btn primary" type="button" (click)="requestQuoteAgain(item)"
+              *ngIf="!isRejectedQuotes && item.status!== 'REJECTED_BY_VENDOR' && item.status!== 'REJECTED_QUOTES'"
+              [disabled]="isEventExpired(item.events.endDate) || item.status ===  plannerQuoteStatus.CANCELED_QUOTES">
+              Request Quote Again</button>
+            <button class="btn primary" type="button" *ngIf="item?.replies?.length" (click)="viewQuote(item)">View
+              Quote</button>
+            <button class="btn link" type="button" [routerLink]="['/planner/quote-request-details', item._id]">View
+              Details</button>
+            <button class="btn primary" type="button" (click)="viewNotes(item.vendorNotes)"
+              *ngIf="item.status === 'REJECTED_BY_VENDOR' || item.status === 'REJECTED_QUOTES'">View Notes</button>
+
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #adminColumnsValue>
+        <div class="tbody-data" data-label="Name">
+          <div class="product-col">
+            <em><img src="{{item?.products?.defaultImageUrl}}"
+                onError="this.src='../../../../../../assets/images/no-image-table.png'" alt="Product Image"
+                class="product-image" /></em>
+            <span> {{item?.products?.name}}</span>
+          </div>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Event Label" *ngIf="!eventDetailPage"><span><a
+              [routerLink]="['/planner/event/event-detail', item.events._id]" [queryParams]="{navigationId: 3}">
+              {{item?.events?.label}}</a></span>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Quote Expired" *ngIf="!isRejectedQuotes">
+          <span>{{item?.quoteExpirationDate | date: 'mediumDate'}} |
+            {{item?.quoteExpirationDate | date: 'hh:mm a'}}</span>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Quote Expiration" *ngIf="isRejectedQuotes">
+          <span>{{item?.latestReply?.updatedAt | date: 'mediumDate'}} |
+            {{item?.latestReply?.updatedAt | date: 'hh:mm a'}}</span>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Qty">
+          <span>{{item?.latestReply?.quantity ? item?.latestReply?.quantity : item?.quantity}}</span>
+        </div>
+        <div class="tbody-data" data-label="Planner Name"><span>{{item?.planners?.firstName}}
+            {{item?.planners?.lastName}}</span>
+        </div>
+        <div class="tbody-data" data-label="Planner Phone"><span>{{item?.planners?.phone | formatPhone}}</span>
+        </div>
+        <div class="tbody-data" data-label="Vendor Name"><span>{{item?.vendors?.name}}</span></div>
+        <div class="tbody-data data-col-10" data-label="Price Starting at">
+          <span>{{item.replies.length ? (item?.totalPrice | currency:'USD'): '-'}}</span></div>
+        <div class="tbody-data" data-label="Status">
+          <span>{{quoteStatus[item?.status]?.status}}</span>
+        </div>
+        <div class="tbody-data">
+          <ng-container *ngIf="plannerId; else adminNonPlannerOpt">
+            <div class="table-button-wrapper">
+              <button class="btn link" type="button" *ngIf="!eventId" [routerLink]="['../../', item._id]">View
+                Details</button>
+              <button class="btn link" type="button" *ngIf="eventId" [routerLink]="['../../quotes', item._id]">View
+                Details</button>
+              <span class="view-quote-btn" (click)="viewQuote(item)" *ngIf="item?.replies?.length">View Quote</span>
+            </div>
+          </ng-container>
+          <ng-template #adminNonPlannerOpt>
+            <div class="table-button-wrapper">
+              <button class="btn link" type="button" *ngIf="!eventDetailPage"
+                [routerLink]="['/admin/reports/quotes', item._id]">View
+                Details</button>
+              <button class="btn link" type="button" *ngIf="eventDetailPage" [queryParams]="{ navigationId: 2}"
+                [routerLink]="['/admin/reports/quotes', item._id]">View
+                Details</button>
+              <span class="view-quote-btn" (click)="viewQuote(item)" *ngIf="item?.replies?.length">View Quote</span>
+            </div>
+          </ng-template>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+  <app-pagination [metaData]="expiredQuotesListData" (pageChange)="pageChange($event)"></app-pagination>
+</div><!-- end table -->
+<div class="table-listing planner-expired-declined-quotes"
+  *ngIf="expiredQuotesListData?.totalDocs === 0 && !(paramsLength)">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>
+<div class="table-listing planner-expired-declined-quotes"
+  *ngIf="expiredQuotesListData?.totalDocs === 0 && paramsLength > 0">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No search results found :(</p>
+  </div>
+</div>

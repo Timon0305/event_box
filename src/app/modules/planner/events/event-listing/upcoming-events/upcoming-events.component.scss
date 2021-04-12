@@ -1,0 +1,210 @@
+@import "../../../../../../assets/scss/variables";
+@import "../../../../../../assets/scss/table";
+
+.event-list-container{
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+  }
+  .action-items{
+    .btn{
+      &:first-child{
+        display: inline-flex;
+        align-items: center;
+      }
+      img{
+        margin-right: 7px;
+      }
+    }
+  }
+}
+.tab-head{
+  border-radius: 5px;
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px rgba(226, 226, 226, 0.5);
+  background-color: #ffffff;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 50px;
+  .nav{
+    width: 100%;
+    height: 100%;
+    .nav-item{
+      width: 50%;
+      &:hover{
+        .nav-link{
+          border-color: #5067eb;
+          background: rgba(#f0f4ff, 0.6);
+        }
+      }
+      &.active {
+        .nav-link{
+          border-color: #5067eb;
+          background: rgba(#f0f4ff, 0.6);
+          font-weight: 600;
+        }
+      }
+    }
+    .nav-link{
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      display: inline-flex;
+      justify-content: center;
+      font-size: 15px;
+      color: #000;
+      border-bottom: 2px solid transparent;
+    }
+  }
+}
+.tab-content-head{
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  .select-list-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: calc(100% - 400px);
+    &.admin-view-event-select-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: auto;
+      margin-left: 10px;
+    }
+    .ng-select{
+      min-width: 200px;
+    }
+    .btn {
+      margin-left: 16px;
+    }
+  }
+  &.tab-head-with-report-filter {
+    justify-content: flex-start;
+    .order-report-filter-section {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      p {
+        margin: 0 10px 0 10px;
+        font-size: 15px;
+      }
+    }
+    .select-list-container  {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: auto;
+      margin-left: 10px;
+    }
+    @media screen and (max-width: $tablet-pro) {
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .order-report-filter-section {
+        margin-top: 20px;
+        flex-wrap: wrap;
+        width: 100%;
+        p {
+          margin: 0 15px 0 0;
+        }
+      }
+    }
+    @media screen and (max-width: $phone-landscape) {
+      .order-report-filter-section {
+        p {
+          margin: 0 0 15px 0;
+        }
+      }
+    }
+  }
+}
+.upcoming-event-table{
+  min-height: 270px;
+  .btn{
+    min-width: 90px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+    & + .btn{
+      margin-top: 10px;
+    }
+  }
+  .table-head,
+  .table-body{
+    justify-content: space-between;
+  }
+  .toggle-dropdown-icon{
+    margin-left: 3px;
+  }
+}
+@media screen and (max-width: $tablet-landscape) {
+  .tab-head {
+    margin-bottom: 30px;
+    ul {
+      &.nav {
+        .nav-item {
+          .nav-link {
+            text-align: center;
+            font-size: 13px;
+            padding: 5px 10px;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: $desktop) {
+  .table-listing {
+    .table-body-wrapper {
+      .table-body {
+        .tbody-data {
+          &.table-dropdown-toggle-col {
+            display: flex;
+            flex-direction: row;
+            .btn {
+              &.primary {
+                width: calc(100% - 38px);
+              }
+              & + .dropdown {
+                .dropdown-menu {
+                  &.dropdown-box-shadow {
+                    top: auto !important;
+                    bottom: calc(100% + 44px);
+                    &::before {
+                      top: auto;
+                      bottom: -12px;
+                      transform: rotate(180deg);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: $phone-landscape) {
+  .tab-content-head {
+    margin-bottom: 24px;
+    .select-list-container {
+      &.sm-filter-dropdown {
+        width: calc(50% - 8px);
+        flex-wrap: wrap;
+      }
+      &.admin-view-event-select-container {
+        margin-left: 0;
+      }
+    }
+    .btn{
+      &.medium{
+        margin-top: 15px;
+      }
+    }
+  }
+}

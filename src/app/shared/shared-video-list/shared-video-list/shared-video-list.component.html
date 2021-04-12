@@ -1,0 +1,6 @@
+<div class="product-video-container" *ngIf="videoArr.length">
+  <div class="video-section" *ngFor="let video of videoArr">
+    <img class="thumb"  src="http://img.youtube.com/vi/{{video?.youtubeId}}/0.jpg" alt="Video Thumbnail"  />
+    <img src="../../../../assets/images/icon-play.svg" (click)="playVideo(video)" alt="Video Thumbnail" class="play-icon" />
+  </div>
+</div>

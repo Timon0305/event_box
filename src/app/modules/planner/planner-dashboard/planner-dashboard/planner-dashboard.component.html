@@ -1,0 +1,86 @@
+<h2 class="page-title top-first-title">My Dashboard</h2>
+
+<div class="dashborad-buttons">
+  <div class="button-container">
+    <button class="btn link btn-block"  [routerLink]="['/planner/quotes/accept-reject-quotes/list']" [queryParams]="sortingParams?.ACCEPT_REJECT_AND_AWAITING_VENDOR_QUOTES" type="button">Accept / Reject Quotes</button>
+    <span class="badge badge-warning" *ngIf="headerCount?.quotes?.ACCEPT_REJECT_QUOTES > 0">{{headerCount?.quotes?.ACCEPT_REJECT_QUOTES}}</span>
+  </div>
+  <div class="button-container">
+    <button class="btn link btn-block" type="button" [routerLink]="['/planner/quotes/awaiting-vendor-quotes/list']" [queryParams]="sortingParams?.ACCEPT_REJECT_AND_AWAITING_VENDOR_QUOTES">Awaiting Vendor Quotes</button>
+    <span class="badge badge-warning" *ngIf="headerCount?.quotes?.AWAITING_VENDOR_QUOTES > 0"> {{headerCount?.quotes?.AWAITING_VENDOR_QUOTES}}</span>
+  </div>
+  <div class="button-container">
+    <button class="btn link btn-block" type="button" [routerLink]="['/planner/quotes/quote-pending-payment/list']" [queryParams]="sortingParams?.ACCEPTED_QUOTES">Quote Pending Payment</button>
+    <span class="badge badge-warning" *ngIf="headerCount?.quotes?.ACCEPTED_QUOTES > 0"> {{headerCount?.quotes?.ACCEPTED_QUOTES}}</span>
+  </div>
+  <div class="button-container">
+    <button class="btn link btn-block" [queryParams]="{ type: constants?.eventType?.upcomingEvent }"
+    [routerLink]="['/planner/event/list']" type="button">My Events</button>
+  </div>
+  <div class="button-container">
+    <button class="btn link btn-block" [routerLink]="['/planner/orders/purchased']" type="button">Purchased Orders</button>
+  </div>
+</div>
+
+<div class="row dashboard-box">
+  <!-- Planner dashboard start from here -->
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-title">Quote Request Folder</div>
+      <div class="card-body light-blue">
+        <div class="heading">Requests Needed to be Sent to Vendor</div>
+        <div class="oval">{{dashboardCount?.quotes?.initiated}}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn text" routerLinkActive="active"
+        [routerLink]="['/planner/quote-request-folder']" >View Folder</button>
+      </div>
+    </div>
+  </div><!-- end col-6 -->
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-title" >Accept / Reject Quotes</div>
+      <div class="card-body light-sky-blue">
+        <div class="heading">Quotes to Accept / Reject</div>
+        <div class="oval mb-1 mb-md-3">{{dashboardCount?.quotes?.acceptReject}}</div>
+        <div class="sub-heading with-child">Accepted <span class="d-none d-sm-inline">Quotes</span>: {{dashboardCount?.quotes?.accept}}</div>
+        <div class="sub-heading with-child">Rejected <span class="d-none d-sm-inline">Quotes</span>: {{dashboardCount?.quotes?.reject}}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn text" routerLinkActive="active"
+        [routerLink]="['/planner/quotes/accept-reject-quotes/list']" [queryParams]="sortingParams?.ACCEPT_REJECT_AND_AWAITING_VENDOR_QUOTES">View Folder</button>
+      </div>
+    </div>
+  </div><!-- end col-6 -->
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-title">My Events</div>
+      <div class="card-body light-orange">
+        <button class="btn text add-btn" [routerLink]="['/planner/event/add-event']"  type="button">+ Add Event</button>
+        <div class="sub-heading with-child"><span class="d-none d-sm-inline">Total</span> Upcoming Events: {{dashboardCount?.events?.upcomings}}</div>
+        <div class="sub-heading with-child"><span class="d-none d-sm-inline">Total</span> Past Events: {{dashboardCount?.events?.past}}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn text" [queryParams]="{ type: constants?.eventType?.upcomingEvent }"
+        [routerLink]="['/planner/event/list']">View Folder</button>
+      </div>
+    </div>
+  </div><!-- end col-6 -->
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-title">My Favorites</div>
+      <div class="card-body light-pink">
+        <div class="heading">Favorites</div>
+        <div class="oval">{{dashboardCount?.products?.fav}}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn text" [routerLink]="['/planner/favourites']">View Folder</button>
+      </div>
+    </div>
+  </div><!-- end col-6 -->
+
+</div>

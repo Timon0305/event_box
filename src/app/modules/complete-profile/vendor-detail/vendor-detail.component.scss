@@ -1,0 +1,17 @@
+@import "~assets/scss/variables";
+.vendor-detail-container{
+  margin-bottom: 6px;
+  .second-title{
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 0.92;
+    margin-top: 36px;
+    margin-bottom: 10px;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    .second-title {
+      font-size: 16px;
+      margin-top: 25px;
+    }
+  }
+}

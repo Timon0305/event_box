@@ -1,0 +1,95 @@
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/table";
+.dashboard-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.dashboard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .filter-section {
+    display: inline-flex;
+    align-items: center;
+    .select-wrapper{
+      margin-left: 12px;
+    }
+  }
+}
+.box-container{
+  .col-lg-4{
+    margin-bottom: 40px;
+    @media screen and (max-width: $tablet-landscape) {
+      margin-bottom: 24px;
+    }
+  }
+}
+.box{
+  border-radius: 6px;
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px #f0f0f0;
+  background-color: #ffffff;
+  height: 100%;
+  padding: 24px 20px 24px 24px;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  .box-content{
+    width: calc(100% - 50px);
+    padding-right: 10px;
+    word-break: break-word;
+    .title{
+      font-size: 26px;
+      font-weight: 600;
+      color: #000000;
+      margin-bottom: 8px;
+      line-height: normal;
+    }
+    .name{
+      font-size: 12px;
+      font-weight: 500;
+      color: #545454;
+      text-transform: uppercase;
+    }
+  }
+  .box-image{
+    height: 50px;
+    width: 50px;
+  }
+}
+.input-with-sign{
+  margin: 40px 0;
+  @media screen and (max-width: $phone-landscape) {
+    margin: 24px 0;
+  }
+  label{
+    font-size: 14px;
+    font-weight: 600;
+    color: #5a5a5a;
+    margin-bottom: 20px;
+  }
+  .date-time-picker{
+    max-width: 75%;
+    @media screen and (max-width: $phone-landscape) {
+      max-width: 100%;
+    }
+    .form-control{
+      padding-right: 15px;
+      color: rgba(#000000, 0.75);
+    }
+    .input-group-append{
+      padding: 0;
+      .btn-default{
+        font-size: 11px;
+        font-weight: 600;
+        color: #5067eb;
+        text-transform: uppercase;
+        padding: 9px 23px 8px;
+      }
+    }
+  }
+}

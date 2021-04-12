@@ -1,0 +1,41 @@
+<!-- Company location -->
+<div class="address-section">
+    <div class="row">
+        <div class="col-6">
+            <div class="section-title mb-0 mt-2">Company Location</div>
+        </div>
+        <div *ngIf="locations?.docs?.length < maxLocations" class="col-6 d-flex justify-content-end add-new-card mb-3">
+            <button type="button" class="btn link link-small" (click)="addLocationModal()">Add New</button>
+        </div>
+        <div class="address-content" *ngIf="locations && locations?.docs?.length">
+            <div class="col-md-6" *ngFor="let location of locations.docs; let i = index; trackBy:trackById">
+                <div class="address-container">
+                    <div class="col-8 col-md-8">
+                        <div class="text-label">Address</div>
+                        <div class="text-content">{{location?.address}}</div>
+                    </div>
+                    <div class="col-4 col-md-4">
+                        <div class="action-buttons">
+                            <a class="link edit" title="Edit" (click)="editLocation(location)"><span class="icon-edit"></span> Edit</a>
+                            <a *ngIf="locations?.docs?.length > 1" (click)="deleteLocation(location._id, i)" class="link" title="Delete"><span class="icon-delete"></span>
+                                Delete</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-label">City</div>
+                        <div class="text-content">{{location?.city}}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-label">State</div>
+                        <div class="text-content">{{location?.state}}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-label">Zip Code</div>
+                        <div class="text-content">{{location?.zipcode}}</div>
+                    </div>
+                </div><!-- end address-container -->
+            </div><!-- end col-md-6 -->
+        </div>
+
+    </div><!-- end row -->
+</div><!-- end address-section -->

@@ -1,0 +1,28 @@
+@import "~assets/scss/variables";
+.remove-location-container{
+  line-height: 1;
+  margin-top: -8px;
+  margin-bottom: 18px;
+}
+.remove-location{
+  display: inline-block;
+  color:  #FF5C5C;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.company-address-container{
+  margin-bottom: 6px;
+  .subtitle{
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.22;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    @media screen and (max-width: $phone-landscape) {
+      font-size: 14px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+  }
+}

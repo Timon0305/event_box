@@ -1,0 +1,8 @@
+<h2 class="page-title top-first-title">Partner Management</h2>
+<div class="admin-vendor-table-container">
+    <div class="space-between-two" *ngIf="(route.snapshot.queryParams.filter || partnerListData?.totalDocs || loader) ">
+        <app-shared-search (search)="search($event)"></app-shared-search>
+        <app-sort-by-filter [sortByData]="partnerListSort" (sortFilterChange)="sortFilterChange($event)" class="sort-filter"></app-sort-by-filter>
+    </div>
+    <app-partner-table [partnerListData]="partnerListData" (deletePartnerEvent)="deletePartner($event)"></app-partner-table>
+</div><!-- end user-table-container -->

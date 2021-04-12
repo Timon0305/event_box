@@ -1,0 +1,17 @@
+@import '~assets/scss/product-list';
+.view-review-container{
+  label{
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 2;
+    color: #818181;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  p{
+    font-weight: 500;
+    line-height: 1.57;
+    color: #111210;
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,63 @@
+@import "~assets/scss/variables";
+.vendor-add-product-container{
+    .page-title{
+      padding-top: 9px;
+      margin-bottom: 40px;
+      &.top-first-title{
+        padding-top: 35px;
+      }
+      @media screen and (max-width: $phone-landscape) {
+        margin-bottom: 25px;
+      &.top-first-title{
+        padding-top: 25px;
+      }
+      }
+    }
+    .form-group{
+      margin-bottom: 40px;
+      @media screen and (max-width: $phone-landscape) {
+        margin-bottom: 16px;
+      }
+    }
+  }
+  .add-product-form{
+    .form-group{
+      margin-bottom: 40px;
+      @media screen and (max-width: $phone-landscape) {
+        margin-bottom: 16px;
+      }
+    }
+    &.footer-padding-added {
+      padding-bottom: 130px;
+      @media screen and (max-width: $phone-landscape) {
+        padding-bottom: 110px;
+      }
+    }
+  }
+  .add-button-container {
+    text-align: right;
+    margin-top: -24px;
+    @media screen and (max-width: $phone-landscape) {
+      margin-top: -16px;
+    }
+  }
+  .remove-button-container{
+    text-align: right;
+    margin-top: -8px;
+    margin-bottom: 30px;
+  }
+  .location-container{
+    margin-top: 40px;
+    @media screen and (max-width: $phone-landscape) {
+      margin-top: 20px;
+    }
+    .location-title{
+      font-size: 15px;
+      font-weight: 500;
+      color: #000000;
+      margin-bottom: 20px;
+    }
+    .check-space{
+      margin-bottom: 32px;
+    }
+  }

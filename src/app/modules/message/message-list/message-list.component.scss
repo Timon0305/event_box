@@ -1,0 +1,61 @@
+@import "~assets/scss/variables";
+.message-user-list {
+  width: 360px;
+  height: 100%;
+  border: 1px solid #dce1ef;
+  border-radius: 4px;
+
+  .list-search {
+    height: 60px;
+    border-bottom: 1px solid #dce1ef;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+
+    .search-form {
+      height: auto;
+      width: 100%;
+      max-width: 100%;
+
+      .form-group {
+        border: 0;
+
+        .form-control {
+          height: 42px;
+          background: #f0f4ff;
+          border-radius: 4px;
+          font-size: 15px;
+          padding-left: 35px;
+        }
+      }
+    }
+  }
+
+  .list-data {
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    .no-result{
+      width: 55%;
+      height: 80%;
+      font-size: 16px;
+      img{
+        width: 70%;
+      }
+    }
+  }
+  @media screen and (max-width: $tablet-pro) {
+    width: 270px;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    border: 0;
+    .list-search {
+      height: 74px;
+    }
+    .list-data {
+      height: auto;
+    }
+  }
+}
+

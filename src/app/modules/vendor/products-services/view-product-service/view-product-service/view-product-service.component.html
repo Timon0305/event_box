@@ -1,0 +1,121 @@
+<div class="row" *ngIf="(productServiceDetail$ | async)?.data as data;">
+  <div class="col-12 vendor-product-detail">
+
+    <div class="vendor-product-top-bar">
+      <ng-container *ngIf="!isAdmin; else adminBreadcrumbs">
+        <app-breadcrumbs [dynamicBreadcrumb]="dynamicBreadcrumb(data)"></app-breadcrumbs>
+        <div class="top-bar-btns">
+          <button class="btn link" type="button" *ngIf="!data?.isArchive" (click)="toggleArchive(data)">Archive</button>
+          <button class="btn link" type="button" *ngIf="data?.isArchive" (click)="toggleArchive(data)">Activate</button>
+          <button class="btn primary" type="button" routerLink="{{productServicesEditRoute}}/{{data._id}}">Edit</button>
+        </div>
+      </ng-container>
+      <ng-template #adminBreadcrumbs>
+        <ng-container *ngIf="route.snapshot.params.vendorId; else adminReportsProductDetail">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/']">
+                <a>Vendor Management</a>
+              </li>
+              <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/view', route.snapshot.params.id]">
+                <a>Profile - {{vendorName}}</a>
+              </li>
+              <li class="breadcrumb-item" (click)="back()">
+                <a>Products/Services - {{vendorName}}</a>
+              </li>
+              <li class="breadcrumb-item active" >
+                {{data.name}}
+              </li>
+            </ol>
+          </nav>
+        </ng-container>
+        <ng-template #adminReportsProductDetail>
+          <app-breadcrumbs [dynamicBreadcrumb]="adminDynamicBreadcrumbs(data)"></app-breadcrumbs>
+        </ng-template>
+      </ng-template>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 mb-md-5" *ngIf="(ratingNreviewObservable$ | async) as productRating;">
+        <app-shared-image-gallery [imageArray]="data.imagesUrl || []" [defaultImage]="data.defaultImageUrl || ''">
+        </app-shared-image-gallery>
+        <div class="above-mobile">
+          <app-shared-slide-carousel [setLocations]="data.locations"></app-shared-slide-carousel>
+          <div class="review-container" *ngIf="(ratingNreviewObservable$ | async) as ratingNreviewList;">
+            <div class="title-with-button">
+              <h4 class="section-title" *ngIf="ratingNreviewList?.totalDocs"> Ratings & Reviews</h4>
+              <a href="javascript:void(0)" routerLink="{{productRatingNReviewRoute}}/{{data?._id}}"
+                *ngIf="ratingNreviewList?.totalDocs > constNumber.one" class="link" title="View all">View all ratings &
+                reviews
+                <img src="assets/images/arrow-right.svg" alt="Arrow Righr" /></a>
+            </div>
+            <div class="row" *ngIf="productRating?.docs.length">
+              <div class="col-12 plan-item-col">
+                <div class="planner-comments">
+                  <div class="top-section">
+                    <div class="content">
+                      <app-shared-view-rating-star [rating]="productRating?.docs[0].rating">
+                      </app-shared-view-rating-star>
+                    </div>
+                  </div>
+                  <p class="comment-detail">{{productRating?.docs[0].review}}</p>
+                  <p class="comment-author">- {{productRating?.docs[0].user | formatPlannerName}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="product-detail">
+          <div class="page-title">{{data?.name}}</div>
+          <app-shared-view-rating-star [rating]="data?.avgRating" [ratingCount]="data?.ratingCount">
+          </app-shared-view-rating-star>
+          <div class="product-category">Category: <span>{{data?.category?.name}}</span></div>
+          <div class="product-category extra-margin">Sub Category: <span>{{data?.subCategory?.name}}</span></div>
+          <div class="product-category extra-margin" *ngIf="isAdmin">Vendor: <span>{{data?.company?.name}}</span></div>
+
+          <div class="price-container">
+            <span class="text">Price Starting at:</span>
+            <span class="amount">{{data?.price | currency:'USD'}}</span>
+          </div>
+          <div class="divider"></div>
+
+          <h5 class="product-sub-title">Product Description</h5>
+          <p class="des">{{data?.description}}</p>
+          <div class="divider"></div>
+          <h5 class="product-sub-title">Additional Details <span class="italic">(Guidelines)</span></h5>
+          <p class="des">{{data?.additionalDetails}}</p>
+          <div class="divider"></div>
+          <h5 class="product-sub-title" *ngIf="data?.videos[0]">Videos</h5>
+          <app-shared-video-list [videos]="data.videos || []"></app-shared-video-list>
+        </div><!-- end product-detail -->
+        <div class="mobile-only">
+          <app-shared-slide-carousel [setLocations]="data.locations"></app-shared-slide-carousel>
+          <div class="review-container" *ngIf="(ratingNreviewObservable$ | async) as ratingNreviewList;">
+            <div class="title-with-button">
+              <h4 class="section-title" *ngIf="ratingNreviewList?.totalDocs"> Ratings & Reviews</h4>
+              <a href="javascript:void(0)" routerLink="{{productRatingNReviewRoute}}/{{data?._id}}"
+                *ngIf="ratingNreviewList?.totalDocs > constNumber.one" class="link" title="View all">View all ratings &
+                reviews
+                <img src="assets/images/arrow-right.svg" alt="Arrow Righr" /></a>
+            </div>
+            <div class="row" *ngIf="productRating?.docs.length">
+              <div class="col-12 plan-item-col">
+                <div class="planner-comments">
+                  <div class="top-section">
+                    <div class="content">
+                      <app-shared-view-rating-star [rating]="productRating?.docs[0].rating">
+                      </app-shared-view-rating-star>
+                    </div>
+                  </div>
+                  <p class="comment-detail">{{productRating?.docs[0].review}}</p>
+                  <p class="comment-author">- {{productRating?.docs[0].user | formatPlannerName}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

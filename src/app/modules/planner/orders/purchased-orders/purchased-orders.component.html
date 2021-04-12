@@ -1,0 +1,150 @@
+<div class="tab-content">
+  <div class="tab-content">
+    <!-- end tab-content-head -->
+    <div class="tab-content-head tab-head-with-report-filter" *ngIf="(totalDocs || (paramsLength > 0))">
+      <div class="search-container">
+        <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+      </div><!-- end search-container -->
+      <app-sort-by-filter [sortByData]="sortingData" (sortFilterChange)=sort($event)
+        class="sort-filter sm-filter-dropdown">
+      </app-sort-by-filter>
+      <ng-container>
+        <div class="order-report-filter-section">
+          <p>Orders Report</p>
+          <app-shared-date-range></app-shared-date-range>
+          <button class="btn primary medium" type="button" [disabled]="!dateRangeComponent?.isDateValid"
+            (click)="fetchReport()">Export</button>
+        </div>
+      </ng-container>
+
+    </div>
+    <ng-container *ngIf="(purchasedOrder$| async)?.data as purchasedOrder">
+
+      <!-- table start form here -->
+      <div class="table-listing purchased-order-table" [ngClass]="{'admin-purchased-order-table': isAdmin}"
+      *ngIf="purchasedOrder?.docs?.length">
+        <div class="table-head-wrapper" [ngClass]="{'purchased-order-table-detail': isEventDetail}">
+          <div class="table-head" *ngIf="!isAdmin; else adminHeading">
+            <div class="thead-data">Product/Service Name</div>
+            <div class="thead-data" *ngIf="!isEventDetail">Event Label</div>
+            <div class="thead-data">Purchased Date</div>
+            <div class="thead-data">Vendor Name</div>
+            <div class="thead-data">Vendor Phone</div>
+            <div class="thead-data">Vendor Email</div>
+            <div class="thead-data">Qty</div>
+            <div class="thead-data">Total</div>
+            <div class="thead-data">Action</div>
+          </div>
+          <ng-template #adminHeading>
+            <div class="table-head">
+              <div class="thead-data">Product/Service Name</div>
+              <div class="thead-data" *ngIf="!isEventDetail">Event Label</div>
+              <div class="thead-data">Purchased Date</div>
+              <div class="thead-data">Qty</div>
+              <div class="thead-data">Planner Name</div>
+              <div class="thead-data">Planner Phone</div>
+              <div class="thead-data">Vendor Name</div>
+              <div class="thead-data">Amount</div>
+              <div class="thead-data">Action</div>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="table-body-wrapper" [ngClass]="{'purchased-order-table-detail': isEventDetail}">
+          <div class="table-body" *ngFor="let item of purchasedOrder?.docs">
+            <!-- repeat this div -->
+            <ng-container *ngIf="!isAdmin; else adminTableBody">
+
+              <div class="tbody-data" data-label="Product/Service Name">
+                <div class="product-col">
+                  <em><img src="{{item?.products?.defaultImageUrl}}" appNoImage alt="Product Image"
+                      class="product-image" /></em>
+                  <span>{{item?.products?.name}}</span>
+                </div>
+              </div>
+              <div class="tbody-data" data-label="Event Label" *ngIf="!isEventDetail">
+                <span>{{item?.events?.label}}</span>
+              </div>
+              <div class="tbody-data" data-label="Purchased Date">
+                <span>{{item?.createdAt | date: 'MMM dd, yyyy | hh:mm a'}}</span></div>
+              <div class="tbody-data" data-label="Vendor Name">
+                <span>{{item?.vendors?.name}}</span>
+              </div>
+              <div class="tbody-data" data-label="Vendor Phone">
+                <span>{{(item?.vendors?.phone|formatPhone)}}</span>
+              </div>
+              <div class="tbody-data" data-label="Vendor Email">
+                <span>{{item?.companyAdmin?.email}}</span>
+              </div>
+              <div class="tbody-data" data-label="Qty">
+                <span>{{item?.quantity}}</span>
+              </div>
+              <div class="tbody-data" data-label="Total">
+                <span>{{item?.discount?.finalAmount | currency:'USD':'symbol':'1.0-2'}}</span>
+              </div>
+              <div class="tbody-data">
+                <button class="btn primary" type="button" (click)="messageVendor(item._id)">Message Vendor</button>
+                <button class="btn primary" type="button" [routerLink]="['/planner/order', item._id]">View Order
+                  Details</button>
+                <button class="btn link" type="button" *ngIf="canCanceledOrder(item.createdAt)" (click)="cancelOrder(item._id)">Cancel Order</button>
+              </div>
+            </ng-container>
+            <ng-template #adminTableBody>
+              <div class="tbody-data" data-label="Product/Service Name">
+                <div class="product-col">
+                  <em><img src="{{item?.products?.defaultImageUrl}}" appNoImage alt="Product Image"
+                      class="product-image" /></em>
+                  <span>{{item?.products?.name}}</span>
+                </div>
+              </div>
+              <div class="tbody-data" data-label="Event Label" *ngIf="!isEventDetail">
+                <span>{{item?.events?.label}}</span>
+              </div>
+              <div class="tbody-data" data-label="Purchased Date">
+                <span>{{item?.createdAt | date: 'MMM dd, yyyy | hh:mm a'}}</span></div>
+              <div class="tbody-data" data-label="Qty">
+                <span>{{item?.quantity}}</span>
+              </div>
+              <div class="tbody-data" data-label="Planner Name">
+                <span>{{item?.planners?.firstName}} {{item?.planners?.lastName}}</span>
+              </div>
+              <div class="tbody-data" data-label="Planner Phone">
+                <span>{{item?.planners?.phone| formatPhone}}</span>
+              </div>
+              <div class="tbody-data" data-label="Vendor Name">
+                <span>{{item?.vendors?.name}}</span>
+              </div>
+              <div class="tbody-data" data-label="Amount">
+                <span>{{item?.discount?.finalAmount | currency:'USD':'symbol':'1.0-2'}}</span>
+              </div>
+              <div class="tbody-data">
+                <button class="btn primary" type="button" *ngIf="!isEventDetail" [routerLink]="['../', item._id]">View
+                  Details</button>
+                <button class="btn link" *ngIf="isEventDetail" type="button"
+                  [routerLink]="['/admin/reports/orders', item._id]" [queryParams]="{ navigationId: 2}">View
+                  Details</button>
+                <span class="view-quote-btn cursor-pointer" (click)="viewQuote(item)">View Order Details</span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <app-pagination [metaData]="purchasedOrder" (pageChange)="pageChange($event)"></app-pagination>
+      </div><!-- end table -->
+      <div class="table-listing purchased-order-table"
+        *ngIf="purchasedOrder?.totalDocs === 0 && !(paramsLength > 0)">
+        <div class="no-result">
+          <img src="assets/images/no-data.svg" alt="No results" />
+          <p class="mt-5">Sorry! No results found :(</p>
+        </div>
+      </div>
+      <div class="table-listing purchased-order-table"
+        *ngIf="purchasedOrder?.totalDocs === 0 && paramsLength > 0">
+        <div class="no-result">
+          <img src="assets/images/no-data.svg" alt="No results" />
+          <p class="mt-5">Sorry! No results found :(</p>
+        </div>
+      </div>
+    </ng-container>
+
+  </div><!-- end tab-content -->
+</div>

@@ -1,0 +1,26 @@
+
+<div class="modal-header" ngbAutoFocus>
+  <h4 class="modal-title">Notes</h4>
+</div>
+<div class="modal-body">
+  <p>{{notes}}</p>
+  <form class="signin-form" [formGroup]="form" *ngIf="!onlyViewNotes">
+    <div class="form-group">
+      <textarea formControlName="notes"
+        [ngClass]="{'is-invalid': (form?.controls?.notes?.touched && form?.controls?.notes?.errors)}"
+        class="form-control vendor-note-textarea" id="notes" maxlength="{{quoteValidation?.vendorNotesLength}}"
+        ></textarea>
+      <!-- please put "is-invalid" class for error -->
+      <div class="invalid-feedback"
+        *ngIf="form?.controls?.notes?.touched && form?.controls?.notes?.errors?.required">Notes are
+        required.</div>
+      <div class="form-help-text">You have {{quoteValidation.vendorNotesLength - form?.value?.notes?.length}}
+        characters remaining.</div>
+    </div>
+    <div class="btn-space with-border">
+      <button type="button" class="btn link" (click)="activeModal.close()">Cancel</button>
+      <button type="submit" class="btn primary" [disabled]="!form.valid"
+        (click)="activeModal.close(form)">Update</button>
+    </div>
+  </form>
+</div>

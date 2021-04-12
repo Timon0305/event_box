@@ -1,0 +1,155 @@
+<div class="event-list-container">
+
+  <div >
+    <h2  class="page-title" *ngIf="expiredQuotes && !isAdmin">Expired / Rejected Quotes</h2>
+    <h2 class="page-title" *ngIf="!expiredQuotes && !isAdmin">Canceled Quotes</h2>
+    <div class="tab-head" *ngIf="!isAdmin">
+      <ul class="nav">
+        <li class="nav-item" [ngClass]="{'active': expiredQuotes}">
+          <a class="nav-link" [routerLink]="['/vendor/quotes/expired-cancelled-list']" routerLinkActive="active"
+            [queryParams]="{ type: 'EXPIRED_QUOTES', order: -1, sort: 'updatedAt' }"
+            [ngClass]="{'active': !expiredQuotes}" [routerLinkActiveOptions]="{exact:
+          true}" title="Expired/Declined Quotes">Expired / Rejected Quotes</a>
+        </li>
+        <li class="nav-item" [ngClass]="{'active': !expiredQuotes}">
+          <a class="nav-link" [routerLink]="['/vendor/quotes/expired-cancelled-list']" routerLinkActive="active"
+            [queryParams]="{ type: 'CANCELLED_QUOTES', order: -1, sort: 'updatedAt' }" [routerLinkActiveOptions]="{exact:
+          true}" title="Canceled Quotes">Canceled Quotes</a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content-head" *ngIf="expiredQuotes && (expiredQuoteList?.totalDocs > 0 || (paramsLength > 3))">
+        <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+
+        <div class="select-list-container">
+          <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+          </app-sort-by-filter>
+        </div>
+    </div>
+  </div>
+
+  <div class="table-listing product-table expired-declined-quotes"
+    *ngIf="expiredQuotes && expiredQuoteList?.docs?.length">
+    <div class="table-head-wrapper">
+      <div class="table-head">
+        <div class="thead-data">Product/Service Name</div>
+        <div class="thead-data">Event Name</div>
+        <div class="thead-data">Planner Name</div>
+        <div class="thead-data">Planner Requested Date/Time</div>
+        <div class="thead-data" *ngIf="!isAdmin">Vendor Most Recent Response Date/Time</div>
+        <div class="thead-data" *ngIf="isAdmin" >Vendor Response Date</div>
+        <div class="thead-data">Qty</div>
+        <div class="thead-data">Price Quote</div>
+        <div class="thead-data">Status</div>
+        <div class="thead-data" *ngIf="!isAdmin">Action</div>
+      </div>
+    </div>
+    <div class="table-body-wrapper">
+      <div class="table-body" *ngFor="let item of expiredQuoteList?.docs;let i = index; trackBy: trackByFn">
+        <!-- repeat this div -->
+        <div class="tbody-data" data-label="Product/Service Name" (click)="isAdmin ? getQuoteView(item) : ''">
+          <div class="product-col">
+            <em><img src="{{item?.products?.defaultImageUrl}}" alt="Product Image" class="product-image"
+                onError="this.src='./../assets/images/no-image.png'" />
+            </em>
+            <span> {{item?.products?.name}}</span>
+          </div>
+        </div>
+        <div class="tbody-data" data-label="Event Name"><span>{{item?.events?.name}}</span></div>
+        <div class="tbody-data" data-label="Planner Name"><span>{{item?.planners?.firstName}}
+            {{item?.planners?.lastName.charAt(0).toUpperCase()}}</span></div>
+        <div class="tbody-data" data-label="Planner Requested Date/Time">
+          <span>{{item?.quoteRequestedDate | eventDate}}<br>
+          </span></div>
+        <div class="tbody-data" *ngIf="!isAdmin" data-label="Vendor Most Recent Response Date">
+          <span>{{(item?.latestReply?.updatedAt|| item?.lastStatusUpdatedAt) ? ((item?.latestReply?.updatedAt  | eventDate) || (item?.lastStatusUpdatedAt | eventDate)): '-'}}</span>
+        </div>
+        <div class="tbody-data" *ngIf="isAdmin" data-label="Vendor Most Recent Response Date">
+          <span>{{(item?.latestReply?.updatedAt || item?.lastStatusUpdatedAt) ? ((item?.latestReply?.updatedAt  | date: 'mediumDate') || (item?.lastStatusUpdatedAt | date: 'mediumDate')): '-'}}</span>
+        </div>
+        <div class="tbody-data" data-label="Qty">
+          <span>{{item?.latestReply?.quantity ? item?.latestReply?.quantity : item?.quantity}}</span></div>
+        <div class="tbody-data" data-label="Price Quote"><span>{{item?.totalPrice ? (item?.totalPrice | currency:'USD'): '-'}}</span></div>
+        <div class="tbody-data" data-label="Status"><span>{{quoteStatus[item?.status]?.status}}</span></div>
+        <div class="tbody-data" *ngIf="!isAdmin">
+          <div class="table-button-wrapper">
+            <button class="btn primary" type="button" (click)="messagePlanner(item._id, item.planner)">Message
+              Planner</button>
+            <button class="btn link" type="button" [routerLink]="['/vendor/quotes/quote-detail', item._id]">View
+              Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-pagination [metaData]="expiredQuoteList" (pageChange)="pageChange($event)"></app-pagination>
+
+  </div><!-- end table -->
+  <div class="tab-content-head" *ngIf="!expiredQuotes && (cancelledQuotes?.totalDocs > 0 || (paramsLength > 3))">
+
+    <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+
+    <div class="select-list-container">
+      <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+      </app-sort-by-filter>
+    </div>
+  </div>
+  <div class="table-listing quote-needed-table"
+    *ngIf="((expiredQuoteList?.totalDocs === 0 && (paramsLength <= 1)) || (cancelledQuotes?.totalDocs === 0 && (paramsLength <= 1)))">
+    <div class="no-result">
+      <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+      <p class="mt-5">Sorry! No results found :(</p>
+    </div>
+  </div>
+  <div class="table-listing quote-needed-table"
+    *ngIf="((expiredQuoteList?.totalDocs === 0 && paramsLength > 1) || (cancelledQuotes?.totalDocs === 0 && paramsLength > 1))">
+    <div class="no-result">
+      <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+      <p class="mt-5">Sorry! No results found :(</p>
+    </div>
+  </div>
+
+  <div class="table-listing cancelled-quotes" *ngIf="!expiredQuotes && cancelledQuotes?.docs?.length">
+    <div class="table-head-wrapper">
+      <div class="table-head">
+        <div class="thead-data">Product/Service Name</div>
+        <div class="thead-data">Event Name</div>
+        <div class="thead-data">Planner Name</div>
+        <div class="thead-data">Planner Requested Date/Time</div>
+        <div class="thead-data">Vendor Response Date/Time</div>
+        <div class="thead-data">Canceled Date</div>
+        <div class="thead-data">Qty</div>
+        <div class="thead-data">Price Quote</div>
+      </div>
+    </div>
+    <div class="table-body-wrapper">
+      <div class="table-body" *ngFor="let item of cancelledQuotes?.docs;let i = index; trackBy: trackByFn">
+        <!-- repeat this div -->
+        <div class="tbody-data pointer" data-label="Product/Service Name" (click)="isAdmin ? getQuoteView(item) : ''">
+          <div class="product-col">
+            <em><img src="{{item?.products?.defaultImageUrl}}" alt="Product Image" class="product-image"
+                onError="this.src='./../assets/images/no-image.png'" />
+            </em>
+            <span> {{item?.products?.name}}</span>
+          </div>
+        </div>
+        <div class="tbody-data" data-label="Event Name"><span>{{item?.events?.name}}</span></div>
+        <div class="tbody-data" data-label="Planner Name"><span>{{item?.planners?.firstName}}
+            {{item?.planners?.lastName.charAt(0).toUpperCase()}}</span></div>
+        <div class="tbody-data" data-label="Planner Requested Date/Time">
+          <span>{{item?.quoteRequestedDate | eventDate}}<br>
+          </span></div>
+        <div class="tbody-data" data-label="Vendor Response Date">
+          <span>{{item?.latestReply?.createdAt | eventDate}}</span></div>
+
+        <div class="tbody-data" data-label="Canceled Date">
+          <span>{{item?.latestReply?.updatedAt | date: 'mediumDate'}}</span></div>
+        <div class="tbody-data" data-label="Qty">
+          <span>{{item?.latestReply?.quantity ? item?.latestReply?.quantity : item?.quantity}}</span></div>
+        <div class="tbody-data" data-label="Price Quote"><span>{{(item?.totalPrice) | currency:'USD'}}</span>
+        </div>
+      </div>
+    </div>
+    <app-pagination [metaData]="cancelledQuotes" (pageChange)="pageChange($event)"></app-pagination>
+  </div>
+
+</div>

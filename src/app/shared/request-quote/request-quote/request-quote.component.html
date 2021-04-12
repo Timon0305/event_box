@@ -1,0 +1,177 @@
+<div class="modal-header quote-invoice-header" ngbAutoFocus>
+    <div class="quote-invoice-image">
+      <img src="./../../../../assets/images/logo.png" class="img-contain" alt="Logo" />
+    </div>
+    <div class="quote-invoice-text">
+      <h2>Quote #{{quote?.quoteSeries || quote?.quoteId}}</h2>
+      <p><span>Date/Time of Quote Requested:</span> <span class="text-next-line">{{quote?.quoteRequestedDate  | date: 'mediumDate'}} | {{quote?.quoteRequestedDate  | date: 'shortTime'}}</span></p>
+      <p *ngIf="(quote?.latestReply?.updatedAt || quote?.lastReplyDate) && !quote.wantCuonterOffer"><span>Date of Quote: </span>{{(quote?.latestReply?.updatedAt || quote?.lastReplyDate)  | date: 'mediumDate'}} | {{(quote?.latestReply?.updatedAt || quote?.lastReplyDate)  | date: 'shortTime'}}</p>
+    </div>
+    <button type="button" class="close big-close" aria-label="Close" (click)="activeModal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="invoice-sub-header">
+          <h3>{{quote?.vendors?.name}}</h3>
+          <p>
+            <span>{{quote?.companyAddress?.address}}</span>
+            <!--Removed state zip through client feedback-->
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="invoice-sub-header-detail">
+          <div class="text"><span>Representative: </span> {{quote?.companyAdmin?.firstName}} {{quote?.companyAdmin?.lastName}}</div>
+          <div class="text"><span>Phone: </span> {{quote?.companyAdmin?.phone | formatPhone}}</div>
+          <div class="text"><span>Email:</span> {{quote?.companyAdmin?.email}}</div>
+        </div>
+      </div>
+      <div class="info-section">
+        <div class="info-heading">Planner Information</div>
+        <div class="col-md-6">
+          <div class="text">
+            <span class="heading">Contact:</span>
+            <span class="detail">{{quote?.planners?.firstName}} {{quote?.planners?.lastName.charAt(0).toUpperCase()}}</span>
+          </div>
+          <div class="text">
+            <span class="heading">Company:</span>
+            <span class="detail">{{quote?.planners?.companyName}}</span>
+          </div>
+        </div>
+        <div class="col-md-6">
+
+          <div class="text">
+            <span class="heading">Phone:</span>
+            <span class="detail">{{quote?.planners?.phone | formatPhone}}</span>
+          </div>
+          <div class="text">
+            <span class="heading">Email:</span>
+            <span class="detail">{{quote?.planners?.email}}</span>
+          </div>
+        </div>
+      </div><!-- end info section -->
+
+      <div class="info-section">
+        <div class="info-heading">Event Information</div>
+        <div class="col-md-6">
+          <div class="text">
+            <span class="heading">Event Start:</span>
+            <span class="detail">
+              {{quote?.events?.startDate  | timezoneDateFormat: quote?.events?.eventTimezone}}
+              {{timezoneMap[quote?.events?.eventTimezone]}}
+            </span>
+          </div>
+          <div class="text">
+            <span class="heading">Venue:</span>
+            <span class="detail">{{quote?.events?.venueName}}</span>
+          </div>
+          <div class="text">
+            <span class="heading">Venue Address:</span>
+            <span class="detail">{{quote?.events?.address}}, {{quote?.events?.city}}, {{quote?.events?.state}}, {{quote?.events?.zipCode}} </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="text">
+            <span class="heading">Event End:</span>
+            <span class="detail">
+              {{quote?.events?.endDate  | timezoneDateFormat: quote?.events?.eventTimezone}}
+              {{timezoneMap[quote?.events?.eventTimezone]}}
+            </span>
+
+          </div>
+          <div class="text">
+            <span class="heading">Event Name:</span>
+            <span class="detail">{{quote?.events?.name}}</span>
+          </div>
+          <div class="text">
+            <span class="heading">Event Type:</span>
+            <span class="detail">{{quote?.events?.eventType}}</span>
+          </div>
+          <div class="text">
+            <span class="heading">Total Guests:</span>
+            <span class="detail">{{quote?.events?.guestCount}}</span>
+          </div>
+        </div>
+      </div><!-- end info section -->
+
+      <div class="info-section info-notes">
+        <div class="info-heading">Event Notes</div>
+        <div class="col-12">
+          <div class="text">
+            <span class="heading">Overview of Event</span>
+            <span class="detail">{{quote?.events?.details}}</span>
+          </div>
+          <div class="text">
+            <span class="heading">Planner Notes</span>
+        <span class="detail">{{quote?.notes}}</span>
+          </div>
+        </div>
+      </div><!-- end info section -->
+
+      <div class="info-section">
+        <div class="info-heading">Event Logistics</div>
+        <div class="col-md-6">
+          <div class="text">
+            <span class="heading">Delivery Start:</span>
+            <span class="detail">{{quote?.varriableInfo?.deliveryStartDate | timezoneDateFormat: quote?.events?.eventTimezone}}
+              {{timezoneMap[quote?.events?.eventTimezone]}}
+            </span>
+
+          </div>
+          <div class="text">
+            <span class="heading">Set Up Start:</span>
+            <span class="detail">
+              {{quote?.varriableInfo?.setUpFromDate  | timezoneDateFormat: quote?.events?.eventTimezone}}
+              {{timezoneMap[quote?.events?.eventTimezone]}}
+            </span>
+
+          </div>
+          <div class="text">
+            <span class="heading">Breakdown Start:</span>
+            <span class="detail">
+              {{quote?.varriableInfo?.breakDownStartDate  | timezoneDateFormat: quote?.events?.eventTimezone}}
+              {{timezoneMap[quote?.events?.eventTimezone]}}
+            </span>
+
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="text">
+            <span class="heading">Delivery End:</span>
+            <span class="detail">
+              {{quote?.varriableInfo?.deliveryEndDate  | timezoneDateFormat: quote?.events?.eventTimezone}}
+              {{timezoneMap[quote?.events?.eventTimezone]}}
+            </span>
+
+          </div>
+          <div class="text">
+            <span class="heading">Set Up End:</span>
+            <span class="detail">
+              {{quote?.varriableInfo?.setUpToDate  | timezoneDateFormat: quote?.events?.eventTimezone}}
+              {{timezoneMap[quote?.events?.eventTimezone]}}
+            </span>
+
+          </div>
+          <div class="text">
+            <span class="heading">Breakdown End:</span>
+            <span class="detail">
+              {{quote?.varriableInfo?.breakDownEndDate  | timezoneDateFormat: quote?.events?.eventTimezone}}
+              {{timezoneMap[quote?.events?.eventTimezone]}}
+            </span>
+
+          </div>
+        </div>
+      </div><!-- end info section -->
+      <form [formGroup]="requestQuoteForm" class="w-100">
+        <app-quote-product-pricing [form]="requestQuoteForm" [otherProductDetails]="(addionalProducts$ | async)" [quoteDetail]="quote"></app-quote-product-pricing>
+
+      </form>
+
+    </div>
+    <div class="btn-space with-border quote-invoice-button-space">
+      <button class="btn primary" [disabled]="!requestQuoteForm.valid"  (click)="sendQuote()">{{(quote?.latestReply && !quote.wantCuonterOffer) ? 'Update Quote' : 'Send Quote'}}</button>
+    </div>
+  </div>

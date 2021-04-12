@@ -1,0 +1,35 @@
+.admin-login-container {
+    display: flex;
+    background: #f6f6f6;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    .login-form-container {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      .logo {
+        max-width: 158px;
+        margin-bottom: 30px;
+      }
+      .login-form {
+        padding: 40px 100px;
+        background: #fff;
+        border-radius: 5px;
+        border: solid 1px #e7e4e4;
+        h2 {
+          font-size: 26px;
+          font-weight: 500;
+          color: #000;
+          margin-bottom: 40px;
+        }
+        .form-group {
+          text-align: left;
+          label {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }

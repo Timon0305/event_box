@@ -1,0 +1,21 @@
+<ng-container *ngIf="cardList?.length">
+  <h4 class="card-sub-title">Saved Cards</h4>
+  <div class="card-row-wrapper">
+    <div class="card-row" *ngFor="let card of cardList;let i = index; trackBy: trackByFn">
+      <div class="check-container">
+        <input type="radio" (change)="changeDefaultCard(card._id, i)" name="savedCard" id="{{card._id}}"
+          [checked]="card.isDefault">
+        <label for="{{card._id}}">
+          <h4>Credit Card</h4>
+          <p>XXXX-XXXX-XXXX-{{card?.last4}} <img src="assets/images/{{card?.brand}}.svg" alt="{{card?.brand}}" class="card-image" /></p>
+        </label>
+      </div>
+      <div class="card-action" *ngIf="card.isDefault">
+        <input [(ngModel)]="cvv" type="number" class="form-control cvv-input" appPreventKeys [maxLngth]="999"
+          placeholder="cvv" [controlValue]="cvv" />
+        <button type="button" class="btn primary" (click)="pay(amountToPay, card.id)" [disabled]="!cvv">Pay
+          {{amountToPay | currency:'USD'}}</button>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,75 @@
+header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: $white;
+  z-index: 9;
+  width: 100%;
+  border-bottom: 1px solid $main-border-color;
+  .container-fluid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+  .navbar-brand {
+      padding: 13px 0px 12px 10px;
+  }
+  .helpline {
+      font-size: 15px;
+      color: $grey;
+      em {
+          color: $green;
+      }
+  }
+  .nav-item {
+      &>a {
+          display: inline-block;
+          vertical-align: middle;
+          width: 32px;
+          &.notification {
+              background: url(../images/svg/bell.svg) 0 0 no-repeat;
+              width: 32px;
+              height: 32px;
+              font-size: 0;
+              position: relative;
+              .count {
+                  font-size: 10px;
+                  color: $green;
+                  background: $light-green;
+                  min-width: 19px;
+                  height: 13px;
+                  display: inline-block;
+                  text-align: center;
+                  border-radius: 1px;
+                  position: absolute;
+                  right: -9px;
+                  top: 0;
+              }
+          }
+      }
+      .dropdown-toggle {
+          height: 32px;
+          padding: 0;
+          font-size: 0;
+          min-width: 0;
+          text-align: center;
+          margin-right: -10px;
+          margin-left: 30px;
+      }
+  }
+}
+.navbar{
+  margin: 0 auto 0 30px;
+  .navbar-nav{
+    flex-direction: row;
+    .nav-link{
+      color: $theme-text;
+      width: auto;
+      padding: 0 20px;
+      font-size: 16px;
+      &:hover{
+        color: $green;
+      }
+    }
+  }
+}

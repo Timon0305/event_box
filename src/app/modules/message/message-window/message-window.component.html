@@ -1,0 +1,218 @@
+<div class="message-detail-head" #head>
+  <ng-container *ngIf="isAdmin; else nonAdmin">
+    <ng-container>
+      <div class="admin-user-head">
+        <span class="user-avatar">
+          <img appNoImage src="{{s3BaseUrl}}{{ message?.planners?.image}}" class="img-cover" alt="user" />
+        </span>
+        <p class="text-truncate">{{message?.planners | formatPlannerName}}</p>
+      </div>
+      <div class="admin-user-head">
+        <span class="user-avatar">
+          <img appNoImage src="{{s3BaseUrl}}{{ message?.vendors?.logo}}" class="img-cover" alt="user" />
+        </span>
+        <p class="text-truncate">{{message?.vendors?.name}}</p>
+      </div>
+    </ng-container>
+    <ng-container>
+
+    </ng-container>
+
+  </ng-container>
+  <ng-template #nonAdmin>
+    <ng-container *ngIf="!isVendor">
+      <span class="material-icons" (click)="onBack()">
+        keyboard_backspace
+      </span>
+      <span class="user-avatar">
+        <img appNoImage src="{{s3BaseUrl}}{{ message?.vendors?.logo}}" class="img-cover" alt="user" />
+      </span>
+      <p class="text-truncate">{{message?.vendors?.name}}</p>
+    </ng-container>
+    <ng-container *ngIf="isVendor">
+      <span class="material-icons" (click)="onBack()">
+        keyboard_backspace
+      </span>
+      <span class="user-avatar">
+        <img appNoImage src="{{s3BaseUrl}}{{ message?.planners?.image}}" class="img-cover" alt="user" />
+      </span>
+      <p class="text-truncate">{{message?.planners | formatPlannerName}}</p>
+    </ng-container>
+  </ng-template>
+
+
+</div>
+<ng-container>
+  <div class="upload-image-loader" *ngIf="(messageInput?.loader && !isAdmin)">
+    <div id="floatingBarsG">
+      <div class="blockG" id="rotateG_01"></div>
+      <div class="blockG" id="rotateG_02"></div>
+      <div class="blockG" id="rotateG_03"></div>
+      <div class="blockG" id="rotateG_04"></div>
+      <div class="blockG" id="rotateG_05"></div>
+      <div class="blockG" id="rotateG_06"></div>
+      <div class="blockG" id="rotateG_07"></div>
+      <div class="blockG" id="rotateG_08"></div>
+    </div>
+  </div>
+  <div class="message-detail-box" [ngClass]="{'admin-message-detail-box': isAdmin}" id="msg-detail" #detail>
+    <app-reverse-scroll (scrolled)="scrolled()" [options]="options">
+      <ng-container *ngFor="let chat of messageDetails| reverseArray; let i = index;trackBy: trackByFn">
+        <div class="message-tooltip-row" *ngIf="chat.type === chatTypes.TEXT">
+          <ng-container *ngIf="isAdmin; else nonAdminText">
+            <div class="message-tooltip" [ngClass]="{'received-message-tooltip': chat?.messageBy === userRoles.PLANNER,
+             'send-message-tooltip': (chat.messageBy === userRoles.VENDOR)   }">
+              <p class="preserve-whitespace">{{chat.message}}</p>
+              <span>{{chat.createdAt | messageDateTime: true}}</span>
+            </div>
+          </ng-container>
+          <ng-template #nonAdminText>
+            <div class="message-tooltip" [ngClass]="{'received-message-tooltip': chat?.messageBy !== role,
+             'send-message-tooltip': (chat?.messageBy === role)   }">
+              <p class="preserve-whitespace">{{chat?.message}}</p>
+              <span>{{chat?.createdAt | messageDateTime: true}}</span>
+            </div>
+          </ng-template>
+        </div>
+        <!--Quote chat type-->
+        <div class="message-tooltip-row " [ngClass]="{'justify-content-end': (!isAdmin && (chat?.messageBy === role)) || 
+      (isAdmin && (chat?.messageBy === userRoles.VENDOR))}" *ngIf="chat?.type === chatTypes.QUOTE">
+          <div class="media-card">
+            <h3>{{quoteStatusText[chat?.quote?.status] || 'Quote'}}</h3>
+            <div class="card-image">
+              <img appNoImage src="{{chat?.quote?.product?.defaultImageUrl}}" alt="Card image" />
+            </div>
+            <div class="card-body">
+              <h4>{{chat?.quote?.product?.name}}</h4>
+              <p>{{chat?.quote?.events?.label}}</p>
+              <p>Qyt: {{chat?.quote?.quantity}}</p>
+              <div class="card-row">
+                <div class="card-col">
+                  <span>Event Start Date</span>
+                  <p>{{chat?.quote?.varriableInfo?.eventStartDate | eventDate}}</p>
+                </div>
+                <div class="card-col">
+                  <span>Event End Date</span>
+                  <p>{{chat?.quote?.varriableInfo?.eventEndDate | eventDate}}</p>
+                </div>
+              </div>
+              <ng-container *ngIf="!isVendor && !isAdmin">
+                <button type="button" class="btn card-btn"
+                  [routerLink]="['/planner/quote-request-details', chat?.quote?._id ]">View
+                  Full
+                  Details</button>
+              </ng-container>
+              <ng-container *ngIf="isVendor">
+
+                <button type="button" class="btn card-btn"
+                  [routerLink]="['/vendor/quotes/quote-detail', chat?.quote?._id ]">View
+                  Full
+                  Details</button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!--Order chat type-->
+        <div class="message-tooltip-row " [ngClass]="{'justify-content-end': (!isAdmin && (chat.messageBy === role)) || 
+      (isAdmin && (chat.messageBy === userRoles.VENDOR))}" *ngIf="chat?.type === chatTypes.ORDER">
+          <div class="media-card">
+            <h3>{{orderStatusText[chat?.order?.status]}}</h3>
+            <div class="card-image">
+              <img appNoImage src="{{chat?.order?.products?.defaultImageUrl}}" alt="Card image" />
+            </div>
+            <div class="card-body">
+              <h4>{{chat?.order?.products?.name}}</h4>
+              <p>{{chat?.order?.events?.label}}</p>
+              <p>Qyt: {{chat?.order?.quantity}}</p>
+              <div class="card-row">
+                <div class="card-col">
+                  <span>Event Start Date</span>
+                  <p>{{chat?.order?.varriableInfo?.eventStartDate | eventDate}}</p>
+                </div>
+                <div class="card-col">
+                  <span>Event End Date</span>
+                  <p>{{chat?.order?.varriableInfo?.eventEndDate | eventDate}}</p>
+                </div>
+              </div>
+              <ng-container *ngIf="!isVendor && !isAdmin">
+                <button type="button" class="btn card-btn" [routerLink]="['/planner/order', chat?.order?._id]">View
+                  Full
+                  Details</button>
+
+              </ng-container>
+              <ng-container *ngIf="isVendor">
+                <button type="button" class="btn card-btn"
+                  [routerLink]="['/vendor/quotes/order-detail', chat?.order?._id]">View
+                  Full
+                  Details</button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!--PRODUCT Chat type-->
+        <div class="message-tooltip-row" [ngClass]="{'justify-content-end': (!isAdmin && (chat.messageBy === role)) || 
+        (isAdmin && (chat.messageBy === userRoles.VENDOR))}" *ngIf="chat.type === chatTypes.PRODUCT && chat.product">
+          <div class="media-card">
+            <h3>Product Inquiry</h3>
+            <div class="card-image">
+              <img appNoImage src="{{chat?.product?.defaultImageUrl}}" alt="Card image" />
+            </div>
+            <div class="card-body">
+              <h4>{{chat?.product.name}}</h4>
+              <button type="button" class="btn card-btn" *ngIf="!isVendor && !isAdmin"
+                [routerLink]="['/details', chat?.product?._id]">View Full
+                Details</button>
+              <button type="button" class="btn card-btn" *ngIf="isVendor"
+                [routerLink]="['/vendor/products-services', chat?.product?._id]">View Full
+                Details</button>
+            </div>
+          </div>
+        </div>
+        <div class="message-tooltip-row" *ngIf="chat.type === chatTypes.MEDIA">
+          <ng-container *ngIf="isAdmin; else nonAdminMediaBox">
+            <div class="message-tooltip with-attachment" [ngClass]="{'received-message-tooltip': chat.messageBy === userRoles.PLANNER,
+            'send-message-tooltip': (chat.messageBy === userRoles.VENDOR)  }">
+              <div class="attachment-top">
+                <div class="image-section">
+                  <img src="assets/images/pin.svg" alt="Attachment" />
+                </div>
+                <div class="text">{{chat?.image?.name}}</div>
+              </div>
+              <div class="attachment-bottom">
+                <p>{{chat?.image?.size}}</p>
+                <a (click)="downloadFile(chat.message)">download</a>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #nonAdminMediaBox>
+            <div class="message-tooltip with-attachment" [ngClass]="{'received-message-tooltip': chat.messageBy !== role,
+             'send-message-tooltip': (chat.messageBy === role) }">
+              <div class="attachment-top">
+                <div class="image-section">
+                  <img src="assets/images/pin.svg" alt="Attachment" />
+                </div>
+                <div class="text">{{chat?.image?.name}}</div>
+              </div>
+              <div class="attachment-bottom">
+                <p>{{chat?.image?.size}}</p>
+                <a (click)="downloadFile(chat.message)">download</a>
+              </div>
+            </div>
+          </ng-template>
+
+        </div>
+      </ng-container>
+
+    </app-reverse-scroll>
+
+  </div>
+</ng-container>
+
+
+<app-message-input *ngIf="!isAdmin" [isVendor]="isVendor" (getMessageDetails)="getMessageDetails($event)"
+  [message]="message">
+</app-message-input>

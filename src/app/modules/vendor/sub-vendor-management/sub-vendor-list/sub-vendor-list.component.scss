@@ -1,0 +1,123 @@
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/table";
+
+.main-container{
+  position: relative;
+}
+.left-navigation{
+  width: 300px;
+  position: fixed;
+  left: 0;
+  top: 111px;
+  overflow: auto;
+  max-height: calc(100vh - 111px);
+  background-color: #fafafa;
+  min-height: calc(100vh - 111px);
+  height: 100%;
+  .nav-item{
+    width: 100%;
+    border-bottom: 1px solid #dce1ef;
+    .nav-item{
+      &:last-child{
+        border-bottom: 0;
+      }
+      .nav-link{
+        padding-left: 0;
+      }
+    }
+  }
+  .nav-link{
+    padding: 21px 17px;
+    font-size: 15px;
+    color: #000000;
+    border-left: 3px solid transparent;
+    &.active,
+    &:focus,
+    &:hover{
+      color: #5067eb;
+      background: rgba(#f0f4ff, 0.6);
+      border-left: 3px solid #5067eb;
+    }
+    &.dropdown-toggle{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &::after {
+        display: inline-block;
+        margin-left: .255em;
+        vertical-align: .255em;
+        content: "";
+        border-top: 7px solid #8594bd;
+        border-right: 7px solid transparent;
+        border-bottom: 0;
+        border-left: 7px solid transparent;
+      }
+    }
+
+  }
+  .active{
+    .nav-link{
+      color: #5067eb !important;
+      font-weight: 500;
+      background: rgba(#f0f4ff, 0.6);
+      border-left: 3px solid #5067eb;
+      &.active,
+      &:focus,
+      &:hover{
+        color: #5067eb;
+        border-left: 3px solid #5067eb;
+      }
+    }
+  }
+  .notification-active{
+    .nav-link{
+      color: #000000;
+      font-weight: 500;
+      &.active,
+      &:focus,
+      &:hover{
+        color: #5067eb;
+      }
+    }
+  }
+}
+
+.user-table-container{
+  .title-with-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 40px;
+    padding-top: 30px;
+  }
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+  .search-container{
+    margin-bottom: 30px;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    .title-with-button{
+      margin: 0 0 24px;
+      padding-top: 24px;
+      .btn {
+        min-width: 80px;
+        padding: 0 10px;
+      }
+    }
+    .page-title {
+      font-size: 20px;
+      padding-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+    .search-container {
+      width: 100%;
+      max-width: 100%;
+      .search-form {
+        max-width: 100%;
+      }
+    }
+  }
+}

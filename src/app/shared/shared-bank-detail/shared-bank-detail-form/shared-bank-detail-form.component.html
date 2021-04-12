@@ -1,0 +1,167 @@
+<div class="bank-detail-container">
+  <h2 class="page-title" *ngIf="editBankDetails">Add Bank Details</h2>
+  <form [formGroup]="f" (submit)="f?.valid && submitBankDetail()" class="complete-profile"
+    [ngClass]="{'mb-40': !editBankDetails}">
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="accountHolderName">Account Holder Name*</label>
+        <input [readonly]="isBankdetailsExist"
+          [ngClass]="{'is-invalid': (f?.controls?.account_holder_name?.touched && f?.controls?.account_holder_name?.errors)}"
+          formControlName="account_holder_name" type="text" class="form-control" id="accountHolderName"
+          aria-describedby="accountHolderNameHelp" placeholder="Enter account holder name">
+        <div class="invalid-feedback" *ngIf="f?.controls?.account_holder_name?.touched ">Account Holder Name Required
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="bankName">Bank Name*</label>
+        <input [readonly]="isBankdetailsExist"
+          [ngClass]="{'is-invalid': (f?.controls?.bank_name?.touched && f?.controls?.bank_name?.errors)}"
+          formControlName="bank_name" type="text" class="form-control" id="bankName" aria-describedby="bankNameHelp"
+          placeholder="Enter bank name">
+        <div class="invalid-feedback" *ngIf="f?.controls?.bank_name?.touched">Bank Name is Required</div>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="accountNumber">Account Number*</label>
+        <input *ngIf="!isBankdetailsExist"
+          [ngClass]="{'is-invalid': (f?.controls?.account_number?.touched && f?.controls?.account_number?.errors)}"
+          formControlName="account_number" type="text" appNumberInput  class="form-control" id="accountNumber"
+          aria-describedby="accountNumberHelp" placeholder="Enter account number">
+        <input [readonly]="isBankdetailsExist" *ngIf="isBankdetailsExist" formControlName="account_number" type="text"
+          class="form-control" id="accountNumber" aria-describedby="accountNumberHelp"
+          placeholder="Enter account number">
+        <div class="invalid-feedback"
+          *ngIf="f?.controls?.account_number?.touched && f?.controls?.account_number?.errors?.minlength">Account Number
+          should be minimum of 7
+          digits.
+        </div>
+        <div class="invalid-feedback"
+          *ngIf="f?.controls?.account_number?.touched && f?.controls?.account_number?.errors?.required">Account Number
+          is Required.</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="confirmAccountNumber">Confirm Account Number*</label>
+        <input *ngIf="!isBankdetailsExist" appNumberInput 
+          [ngClass]="{'is-invalid': (f?.controls?.cnfirmAccNumber?.touched && (f?.controls?.cnfirmAccNumber?.errors || f?.errors?.mismatchAccount))}"
+          formControlName="cnfirmAccNumber" type="text" class="form-control"
+          id="confirmAccountNumber" aria-describedby="confirmAccountNumberHelp" placeholder="Enter account number">
+        <input [readonly]="isBankdetailsExist" *ngIf="isBankdetailsExist" formControlName="cnfirmAccNumber" type="text"
+          class="form-control" id="confirmAccountNumber" aria-describedby="confirmAccountNumberHelp"
+          placeholder="Enter account number">
+        <ng-container *ngIf="f?.controls?.cnfirmAccNumber?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.cnfirmAccNumber?.errors?.required">Confirm Account Number is
+            Required.
+          </div>
+          <div class="invalid-feedback" *ngIf="f?.errors?.mismatchAccount">Confirm Account Number must be same as
+            Account Number.
+          </div>
+        </ng-container>
+
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="routingNumber">Routing Number*</label>
+        <input *ngIf="!isBankdetailsExist"
+          [ngClass]="{'is-invalid': (f?.controls?.routing_number?.touched && f?.controls?.routing_number?.errors)}"
+          formControlName="routing_number" mask="000000000" type="text" class="form-control" id="routingNumber"
+          aria-describedby="routingNumberHelp" placeholder="Enter routing number">
+        <input [readonly]="isBankdetailsExist" *ngIf="isBankdetailsExist" formControlName="routing_number" type="text"
+          class="form-control" id="routingNumber" aria-describedby="routingNumberHelp"
+          placeholder="Enter routing number">
+        <div class="invalid-feedback"
+          *ngIf="f?.controls?.routing_number?.touched && f?.controls?.routing_number?.errors?.required">Routing Number
+          is required.</div>
+        <div class="invalid-feedback"
+          *ngIf="f?.controls?.routing_number?.errors && !f?.controls?.routing_number?.errors?.required">Routing Number
+          should be minimum of 9 digits.
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="confirmRoutingNumber">Confirm Routing Number*</label>
+        <input *ngIf="!isBankdetailsExist"
+          [ngClass]="{'is-invalid': (f?.controls?.confirmRoutingNumber?.touched &&  (f?.controls?.confirmRoutingNumber?.errors || f?.errors?.mismatchRouterNumber))}"
+          formControlName="confirmRoutingNumber" type="text" mask="000000000" class="form-control"
+          id="confirmRoutingNumber" aria-describedby="confirmRoutingNumberHelp" placeholder="Enter routing number">
+        <input *ngIf="isBankdetailsExist" [readonly]="isBankdetailsExist" formControlName="confirmRoutingNumber"
+          type="text" class="form-control" id="confirmRoutingNumber" aria-describedby="confirmRoutingNumberHelp"
+          placeholder="Enter routing number">
+        <ng-container *ngIf="f?.controls?.confirmRoutingNumber?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.confirmRoutingNumber?.errors?.required">Confirm Routing
+            Number is
+            required.
+          </div>
+          <div class="invalid-feedback" *ngIf="f?.errors?.mismatchRouterNumber">Confirm Routing Number must be same as
+            Routing Number.
+          </div>
+        </ng-container>
+      </div>
+    </div><!-- end form row -->
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="routingNumber">EIN/TaxID*</label>
+        <input *ngIf="!isBankdetailsExist"
+          [ngClass]="{'is-invalid': (f?.controls?.tax_id?.touched && f?.controls?.tax_id?.errors)}"
+          formControlName="tax_id" type="text" mask="000000000" class="form-control" id="routingNumber"
+          aria-describedby="routingNumberHelp" placeholder="Enter EIN/TaxID">
+        <input [readonly]="isBankdetailsExist" *ngIf="isBankdetailsExist" formControlName="tax_id" type="text"
+          class="form-control" id="routingNumber" aria-describedby="routingNumberHelp" placeholder="Enter EIN/TaxID">
+        <div class="invalid-feedback" *ngIf="f?.controls?.tax_id?.touched && f?.controls?.tax_id?.errors?.required">
+          EIN/TaxID is required.</div>
+        <div class="invalid-feedback" *ngIf="f?.controls?.tax_id?.errors && !f?.controls?.tax_id?.errors?.required">
+          EIN/TaxID should be minimum of 9 digits.
+        </div>
+      </div>
+      <div class="form-group col-md-6 mb-5">
+        <label for="confirmRoutingNumber">Confirm EIN/TaxID*</label>
+        <input *ngIf="!isBankdetailsExist"
+          [ngClass]="{'is-invalid': (f?.controls?.confirmTaxId?.touched &&  (f?.controls?.confirmTaxId?.errors || f?.errors?.mismatchTaxId))}"
+          mask="000000000" formControlName="confirmTaxId" type="text" class="form-control" id="confirmRoutingNumber"
+          aria-describedby="confirmRoutingNumberHelp" placeholder="Enter EIN/TaxID">
+        <input *ngIf="isBankdetailsExist" [readonly]="isBankdetailsExist" formControlName="confirmTaxId" type="text"
+          class="form-control" id="confirmRoutingNumber" aria-describedby="confirmRoutingNumberHelp"
+          placeholder="Enter EIN/TaxID">
+        <ng-container *ngIf="f?.controls?.confirmTaxId?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.confirmTaxId?.errors?.required">Confirm EIN/TaxID is
+            required.
+          </div>
+          <div class="invalid-feedback" *ngIf="f?.errors?.mismatchTaxId">Confirm EIN/TaxID must be same as EIN/TaxID.
+          </div>
+
+        </ng-container>
+      </div>
+    </div>
+    <ng-container *ngIf="!isBankdetailsExist && !fromPartner">
+      <div class="create-vendor-profile fixed-footer" *ngIf="!editBankDetails">
+        <div class="container">
+          <div class="button-container">
+            <button type="button" class="btn text"><img src="../../../../assets/images/arrow-left.svg" alt="Back button"
+                class="back-arrow" /> <span class="text-underline" (click)="backToVendorDetail()">Back</span></button>
+            <button type="button" class="btn link mw-200 ml-auto" (click)="skipBankDetail()">Skip</button>
+            <button type="submit" class="btn primary mw-200 ml-3" [disabled]="!f?.valid">Done</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="editBankDetails" class="edit-profile-form">
+        <div class="btn-space">
+          <button type="button" class="btn link" [routerLink]="['/vendor/profile']">Cancel</button>
+          <button type="submit" class="btn primary" [disabled]="!f?.valid">Add</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="fromPartner">
+      <div class="bottom-btn-space fixed-footer ml-0">
+        <button class="btn link" type="button" (click)="back()">Back</button>
+        <button class="btn primary" *ngIf="!isPartnerBankEdit"  type="button" (click)="savePartnerBank()" [disabled]="!f?.valid">Add Partner</button>
+        <button class="btn primary" *ngIf="isPartnerBankEdit"  type="button" [routerLink]="['/admin/partner-management/list']">Continue</button>
+
+      </div>
+    </ng-container>
+
+  </form>
+</div><!-- end bank-detail-container -->

@@ -1,0 +1,30 @@
+<div class="package-container fixed-footer-padding">
+    <div class="page-title" ngbAutoFocus>Edit Category</div>
+
+    <form [formGroup]="editCategoryForm" (submit)="updateCategory()" class="event-form">
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="packagePercent">Edit Category*</label>
+          <input type="text" class="form-control"
+            formControlName="name"
+            [ngClass]="{'is-invalid': (f?.controls?.name?.touched && f?.controls?.name?.errors)}"
+            aria-describedby="packagePercentHelp"
+            placeholder="Enter category name.">
+
+            <ng-container *ngIf="f?.controls?.name?.touched">
+                <div class="invalid-feedback" *ngIf="f?.controls?.name?.errors?.required">First Name is required.</div>
+            </ng-container>
+        </div>
+      </div><!-- end form row -->
+    </form>
+  </div>
+
+  <div class="fixed-footer">
+    <div class="container-fluid">
+      <div class="button-container">
+        <button  type="button" class="btn link mw-220" [routerLink]="['/admin/category-management']" >Cancel</button>
+        <button  type="button" class="btn primary mw-220" [disabled]="!f.valid" (click)="updateCategory()">Update Category</button>
+      </div>
+    </div>
+  </div>

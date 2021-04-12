@@ -1,0 +1,125 @@
+<div class="container-fluid fixed-header-padding" >
+  <div class="main-container">
+
+    <div class="left-navigation" [ngClass]="{'fixed-footer-add': fixedFooterClass}">
+      <span class="left-navigation-toggle" (click)="onProfileMenu()" [ngClass]="{'show': profileMenu}"></span>
+      <ul class="nav">
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" class="nav-link" routerLinkActive="active" [routerLink]="['/vendor/dashboard']" >My Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/vendor/quotes/list']" [routerLinkActiveOptions]="{exact:
+            true}" routerLinkActive="active" (click)="onProfileMenu()"  [queryParams]="{ order: 1, sort: 'quoteExpirationDate' }" class="nav-link">Price Quotes Needed
+            <span *ngIf="headerCount?.quotes?.AWAITING_VENDOR_QUOTES > 0" class="badge badge-warning">{{headerCount?.quotes?.AWAITING_VENDOR_QUOTES}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" [routerLink]="['/vendor/orders']" routerLinkActive="active"
+          [queryParams]="{ type: 'NEW_ORDERS' }"  [routerLinkActiveOptions]="{exact:
+          true}" class="nav-link">New Orders <span *ngIf="(headerCount?.orders?.newOrders > 0)" class="badge badge-warning">{{headerCount?.orders?.newOrders}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" [routerLink]="['/vendor/orders']" routerLinkActive="active"
+          [queryParams]="{ type: 'DAY_OUR_ORDERS' }"  [routerLinkActiveOptions]="{exact:
+          true}" class="nav-link">30 Days Out
+          <span *ngIf="(headerCount?.orders?.thirtyDayOut) > 0" class="badge badge-warning">{{headerCount?.orders?.thirtyDayOut}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/vendor/quotes/list']" (click)="onProfileMenu()" routerLinkActive="active" class="nav-link" [queryParams]="{ type: 'ACCEPT_REJECT_QUOTES', order: 1, sort: 'quoteExpirationDate' }" [routerLinkActiveOptions]="{exact:
+            true}" >Awaiting Quote Acceptance<span *ngIf="headerCount?.quotes?.ACCEPT_REJECT_QUOTES > 0" class="badge badge-warning">{{headerCount?.quotes?.ACCEPT_REJECT_QUOTES}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)"  class="nav-link"  (click)="onProfileMenu()" [routerLink]="['/vendor/orders']" routerLinkActive="active"
+          [queryParams]="{ type: 'FULFILLED_ORDERS' }"  [routerLinkActiveOptions]="{exact:
+          true}">Fulfilled Orders</a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" class="nav-link"  (click)="onProfileMenu()" [routerLink]="['/vendor/orders']" routerLinkActive="active"
+          [queryParams]="{ status: 'CANCELLED' }"  [routerLinkActiveOptions]="{exact:
+          true}">Canceled Orders</a>
+        </li>
+        <li class="nav-item">
+          <div class="has-child">
+            <a class="nav-link dropdown-toggle" id="quotesDropdown" [ngClass]="{'active': collapseQuotes == false }"
+             (click)="collapseQuotes = !collapseQuotes; collapseMyProducts= true; collapseMyAccount= true;">Quotes</a>
+            <ul class="nav" [ngbCollapse]="collapseQuotes">
+              <li class="nav-item">
+                <a  class="nav-link " (click)="onProfileMenu('collapseQuotes')" [routerLink]="['/vendor/quotes/expired-cancelled-list']" routerLinkActive="active" class="nav-link" [queryParams]="{ type: 'EXPIRED_QUOTES' }" [routerLinkActiveOptions]="{exact:
+                  true}">Expired / Rejected Quotes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="onProfileMenu('collapseQuotes')" [routerLink]="['/vendor/quotes/expired-cancelled-list']" routerLinkActive="active" class="nav-link" [queryParams]="{ type: 'CANCELLED_QUOTES' }" [routerLinkActiveOptions]="{exact:
+                  true}">Canceled Quotes</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="has-child">
+            <a class="nav-link dropdown-toggle" id="productDropdown" [ngClass]="{'active': collapseMyProducts == false }"
+             (click)="collapseMyProducts = !collapseMyProducts; collapseMyAccount = true; collapseQuotes = true;">My
+              Products/Services</a>
+            <ul class="nav" aria-labelledby="productDropdown" [ngbCollapse]="collapseMyProducts">
+              <li class="nav-item">
+                  <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyProducts')" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+                    true}"  [routerLink]="appRoutesVendor.addProductServices">Add
+                    Products/Services</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyProducts')" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+                  true}" [queryParams]="{ type: null }"
+                  queryParamsHandling="merge" [routerLink]="appRoutesVendor.productsServices">View all
+                  Products/Services </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)"  (click)="onProfileMenu()"  class="nav-link" [routerLink]="['/vendor/invites']" routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact:
+          true}">Invites</a>
+        </li>
+      
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" routerLinkActive="active"  [routerLink]="appRoutesVendor.messages" messages class="nav-link">My Messages</a>
+        </li>
+        <li class="nav-item">
+          <div ngbDropdown>
+            <a class="nav-link dropdown-toggle" id="myAccountDropdown" [ngClass]="{'active': collapseMyAccount == false }"
+            (click)="collapseMyAccount = !collapseMyAccount; collapseMyProducts = true; collapseQuotes = true">My Account</a>
+            <ul class="nav" aria-labelledby="myAccountDropdown" [ngbCollapse]="collapseMyAccount">
+              <li class="nav-item">
+                <a [routerLink]="['/vendor/profile']" (click)="onProfileMenu('collapseMyAccount')" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active" class="nav-link">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="onProfileMenu('collapseMyAccount')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"  [routerLink]="['/vendor/profile/bank-details']">Bank Details</a>
+              </li>
+              <!-- <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyAccount')" class="nav-link" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active" [routerLink]="['/vendor/payment-history']">Payment History</a>
+              </li> -->
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyAccount')" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"  [routerLink]="['/vendor/sub-vendor-management']">User
+                  Management </a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyAccount')" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}"  [routerLink]="['/vendor/change-password']">Change
+                  Password</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyAccount')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"  [routerLink]="['/vendor/vendor-support']" class="nav-link">Support</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)"  (click)="onProfileMenu()"  class="nav-link" [routerLink]="[vendorRoutes.paymentHistory]"
+          routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" >Payment History</a>
+        </li>
+      </ul>
+    </div><!-- end left navigation -->
+    <div class="right-container">
+      <app-breadcrumbs></app-breadcrumbs>
+      <router-outlet (activate)="onActivate($event)"></router-outlet>
+    </div>
+
+  </div>
+</div>

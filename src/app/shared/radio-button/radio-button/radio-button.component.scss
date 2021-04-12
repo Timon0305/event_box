@@ -1,0 +1,20 @@
+@import "~assets/scss/variables";
+.radio-button-group {
+  display: flex;
+  .form-group {
+    display: inline-block;
+    &:not(:last-child) {
+      margin-right: 35px;
+    }
+  }
+  @media screen and (max-width: $phone-landscape) {
+    flex-wrap: wrap;
+    .form-group {
+      width: 100%;
+      margin: 0 0 15px 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

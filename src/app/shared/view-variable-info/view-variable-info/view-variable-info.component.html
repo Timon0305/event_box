@@ -1,0 +1,95 @@
+<div class="detail-content-left">
+  <div class="row">
+    <div class="col-md-4">
+      <p class="title">Event Start Date & Time</p>
+      <p class="des">{{quoteInfo?.varriableInfo?.eventStartDate | timezoneDateFormat: quoteInfo?.events?.eventTimezone}}
+        {{timeZoneMap[quoteInfo?.events?.eventTimezone]}}
+      </p>
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4">
+      <p class="title">Event End DATE & TIME</p>
+      <p class="des">{{quoteInfo?.varriableInfo?.eventEndDate | timezoneDateFormat: quoteInfo?.events?.eventTimezone}}
+        {{timeZoneMap[quoteInfo?.events?.eventTimezone]}}
+      </p>
+
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4">
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4">
+      <p class="title">Delivery Date & Time From</p>
+      <p class="des">
+        {{quoteInfo?.varriableInfo?.deliveryStartDate | timezoneDateFormat: quoteInfo?.events?.eventTimezone}}
+        {{timeZoneMap[quoteInfo?.events?.eventTimezone]}}
+
+      </p>
+
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4">
+      <p class="title">Delivery DATE & TIME To</p>
+      <p class="des">
+        {{quoteInfo?.varriableInfo?.deliveryEndDate | timezoneDateFormat: quoteInfo?.events?.eventTimezone}}
+        {{timeZoneMap[quoteInfo?.events?.eventTimezone]}}
+
+      </p>
+
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4">
+      <p class="title">Setup DATE & TIME From</p>
+      <p class="des">{{quoteInfo?.varriableInfo?.setUpFromDate | timezoneDateFormat: quoteInfo?.events?.eventTimezone}}
+        {{timeZoneMap[quoteInfo?.events?.eventTimezone]}}
+      
+      </p>
+
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4">
+      <p class="title">Setup DATE & TIME TO</p>
+      <p class="des">{{quoteInfo?.varriableInfo?.setUpToDate | timezoneDateFormat: quoteInfo?.events?.eventTimezone}}
+        {{timeZoneMap[quoteInfo?.events?.eventTimezone]}}
+      
+      </p>
+
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4">
+      <p class="title">Breakdown DATE & TIME From</p>
+      <p class="des">
+        {{quoteInfo?.varriableInfo?.breakDownStartDate | timezoneDateFormat: quoteInfo?.events?.eventTimezone}}
+        {{timeZoneMap[quoteInfo?.events?.eventTimezone]}}
+
+      </p>
+
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4">
+      <p class="title">Breakdown DATE & TIME TO</p>
+      <p class="des">
+        {{quoteInfo?.varriableInfo?.breakDownEndDate | timezoneDateFormat: quoteInfo?.events?.eventTimezone}}
+        {{timeZoneMap[quoteInfo?.events?.eventTimezone]}}
+
+      </p>
+
+    </div><!-- end col-md-4 -->
+
+    <div class="col-md-4" *ngIf="!quoteInfo?.orderId">
+      <p class="title">Request Date & Time</p>
+      <p class="des">
+        {{quoteInfo?.quoteRequestedDate ? (quoteInfo?.quoteRequestedDate | eventDate) : '-' }}
+      </p>
+    </div><!-- end col-md-4 -->
+
+
+
+    <div class="col-12">
+      <p class="title">Notes</p>
+      <p class="des long-description mb-0">{{quoteInfo?.notes}}</p>
+    </div><!-- end col-md-4 -->
+
+  </div><!-- end row -->
+
+</div>

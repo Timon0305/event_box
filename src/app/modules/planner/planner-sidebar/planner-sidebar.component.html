@@ -1,0 +1,119 @@
+<div class="container-fluid fixed-header-padding" [ngClass]="{'fixed-footer-padding': fixedFooterPadding}">
+  <div class="main-container">
+
+    <div class="left-navigation" [ngClass]="{'fixed-footer-add': fixedFooterClass}">
+        <span class="left-navigation-toggle" (click)="onProfileMenu()" [ngClass]="{'show': profileMenu}"></span>
+      <ul class="nav">
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" class="nav-link" routerLinkActive="active"
+          [routerLink]="['/planner/dashboard']">My Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" class="nav-link" routerLinkActive="active"
+            [routerLink]="['/planner/quote-request-folder']">Quote Request Folder
+            <span *ngIf="headerCount?.quotes?.INITIATED > 0"
+            class="badge badge-pill badge-warning">{{headerCount?.quotes?.INITIATED}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a routerLinkActive="active" (click)="onProfileMenu()"
+          [routerLink]="['/planner/quotes/accept-reject-quotes/list']" [queryParams]="{ order: 1, sort: 'quoteExpirationDate' }"  class="nav-link">Accept / Reject Quotes <span
+              class="badge badge-warning" *ngIf="headerCount?.quotes?.ACCEPT_REJECT_QUOTES > 0"> {{headerCount?.quotes?.ACCEPT_REJECT_QUOTES}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" [queryParams]="{ order: 1, sort: 'quoteExpirationDate' }" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+            false}" [routerLink]="['/planner/quotes/awaiting-vendor-quotes/list']">Awaiting Vendor Quotes
+            <span
+            class="badge badge-warning" *ngIf="headerCount?.quotes?.AWAITING_VENDOR_QUOTES > 0"> {{headerCount?.quotes?.AWAITING_VENDOR_QUOTES}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" [queryParams]="{ order: 1, sort: 'events.startdate' }" class="nav-link"
+          [routerLinkActiveOptions]="{exact:
+            false}" routerLinkActive="active"
+          [routerLink]="['/planner/quotes/quote-pending-payment/list']">Quotes Pending Payment <span
+            class="badge badge-warning" *ngIf="headerCount?.quotes?.ACCEPTED_QUOTES > 0"> {{headerCount?.quotes?.ACCEPTED_QUOTES}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" [queryParams]="{ order: -1, sort: 'quoteExpirationDate' }" class="nav-link" [routerLink]="['/planner/quotes/expired-quotes/list']">Expired / Rejected Quotes</a>
+        </li>
+        <li class="nav-item">
+          <div class="has-child">
+            <a class="nav-link dropdown-toggle" id="quotesDropdown" [ngClass]="{'active': collapseMyEvents == false }"
+              (click)="collapseMyEvents = !collapseMyEvents; collapseOrders= true; collapseMyAccount= true; ">My
+              Events</a>
+            <ul class="nav" [ngbCollapse]="collapseMyEvents">
+              <li class="nav-item">
+                <a routerLinkActive="active" (click)="onProfileMenu('collapseMyEvents')" [queryParams]="{ type: constants?.eventType?.upcomingEvent }"
+                  [routerLink]="['/planner/event/list']" class="nav-link">Upcoming Events</a>
+              </li>
+              <li class="nav-item">
+                <a routerLinkActive="active" (click)="onProfileMenu('collapseMyEvents')" [queryParams]="{ type: constants?.eventType?.pastEvent }"
+                  [routerLink]="['/planner/event/list']" class="nav-link">Past Events</a>
+              </li>
+
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/planner/event/add-event']" (click)="onProfileMenu()" routerLinkActive="active" class="nav-link">Add New Event</a>
+        </li>
+        <li class="nav-item">
+          <div class="has-child">
+            <a class="nav-link dropdown-toggle" id="productDropdown"  [ngClass]="{'active': collapseOrders == false }"
+              (click)="collapseOrders = !collapseOrders; collapseMyEvents = true; collapseMyAccount = true;">Orders</a>
+            <ul class="nav" aria-labelledby="productDropdown" [ngbCollapse]="collapseOrders">
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseOrders')" class="nav-link" routerLinkActive="active"
+                  [routerLink]="[constants.plannerRoutes.purchasedOrders]">Purchased Orders
+                  </a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseOrders')" class="nav-link" routerLinkActive="active"
+                  [routerLink]="[constants.plannerRoutes.canceledOrders]">Canceled Orders
+                 </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onProfileMenu()" class="nav-link" [routerLink]="['/planner/messages']"
+            routerLinkActive="active">Messages</a>
+        </li>
+        <li class="nav-item">
+          <div ngbDropdown>
+            <a class="nav-link dropdown-toggle" id="myAccountDropdown"
+              [ngClass]="{'active': collapseMyAccount == false }"
+              (click)="collapseMyAccount = !collapseMyAccount; collapseOrders = true; collapseMyEvents = true;">My
+              Account</a>
+            <ul class="nav" aria-labelledby="myAccountDropdown" [ngbCollapse]="collapseMyAccount">
+              <li class="nav-item">
+                <a [routerLink]="['/planner/profile']" (click)="onProfileMenu('collapseMyAccount')"  routerLinkActive="active" class="nav-link">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyAccount')" class="nav-link" routerLinkActive="active"
+                [routerLink]="['/planner/my-rating-review']" >My Ratings & Reviews</a >
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyAccount')" class="nav-link" routerLinkActive="active"
+                [routerLink]="['/planner/favourites']">My Favorites</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyAccount')" class="nav-link" routerLinkActive="active"
+                  [routerLink]="['/planner/change-password']">Change
+                  Password</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" (click)="onProfileMenu('collapseMyAccount')" routerLinkActive="active" [routerLink]="['/planner/planner-support']"
+                  class="nav-link">Support</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div><!-- end left navigation -->
+    <div class="right-container">
+      <app-breadcrumbs></app-breadcrumbs>
+      <router-outlet (activate)='onActivate($event)'></router-outlet>
+    </div>
+
+  </div>
+</div>

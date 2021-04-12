@@ -1,0 +1,6 @@
+<form [formGroup]="form" class="location-input-form">
+    <input type="text" class="form-control" [title]="(form.value.location)?form.value.location:''" (blur)="onInputBlur()" (keydown)="stopSubmit($event)" formControlName="location" placeholder="Location" #googleSearchLocation
+        autocomplete="true" />
+    <button (click)="googleAutoDetectLocation();isHomePage=false;" class="btn text"><img src="assets/images/location.svg" alt="Location" />
+    </button>
+</form>

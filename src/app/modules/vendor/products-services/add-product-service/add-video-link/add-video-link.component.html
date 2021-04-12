@@ -1,0 +1,21 @@
+<div [formGroup]="form">
+  <label for="videoLink">Add Video Link <img src="assets/images/icon-info.svg" alt="Info Icon" class="video-info" placement="bottom" ngbTooltip="Youtube links are the only supported video links." triggers="click:blur" /></label>
+  <ng-container formArrayName="videos" *ngFor="let item of form?.get('videos')?.controls; let i = index;">
+    <div class="form-group">
+      <input type="text" [ngClass]="{'is-invalid': (item?.touched && item?.errors?.invalidUrl)}" formControlName="{{i}}"
+        class="form-control" id="videoLink" placeholder="Enter video link">
+    </div>
+    <ng-container *ngIf="item?.touched">
+      <div class="invalid-feedback" *ngIf="item?.errors?.invalidUrl">
+        {{validationMsg.invalidYoutubeUrl}}
+      </div>
+    </ng-container>
+    <div class="remove-button-container" *ngIf="form.get('videos')?.controls?.length > 1">
+      <button type="button" class="btn text orange-text small" (click)="removeVideoLink(i)">Remove</button>
+    </div>
+  </ng-container>
+
+</div>
+<div class="add-button-container" *ngIf="form.get('videos')?.controls?.length < 5">
+  <button type="button" class="btn text blue-text small" (click)="addVideoLink()">+ Add More</button>
+</div><!-- end add more button -->

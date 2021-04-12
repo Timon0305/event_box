@@ -1,0 +1,60 @@
+@import "~assets/scss/variables";
+  .static-heading{
+    margin: 0;
+    padding-bottom: 24px;
+    @media screen and (max-width: $phone-landscape) {
+      padding-bottom: 15px;
+    }
+    & + .faq-list{
+      border-top: 0;
+    }
+  }
+  .faq-list{
+    border-top: 1px solid #e2e2e2;
+    padding: 25px 0 11px;
+    &:first-child{
+      border-top: 0;
+    }
+    .content-heading{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    h4{
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.63;
+      color: #000000;
+      margin-bottom: 0;
+      width: calc(100% - 26px);
+      @media screen and (max-width: $phone-landscape) {
+        font-size: 14px;
+      }
+    }
+    .content{
+      font-size: 16px;
+      line-height: 1.75;
+      color: #262626;
+      margin-bottom: 17px;
+      transition: .3s transform ease-in-out;
+      p{
+        margin-bottom: 10px;
+      }
+      @media screen and (max-width: $phone-landscape) {
+        font-size: 14px;
+      }
+    }
+    .drop-arrow{
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      background: url(/assets/images/faq-down-arrow.svg) no-repeat center;
+      background-size: 100%;
+      cursor: pointer;
+      transition: .3s transform ease-in-out;
+      &[aria-expanded="false"]{
+        transform: rotate(180deg);
+      }
+    }
+  }

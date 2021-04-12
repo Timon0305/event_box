@@ -1,0 +1,183 @@
+
+  // Footer start from here
+  @import "~assets/scss/variables";
+.footer{
+    background: #fafafa;
+    padding: 28px 15px 0;
+    border-top: 1px solid #e9e9e9;
+    @media screen and (min-width: $phone-landscape){
+      padding-top: 40px;
+    }
+    @media screen and (max-width: $phone-landscape) {
+      padding: 28px 0 0 0;
+    }
+  }
+  .footer-social-section{
+    .navbar-brand{
+      padding-top: 0;
+      padding-bottom: 10px;
+      img{
+        width: 69px;
+        height: auto;
+      }
+    }
+    .navbar-nav{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 15px;
+      .nav-item{
+        margin-right: 12px;
+        &:last-child{
+          margin-right: 0;
+        }
+        &:hover{
+          .nav-link{
+            color: #5067eb;
+          }
+        }
+      }
+    }
+    .nav-link{
+      font-size: 26px;
+      color: #000;
+    }
+    @media screen and (min-width: $phone-landscape){
+      .navbar-brand{
+        padding-bottom: 30px;
+        img{
+          width: 87px;
+        }
+      }
+      .nav-link{
+        font-size: 32px;
+      }
+      .navbar-nav{
+        margin-bottom: 0;
+        .nav-item{
+          margin-right: 12px;
+        }
+      }
+    }
+    @media screen and (min-width: $desktop){
+      .navbar-nav{
+        .nav-item{
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+  .copyright{
+    font-size: 13px;
+    line-height: 1.85;
+    padding: 16px 0;
+    margin: 0;
+    text-align: center;
+    @media screen and (min-width: $phone-landscape){
+      text-align: left;
+    }
+  }
+  .company-link{
+    h5{
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .navbar-nav{
+      margin-bottom: 20px;
+      .nav-item{
+        .nav-link{
+          color: #000;
+          font-size: 12px;
+          padding: 6px 0;
+          &:hover, &.active{
+            color: #5067eb;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+    @media screen and (min-width: $phone-landscape){
+      h5 {
+        font-size: 20px;
+      }
+      .navbar-nav{
+        .nav-item{
+          .nav-link{
+            font-size: 15px;
+            padding: .5rem 0;
+          }
+        }
+      }
+    }
+  }
+  .subscribe-section{
+    h5{
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    p{
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .form-control{
+      margin-bottom: 20px;
+      height: 40px;
+      -webkit-appearance: none;
+      font-size: 16px;
+    }
+    .btn{
+      min-width: 148px;
+      height: 48px;
+      font-size: 14px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      width: 100%;
+      font-weight: 600;
+    }
+    @media screen and (min-width: $phone-landscape){
+      h5 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 15px;
+      }
+      .form-control{
+        height: 45px;
+        font-size: 15px;
+      }
+      .btn {
+        width: auto;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .info-section{
+    position: relative;
+    .info-text{
+      position: absolute;
+      top: -18px;
+      left: 97px;
+      min-width: 160px;
+      font-size: 11px;
+      border: 1px solid #000;
+      border-radius: 5px;
+      padding: 5px;
+      z-index: 1;
+      background: #000;
+      color: #fff;
+    }
+    .nav-close-btn{
+      position: absolute;
+      top: 2px;
+      right: 1px;
+      display: inline-block;
+      padding: 0 5px;
+      cursor: pointer;
+    }
+  }
+  

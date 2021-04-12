@@ -1,0 +1,34 @@
+<nav aria-label="breadcrumb" *ngIf="partnerId">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/admin/partner-management/list']" href="javascript:void(0)">Partner Management</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Partner</li>
+    </ol>
+</nav>
+<div class="add-partner-container fixedFooterPadding">
+    <h2 class="page-title top-first-title" *ngIf="!partnerId">Add New Partner</h2>
+    <h2 class="page-title" *ngIf="partnerId">Edit Partner</h2>
+    <div class="partner-steps">
+        <div class="partner-steps-container" [ngClass]="{'active': activeTab === profileTabs.basicDetails,
+    'filled': activeTab > profileTabs.basicDetails}">
+            <div class="partner-image">
+                <img src="assets/images/user.svg" alt="Vendor manager" />
+            </div>
+            <div class="title">Partner Details</div>
+        </div>
+        <div class="partner-steps-container" [ngClass]="{'active': activeTab === profileTabs.commissionDetails,
+        'filled': activeTab > profileTabs.commissionDetails}">
+            <div class="partner-image">
+                <img src="assets/images/icon-commission.svg" alt="Commission Details" />
+            </div>
+            <div class="title">Commission Details</div>
+        </div>
+        <div class="partner-steps-container" [ngClass]="{'active': activeTab === profileTabs.bankDetails}">
+            <div class="partner-image">
+                <img src="assets/images/bank-inactive.svg" alt="Bank detail" />
+            </div>
+            <div class="title">Bank Details</div>
+        </div>
+    </div>
+    <router-outlet (activate)='onActivate($event)'></router-outlet>
+
+</div>

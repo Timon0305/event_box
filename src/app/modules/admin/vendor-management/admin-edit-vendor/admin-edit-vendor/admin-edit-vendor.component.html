@@ -1,0 +1,14 @@
+<div class="admin-edit-profile">
+
+  <div class="edit-profile">
+    <h2 class="page-title">Edit Vendor</h2>
+
+    <app-vendor-profile-form [vendorProfileData]="(vendorProfileData$| async)" [fromAdmin]="true">
+    </app-vendor-profile-form>
+    <div class="btn-space">
+      <button class="btn link" type="button" (click)="navigateToView()">Cancel</button>
+      <button class="btn primary" [disabled]="(!profileForm?.f?.valid )" (click)="updateProfile()"
+        type="submit">Continue</button>
+    </div>
+  </div>
+</div>

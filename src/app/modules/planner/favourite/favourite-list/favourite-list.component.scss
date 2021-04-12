@@ -1,0 +1,74 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.my-favorites-container{
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 40px;
+    padding-top: 15px;
+  }
+  .top-first-title{
+    padding-top: 30px;
+  }
+  .space-between-two{
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-container{
+    width: 50%;
+    max-width: 270px;
+  }
+  .sort-selectbox{
+    width: 160px;
+  }
+}
+.promocode-table {
+  min-height: 310px;
+  .btn {
+    width: 100px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+
+    &+.btn {
+      margin-top: 10px;
+    }
+  }
+
+  .table-head,
+  .table-body {
+    justify-content: space-between;
+  }
+  .table-body {
+    color: rgba(#000, 0.8);
+  }
+}
+.my-favorites-table{
+  .product-image{
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+  }
+  .btn{
+    width: 105px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 5px 7px;
+    & + .btn{
+      margin-top: 10px;
+    }
+  }
+  .tbody-data{
+    color: rgba(#000000, 0.8);
+    line-height: 1.69;
+    padding: 0 0 0 10px;
+  }
+}
+.table-listing {
+  &.product-table {
+    min-height: 310px;
+  }
+}

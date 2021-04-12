@@ -1,0 +1,16 @@
+<div class="modal-header" ngbAutoFocus>
+    <h4 class="modal-title">Rating & Review</h4>
+    <button (click)="activeModal.close(false)" type="button" class="close big-close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body view-review-modal" *ngIf="data as getRating">
+
+    <app-shared-view-rating-star class="big-star" [rating]="getRating.rating"></app-shared-view-rating-star>
+
+
+    <div class="form-group view-review-container">
+        <label for="reason">Review*</label>
+        <p>{{getRating.review}}</p>
+      </div>
+</div>

@@ -1,0 +1,131 @@
+<button type="button" class="close big-close" aria-label="Close" (click)="activeModal.close()">
+  <span aria-hidden="true">&times;</span>
+</button>
+<div class="modal-header with-info" ngbAutoFocus>
+  <h4 class="modal-title">{{isEdit? 'Edit': ''}} Custom Quote Information
+  </h4>
+  
+  <div class="modal-info-container">Please review and update the below information for this specific product/service to
+    ensure your quote is accurate.</div>
+</div>
+
+<div class="modal-body quote-variable-modal pb-0">
+  <form [formGroup]="variableInfo" class="quote-variable-form" (ngSubmit)="submit()">
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="productName">Product Name*</label>
+        <input type="text" [value]="productAndVendorName.productName" class="form-control" [readonly]="true">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="vendorName">Vendor Name*</label>
+        <input type="text" class="form-control" id="vendorName" [value]="productAndVendorName.vendorName"
+          [readonly]="true">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6" *ngIf="!isEdit">
+        <label for="variableType">Select from dropdown to auto populate available information</label>
+        <ng-select [items]="items" id="variableType"  (click)="clickHandler($event)" (change)="variableTypeChanged($event)" placeholder="Select"
+          formControlName="variableType" bindLabel="text" bindValue="value">
+        </ng-select>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="quantity">Quantity*</label>
+        <input appNumberInput
+          [ngClass]="{'is-invalid': variableInfo.controls?.quantity?.touched && variableInfo.controls?.quantity?.errors}"
+          formControlName="quantity" type="number" class="form-control" id="quantity" aria-describedby="quantityHelp"
+          placeholder="Enter Quantity">
+        <ng-container *ngIf="variableInfo.controls?.quantity?.touched">
+          <div class="invalid-feedback" *ngIf="variableInfo.controls?.quantity?.errors?.required">Quantity
+            is required</div>
+          <div class="invalid-feedback" *ngIf="variableInfo.controls?.quantity?.errors?.invalidNumber">Invalid quantity
+          </div>
+        </ng-container>
+      </div>
+      <div class="form-group col-md-6" *ngIf="isEdit">
+        <label for="eventTimezone">Time Zone</label>
+        <ng-select [clearable]="false" 
+          [ngClass]="{'is-invalid': (variableInfo?.controls?.eventTimezone?.touched && variableInfo?.controls?.eventTimezone?.errors), 'disabled': true}"
+          [items]="timeZones" placeholder="Select" bindLabel="text" bindValue="value" id="eventTimezone"
+          formControlName="eventTimezone">
+        </ng-select>
+        <div class="invalid-feedback d-block"
+          *ngIf="variableInfo?.controls?.eventTimezone?.touched && variableInfo?.controls?.eventTimezone?.errors?.required">
+          Time Zone is required.</div>
+      </div>
+    </div>
+
+    <div class="form-row" *ngIf="!isEdit">
+      <div class="form-group col-md-6">
+        <label for="eventTimezone">Time Zone</label>
+        <ng-select [clearable]="false" 
+          [ngClass]="{'is-invalid': (variableInfo?.controls?.eventTimezone?.touched && variableInfo?.controls?.eventTimezone?.errors), 'disabled': true}"
+          [items]="timeZones" placeholder="Select" bindLabel="text" bindValue="value" id="eventTimezone"
+          formControlName="eventTimezone">
+        </ng-select>
+        <div class="invalid-feedback d-block"
+          *ngIf="variableInfo?.controls?.eventTimezone?.touched && variableInfo?.controls?.eventTimezone?.errors?.required">
+          Time Zone is required.</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="eventStartDate">Event Start Date*</label>
+        <div class="input-group date-time-picker">
+          <input class="form-control" type="text" #eventStartDate="dpDayPicker"
+            [dpDayPicker]="dayPickerConfig['eventStartDate']" [theme]="'dp-material'" formControlName="eventStartDate"
+            [mode]="'daytime'" (onChange)="date = $event" [ngClass]="{'disabled': true}" />
+          <div class="input-group-append">
+            <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+          </div>
+        </div>
+        <div class="invalid-feedback d-block"
+          *ngIf="variableInfo?.controls?.eventStartDate?.touched && variableInfo?.controls?.eventStartDate?.errors?.required">
+          {{messageConst['eventStartDate']?.required}}</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="eventEndDate">Event End Date*</label>
+        <div class="input-group date-time-picker">
+          <input class="form-control" type="text" #eventEndDate="dpDayPicker" [dpDayPicker]="dayPickerConfig['endDate']"
+            [theme]="'dp-material'" formControlName="eventEndDate" [mode]="'daytime'" (onChange)="date = $event"
+            [minDate]="variableInfo?.controls?.eventStartDate?.value" [ngClass]="{'disabled': true}" />
+          <div class="input-group-append">
+            <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+          </div>
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="variableInfo?.controls?.eventEndDate?.errors?.minDate">
+          {{messageConst['eventEndDate']?.mustBeAfterCurrentDate}}</div>
+        <div class="invalid-feedback d-block"
+          *ngIf="variableInfo?.controls?.eventEndDate?.touched && variableInfo?.controls?.eventEndDate?.errors?.required">
+          {{messageConst['endDate']?.required}}</div>
+      </div>
+    </div><!-- end form row -->
+
+    <app-variable-info-form [addEventForm]="variableInfo" [fromQuoteVariable]="true"></app-variable-info-form>
+
+    <div class="form-row">
+      <div class="form-group col-12">
+        <label for="quoteDescription">Notes*</label>
+        <textarea formControlName="notes" class="form-control" id="quoteDescription"
+          [ngClass]="{'is-invalid': variableInfo.controls?.notes?.touched && variableInfo.controls?.notes?.errors}"
+          placeholder="What specific information do you want to share with this vendor about the quote that you are looking to receive?"
+          maxlength="1000"></textarea>
+        <div class="invalid-feedback"
+          *ngIf="variableInfo.controls?.notes?.touched && variableInfo.controls?.notes?.errors?.required">
+          Description {{isRequired}}
+        </div>
+        <div class="form-help-text">You have {{1000 - variableInfo?.value?.notes?.length}} characters remaining</div>
+      </div>
+    </div>
+    <!-- end form row -->
+
+    <div class="btn-space with-border float-right-buttons">
+      <button type="button" class="btn link mw-200" (click)="activeModal.close()">Cancel</button>
+      <button [disabled]="!variableInfo.valid" type="submit"
+        class="btn primary mw-200">{{isEdit ? 'Update': 'Add'}}</button>
+    </div>
+  </form>
+</div>

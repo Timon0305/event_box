@@ -1,0 +1,83 @@
+<nav aria-label="breadcrumb" *ngIf="isAdmin">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/admin/partner-management/list']">Partner Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Profile - {{partnerDetails?.partnerDetails?.businessName}}
+    </li>
+  </ol>
+</nav>
+<div class="admin-vendor-profile">
+  <div class="page-title top-first-title" *ngIf="isAdmin">{{partnerDetails?.partnerDetails?.businessName}} Profile</div>
+  <div class="page-title top-first-title" *ngIf="!isAdmin">My Dashboard</div>
+
+  <div class="top-button-section">
+    <h3 class="title-text">Analytics</h3>
+    <!-- put selectbox here -->
+    <app-shared-date-filter (filterDateEvent)="quoteDateFilter($event)" [fromPartnerReport]="true">
+    </app-shared-date-filter>
+  </div>
+  <div class="row box-container">
+    <div class="col-lg-6 col-xl-4">
+      <div class="box pointer" [routerLink]="['./vendor-list']">
+        <div class="box-content">
+          <div class="title">{{(analytics?.vendor || analytics?.vendors || 0)}}</div>
+          <div class="name">Total Vendors Invited</div>
+        </div>
+        <img src="assets/images/select-vendor-icon.svg" class="bid-icon" alt="Analytics image">
+      </div>
+    </div>
+    <div class="col-lg-6 col-xl-4">
+      <div class="box pointer" [routerLink]="['./planner-list']">
+        <div class="box-content">
+          <div class="title">{{(analytics?.planner || analytics?.planners || 0)}}</div>
+          <div class="name">Total Planners Invited</div>
+        </div>
+        <img src="assets/images/select-planner-icon.svg" class="bid-icon" alt="Analytics image">
+      </div>
+    </div>
+    <div class="col-lg-6 col-xl-4">
+      <div class="box pointer" [routerLink]="['./orders']">
+        <div class="box-content">
+          <div class="title">{{analytics?.ordersCount || 0}}</div>
+          <div class="name">Total Orders</div>
+        </div>
+        <img src="assets/images/icon-cart-payemnt.svg" class="bid-icon" alt="Analytics image">
+      </div>
+    </div>
+    <div class="col-12 full-box-container">
+      <div class="box">
+        <div class="box-content">
+          <div class="name">Total Revenue</div>
+          <div class="title">{{(analytics?.totalRevenue || 0) | currency: 'USD'}}</div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-content">
+          <div class="name">Total Gross</div>
+          <div class="title">{{(analytics?.totalGross || 0) | currency: 'USD'}}</div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-content">
+          <div class="name">Total Net</div>
+          <div class="title">{{(analytics?.totalNet || 0)| currency: 'USD'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container>
+    <div class="divider mt-3"></div>
+    <div class="form-group input-with-sign">
+      <label for="Password">{{isAdmin ? "PARTNER": "YOUR" }} REFERRAL URL </label>
+      <div class="input-group date-time-picker">
+        <input class="form-control" [value]="referralUrl" [readonly]="true" id="referralInput">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-default" (click)="copyUrl()">COPY URL</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="divider mb-2"></div>
+  <ng-container *ngIf="(partnerDetails$ | async)"></ng-container>
+  <ng-container *ngIf="!isAdmin && partnerAnalytics$|async"></ng-container>
+  <app-partner-view-profile [partnerDetails]="partnerDetails" [isAdmin]="isAdmin"></app-partner-view-profile>
+</div>

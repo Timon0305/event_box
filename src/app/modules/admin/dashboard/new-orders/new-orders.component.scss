@@ -1,0 +1,47 @@
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/table";
+.dashboard-container {
+  width: 100%;
+}
+.btn {
+  &.btn-print {
+    min-width: 100px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 3px;
+    border: solid 1px #4880ff;
+    background: #eff4ff;
+    color: #5067eb;
+    font-size: 12px;
+    padding: 0;
+    font-weight: 600;
+    img {
+      margin-right: 10px;
+    }
+    &:focus {
+      outline: 0;
+      box-shadow: none;
+    }
+  }
+}
+.dashboard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .filter-section {
+    display: inline-flex;
+    align-items: center;
+    .select-wrapper{
+      margin-left: 12px;
+    }
+  }
+}
+.card-wrapper{
+  .divider{
+    margin: 35px 0 40px;
+  }
+}

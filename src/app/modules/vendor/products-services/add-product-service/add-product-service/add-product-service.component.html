@@ -1,0 +1,137 @@
+<app-breadcrumbs [dynamicBreadcrumb]="route.snapshot.params.id && dynamicBreadcrumb"></app-breadcrumbs>
+<div class="vendor-add-product-container">
+
+  <h2 class="page-title" [ngClass]="{'top-first-title': !route.snapshot.params.id}"><span *ngIf="!route.snapshot.params.id">Add</span> <span *ngIf="route.snapshot.params.id">Edit</span> Product / Service</h2>
+  <form [formGroup]="productServiceForm" class="add-product-form footer-padding-added" (submit)="submit()">
+    <div class="row radio-btn-wrapper">
+      <div class="form-group">
+        <input type="radio" value="{{productType}}" formControlName="type" name="type" id="addProduct">
+        <label for="addProduct">Product</label>
+      </div>
+      <div class="form-group">
+        <input type="radio" value="{{serviceType}}" formControlName="type" name="type" id="addService">
+        <label for="addService">Service</label>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <!--Product name container-->
+        <ng-container *ngIf="f?.value?.type === productType">
+          <label for="productName">Product Name*</label>
+          <input [ngClass]="{'is-invalid': (f?.controls?.name?.touched && f?.controls?.name?.errors)}" type="text"
+            class="form-control" id="productName" aria-describedby="productNameHelp" placeholder="Enter product name"
+            formControlName="name" maxlength="{{productFormDetails.nameMaxLen}}">
+          <div class="invalid-feedback" *ngIf=" f?.controls?.name?.touched && f?.controls?.name?.errors?.required">
+            Product name {{messages.required}}
+          </div>
+        </ng-container>
+        <!--Service name container-->
+        <ng-container *ngIf="f?.value?.type === serviceType">
+          <label for="productName">Service Name*</label>
+          <input type="text" [ngClass]="{'is-invalid': (f?.controls?.name?.touched && f?.controls?.name?.errors)}"
+            class="form-control" id="productName" aria-describedby="productNameHelp" placeholder="Enter service name"
+            formControlName="name" maxlength="{{productFormDetails.nameMaxLen}}">
+          <div class="invalid-feedback" *ngIf=" f?.controls?.name?.touched && f?.controls?.name?.errors?.required">
+            Service name {{messages.required}}
+          </div>
+        </ng-container>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="productCategory">Category*</label>
+        <ng-select [items]="(categoriesObservable$ | async)" (change)="categoryChanged($event)"
+          [ngClass]="{'is-invalid': (f?.controls?.category?.touched && f?.controls?.category?.errors)}"
+          placeholder="Select" formControlName="category" bindLabel="name" bindValue="_id">
+        </ng-select>
+        <ng-container *ngIf="f?.controls?.category?.touched">
+          <div class="invalid-feedback d-block" *ngIf="f?.controls?.category?.errors?.required">
+            Category {{messages.required}}
+          </div>
+        </ng-container>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="productSubCategory">Sub Category*</label>
+        <ng-select [items]="subCategory" placeholder="Select"
+          [ngClass]="{'is-invalid': (f?.controls?.subCategory?.touched && f?.controls?.subCategory?.errors)}"
+          formControlName="subCategory" bindLabel="name" bindValue="_id">
+        </ng-select>
+        <ng-container *ngIf="f?.controls?.subCategory?.touched">
+          <div class="invalid-feedback d-block" *ngIf="f?.controls?.subCategory?.errors?.required">
+            Sub category {{messages.required}}
+          </div>
+        </ng-container>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="pricingStarting">Pricing Starting at*</label>
+        <input [dropSpecialCharacters]="false" type="text" prefix="$" mask="0*.00" class="form-control" id="pricingStarting"
+          aria-describedby="pricingStartingHelp" formControlName="price"
+          [ngClass]="{'is-invalid': (f?.controls?.price?.touched && f?.controls?.price?.errors)}">
+        <ng-container *ngIf="f?.controls?.price?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.price?.errors?.required">
+            Price {{messages.required}}
+          </div>
+          <div class="invalid-feedback" *ngIf="f?.controls?.price?.errors?.priceZero">
+            {{messages.prizeCannotBeZero}}
+          </div>
+
+        </ng-container>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="productDescription">Description of {{f?.value?.type === productType? 'Product': 'Service'}}*</label>
+        <textarea formControlName="description" class="form-control" id="productDescription"
+          placeholder="Please describe the {{f?.value?.type === productType? 'product': 'service'}} description…"
+          maxlength="{{productFormDetails.descMaxLen}}"
+          [ngClass]="{'is-invalid': (f?.controls?.description?.touched && f?.controls?.description?.errors)}"></textarea>
+        <ng-container *ngIf="f?.controls?.description?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.description?.errors?.required">
+            Description {{messages.required}}
+          </div>
+        </ng-container>
+        <div class="form-help-text">You have {{productFormDetails.descMaxLen - f?.value?.description?.length}}
+          characters remaining</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="productAdditionalDetail">Additional Details <span class="font-italic">(Guidelines)</span>*</label>
+        <textarea formControlName="additionalDetails" class="form-control" id="productAdditionalDetail"
+          placeholder="Please describe the additional details…" maxlength="{{productFormDetails.descMaxLen}}"
+          [ngClass]="{'is-invalid': (f?.controls?.additionalDetails?.touched && f?.controls?.additionalDetails?.errors)}"></textarea>
+        <ng-container *ngIf="f?.controls?.additionalDetails?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.additionalDetails?.errors?.required">
+            Additional detail {{messages.required}}
+          </div>
+        </ng-container>
+        <div class="form-help-text">You have {{productFormDetails.descMaxLen - f?.value?.additionalDetails?.length}}
+          characters remaining</div>
+      </div>
+    </div><!-- end form row -->
+
+    <!-- Image section-->
+    <app-add-product-service-images [form]="productServiceForm" [imagesUrl]="imagesUrl">
+    </app-add-product-service-images>
+
+    <app-add-video-link [form]="productServiceForm"></app-add-video-link>
+    <!-- add more button -->
+
+    <div class="location-container">
+      <h6 class="location-title">Location</h6>
+
+      <app-add-product-service-location [form]="productServiceForm"
+        [vendorLocations]="(locationsObservable$ | async)?.data?.docs"></app-add-product-service-location>
+
+
+    </div>
+
+
+    <div class="bottom-btn-space fixed-footer ml-0">
+      <button class="btn link" type="button" [routerLink]="['/vendor/products-services']">Cancel</button>
+      <button class="btn primary" type="submit" [disabled]="!isFormValid">{{route.snapshot.params.id ? 'Update': 'Add'}}
+        {{f?.value?.type === productType? 'Product': 'Service'}}</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,26 @@
+@import "~assets/scss/variables";
+.quote-variable-form{
+    .form-group{
+      margin-bottom: 40px;
+      @media screen and (max-width: $phone-landscape) {
+        margin-bottom: 16px;
+      }
+    }
+    .disabled{
+      pointer-events: none;
+      background-color: #ececec;
+      border-color: #ececec;
+      ~ div{
+        opacity: 0.7;
+      }
+    }
+  }
+  @media screen and (max-width: $phone-landscape) {
+    .btn-space {
+      padding: 15px;
+      margin-top: 0;
+      .btn {
+        min-width: calc(50% - 8px);
+      }
+    }
+  }

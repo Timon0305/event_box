@@ -1,0 +1,54 @@
+<div class="title-with-button">
+  <h3 *ngIf="referrer === pages.HOME">Hear what other planners are saying</h3>
+  <h4 mb-0 *ngIf="referrer === pages.DETAIL">Ratings & Reviews</h4>
+  <h4 *ngIf="!referrer">Home Locations</h4>
+  <div class="navigation-container" *ngIf="locationsData.length > noOfItemView">
+    <a class="navigation-item" title="Previous" (click)="previous()"><span class="navigation"></span></a>
+    <a class="navigation-item"
+      [ngClass]="{'active': (locationsData.length > noOfItemView && currentIndex < locationsData.length - noOfItemView)}"
+      title="Next" (click)="next()"><span class="navigation right"></span></a>
+  </div>
+</div>
+
+<div class="row" *ngIf="!referrer">
+  <!-- end col-md-6 -->
+  <div class="col-md-6" *ngFor="let location of dataToLsit; trackBy: trackByObjectId; let i = index">
+    <div class="planner-comments user-location-container">
+      <p class="user-location">Location {{currentIndex+i+1}}</p>
+      <p>{{location?.location?.address}}</p>
+      <p *ngIf="location?.miles">Within {{location?.miles}} miles</p>
+    </div>
+  </div><!-- end col-md-6 -->
+</div>
+
+<div class="row" *ngIf="(referrer === pages.HOME)">
+  <div class="col-md-4 plan-item-col" *ngFor="let product of dataToLsit; trackBy: trackByObjectId; let i = index">
+    <div class="planner-comments ">
+      <div class="top-section">
+        <div class="content">
+          <app-shared-view-rating-star class="rating-container" [rating]="product.rating"></app-shared-view-rating-star>
+          <div class="comment-title">{{product?.product?.name | titlecase}}</div>
+        </div>
+        <img src="{{product?.product?.defaultImageUrl}}" alt="Comment image" appNoImage>
+      </div>
+      <p class="comment-detail">{{product?.review}}</p>
+      <p class="comment-author">- {{product?.user | formatPlannerName}}</p>
+    </div>
+  </div>
+</div>
+<!-- end home page review -->
+<div class="rating-reviews-wrapper" *ngIf="(referrer === pages.DETAIL)">
+    <div class="planner-comments" *ngFor="let product of dataToLsit; trackBy: trackByObjectId; let i = index">
+      <div class="top-section">
+        <div class="content">
+          <app-shared-view-rating-star class="rating-container" [rating]="product.rating"></app-shared-view-rating-star>
+        </div>
+      </div>
+      <p class="comment-detail">{{product?.review}}</p>
+      <p class="comment-author">- {{product?.user | formatPlannerName}}</p>
+    </div>
+</div>
+<!-- end detail page review -->
+
+
+<!-- end detail page review -->

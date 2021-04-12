@@ -1,0 +1,41 @@
+<app-breadcrumbs  *ngIf="(productDetail$ | async) as product" [dynamicBreadcrumb]="dynamicBreadcrumb(product.data)"></app-breadcrumbs>
+<app-product-review-container *ngIf="(productDetail$ | async) as product" [product]="product.data"></app-product-review-container>
+
+<!-- review section -->
+<div class="review-container" *ngIf="(ratingNreviewObservable$ | async) as ratingNreviewList">
+  <div class="space-between-two" *ngIf="ratingNreviewList?.totalDocs > 0 || (paramsLength > 0)">
+    <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+    <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+
+  <!-- table start form here -->
+  <div class="table-listing without-product">
+    <div class="table-head-wrapper">
+      <div class="table-head">
+        <div class="thead-data">Rating</div>
+        <div class="thead-data">Comments</div>
+        <div class="thead-data">Planner Name</div>
+        <div class="thead-data">Date/Time of Review</div>
+      </div>
+    </div>
+    <app-product-rating-review-list-item class="table-body-wrapper" [ratingNreviewData]="ratingNreviewList" [referrer]="false">
+    </app-product-rating-review-list-item>
+    <app-pagination [metaData]="ratingNreviewList" (pageChange)="pageChange($event)"></app-pagination>
+    <div class="table-listing product-table"
+      *ngIf="ratingNreviewList?.totalDocs === number.zero && !(params > number.one)">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="table-listing product-table"
+      *ngIf="ratingNreviewList?.totalDocs === number.zero && params > number.one">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+
+  </div>
+</div>

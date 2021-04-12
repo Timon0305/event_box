@@ -1,0 +1,27 @@
+<h2 class="page-title top-first-title">All Notifications</h2>
+
+<ng-container *ngIf="(notificationData$ | async)?.data as notificationData">
+  <div class="table-listing notification-table" *ngIf="notificationData?.docs?.length || loading">
+    <div class="table-head-wrapper">
+      <div class="table-head">
+        <div class="thead-data">Message</div>
+        <div class="thead-data">Date & Time</div>
+      </div>
+    </div>
+    <div class="table-body-wrapper">
+      <div class="table-body cursor-pointer" *ngFor="let notificationObj of notificationData.docs; trackBy: trackByFn" (click)="navigate(notificationObj.notifyType, notificationObj.typeId)">
+        <div class="tbody-data space" data-label="Message"  >
+          <p appNotificationDate [innerHtml]="notificationObj.notification"></p>
+        </div>
+        <div class="tbody-data" data-label="Date & Time">{{notificationObj.createdAt| notificationTime}}</div>
+      </div>
+    </div>
+    <app-pagination [metaData]="notificationData" (pageChange)="pageChange($event)"></app-pagination>
+  </div>
+  <div class="table-listing quote-request-table" *ngIf="!notificationData?.docs?.length && !loading">
+    <div class="no-result">
+      <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+      <p class="mt-5">Sorry! No results found :(</p>
+    </div>
+  </div>
+</ng-container>

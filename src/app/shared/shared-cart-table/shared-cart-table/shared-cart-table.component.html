@@ -1,0 +1,55 @@
+<div class="table-listing order-detail-table" [ngClass]="{'product-table':!finalPaymentPage}">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data">Product/Service Name</div>
+      <div class="thead-data">Vendor Name</div>
+      <div class="thead-data">Event Date</div>
+      <div class="thead-data">Event Label</div>
+      <div class="thead-data">Qty</div>
+      <div class="thead-data">Total</div>
+      <div class="thead-data" >Action</div>
+    </div>
+  </div>
+  <div class="table-body-wrapper">
+    <div class="table-body" *ngFor="let quote of quotesList; let i = index;trackBy: trackByFn">
+      <!-- repeat this div -->
+      <div class="tbody-data" data-label="Name">
+        <div class="product-col">
+          <em><img appNoImage src="{{quote?.product?.defaultImageUrl|| quote?.products?.defaultImageUrl}}"
+              alt="Product Image" class="product-image" /></em>
+          <span> {{quote?.product?.name||quote?.products?.name}}</span>
+        </div>
+      </div>
+      <div class="tbody-data" data-label="Vendor Name"><span>{{quote?.vendor?.name || quote?.vendors?.name}}</span>
+      </div>
+      <div class="tbody-data" data-label="Event Date" *ngIf="quote.event">
+        <span>{{quote?.event?.startDate| timezoneDateFormat: quote?.event?.eventTimezone}}
+          {{mapTimezone[quote?.event?.eventTimezone]}}
+        </span></div>
+      <div class="tbody-data" data-label="Event Date" *ngIf="quote.events">
+        <span>{{quote?.events?.startDate| timezoneDateFormat: quote?.events?.eventTimezone}}
+          {{mapTimezone[quote?.events?.eventTimezone]}}
+        </span></div>
+      <div class="tbody-data" data-label="Event Label"><span>{{quote?.event?.label||quote?.events?.label}}</span></div>
+      <div class="tbody-data" data-label="Qty"><span>{{quote?.latestReply?.quantity}}</span></div>
+      <div class="tbody-data" data-label="Total">
+        <span>{{quote?.discount?.finalAmount | currency:'USD':'symbol':'1.0-2'}}</span>
+      </div>
+      <div class="tbody-data" *ngIf="!finalPaymentPage; else finalPageActions">
+        <div class="table-button-wrapper">
+          <button class="btn" type="button" (click)="viewQuote(quote._id)">View Quote</button>
+          <button class="btn" type="button" (click)="deleteQuote(quote._id, i)">Delete</button>
+        </div>
+      </div>
+      <ng-template #finalPageActions>
+        <div class="tbody-data" >
+          <div class="table-button-wrapper">
+            <button class="btn mw-110" type="button" (click)="viewOrder(quote._id)">View Order</button>
+          </div>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+
+</div>

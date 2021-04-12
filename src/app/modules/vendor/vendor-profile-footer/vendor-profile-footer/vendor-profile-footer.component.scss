@@ -1,0 +1,32 @@
+@import "~assets/scss/variables";
+.fixed-footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background: #fafafa;
+    border-top: 1px solid #e2e2e2;
+  }
+  .button-container{
+    display: flex;
+    widows: 100%;
+      @media screen and (max-width: $phone-landscape) {
+        .btn {
+          flex: 1;
+          min-width: 100px;
+          width: calc(50% - 8px);
+          & + .btn {
+            margin-left: 16px !important;
+          }
+        }
+      }
+  }
+  .btn.text{
+    font-size: 16px;
+    margin-top: 12px;
+  }
+  .back-arrow{
+    margin-right: 9px;
+  }

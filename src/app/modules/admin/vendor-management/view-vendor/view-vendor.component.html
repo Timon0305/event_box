@@ -1,0 +1,203 @@
+<div *ngIf="vendor">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)" [routerLink]="['/admin/vendor-management']">Vendor
+          Management</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Profile - {{ vendor?.company ? (vendor.company?.name ) : blankData }}</li>
+    </ol>
+  </nav>
+  <div class="admin-vendor-profile">
+    <h2 class="page-title">Profile - {{ vendor?.company ? (vendor.company?.name ) : blankData }}</h2>
+
+    <app-analytics *ngIf="vendor" [vendorDetail]="vendor"></app-analytics>
+
+    <div class="divider"></div>
+    <div class="form-group input-with-sign">
+      <label for="companyId">VENDOR REFERRAL URL</label>
+      <div class="input-group date-time-picker">
+        <input class="form-control" [value]="referralUrl" [readonly]="true" id="companyId">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-default" (click)="copyId()">COPY URL</button>
+        </div>
+        <a (click)="redirectoPlanner()" class="btn link link-small view-referred-btn ml-2">View referred planners</a>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="view-profile-container">
+      <div class="top-button-section">
+        <h3 class="title-text">Profile Details</h3>
+        <div>
+          <button  *ngIf="vendor.company.termsPath" type="button" class="btn link link-small" (click) =  "openPdf()" >Print T&C Pdf</button>
+          <button type="button" class="btn link link-small ml-2" [routerLink]="[vendorEdit, vendorId]">Edit Details</button>
+        </div>
+      </div>
+      <div class="profile-image-section">
+        <app-upload-logo [fileUrl]="vendor?.company?.imageUrl" [fromAdmin]="true" [fromViewProfile]="true">
+        </app-upload-logo>
+      </div>
+      <div class="profile-content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="user-name">{{ vendor?.fullName ? (vendor.fullName | titlecase) : blankData }}</div>
+            <div class="user-email">{{ vendor?.email ? (vendor.email | titlecase) : blankData }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Business Name</div>
+            <div class="text-content">{{vendor?.company?.name ? vendor.company?.name : blankData}}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Company Phone</div>
+            <div class="text-content">
+              {{vendor?.company?.phone? (vendor.company?.phone |  formatPhone) :blankData}}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Website Link</div>
+            <div class="text-content">{{vendor?.company?.website ? vendor.company?.website : blankData}}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Instagram Handle</div>
+            <div class="text-content">{{vendor?.company?.instagram ? vendor.company?.instagram : blankData}}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Facebook ID</div>
+            <div class="text-content">{{vendor?.company?.facebook ? vendor.company?.facebook : blankData}}</div>
+          </div>
+          <div class="col-md-3 pl-0">
+            <div class="text-label">Signup Date</div>
+            <div class="text-content">{{vendor?.createdAt ? (vendor?.createdAt | date: 'mediumDate') : blankData}}</div>
+          </div>
+          <div class="col-md-3 pl-0">
+            <div class="text-label">T&C Accepted Date</div>
+            <div class="text-content">
+              {{vendor?.company?.isTermsAcceptedDate ? (vendor?.company?.isTermsAcceptedDate | date: 'mediumDate') : blankData}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="address-section">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="section-title">Company Location</div>
+        </div>
+
+        <div class="address-content" *ngIf="vendor?.locations?.length">
+          <div class="col-md-6" *ngFor="let location of vendor?.locations; let i = index; trackBy:trackById">
+            <div class="address-container">
+              <div class=" col-8 col-md-8">
+                <div class="text-label">Address</div>
+                <div class="text-content">{{location?.address?location?.address:blankData}}</div>
+              </div>
+              <div class="col-4 col-md-4">
+                <div class="action-buttons">
+                  <a class="link edit" title="Edit" (click)="editLocation(vendor._id, location)"><span
+                      class="icon-edit"></span> Edit</a>
+                  <a class="link" title="Delete" *ngIf="vendor?.locations?.length > 1"
+                    (click)="deleteLocation(vendor._id, location._id, i)"><span class="icon-delete"></span> Delete</a>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="text-label">City</div>
+                <div class="text-content">{{location?.city?location?.city:blankData}}</div>
+              </div>
+              <div class="col-md-4">
+                <div class="text-label">State</div>
+                <div class="text-content">{{location?.state?location?.state:blankData}}</div>
+              </div>
+              <div class="col-md-4">
+                <div class="text-label">Zip Code</div>
+                <div class="text-content">{{location?.zipcode?location?.zipcode:blankData}}</div>
+              </div>
+            </div><!-- end address-container -->
+          </div><!-- end col-md-6 -->
+        </div>
+
+      </div><!-- end row -->
+    </div><!-- end address-section -->
+
+    <div class="divider"></div>
+
+    <!-- Bank Details -->
+    <div class="address-section" *ngIf="vendor?.company?.bankDetail">
+      <div class="section-title">Bank Details</div>
+      <div class="address-content">
+        <div class="col-md-6">
+          <div class="address-container bank-detail">
+            <div class="col-md-8">
+              <div class="user-bank-name">{{vendor.company.bankDetail?.accountHolderName | titlecase}} </div>
+            </div>
+            <div class="col-md-12">
+              <div class="bank-text">{{vendor.company.bankDetail?.bankName | titlecase}}</div>
+              <div class="bank-text">{{vendor.company.bankDetail?.accountNumber}}</div>
+              <div class="bank-text">{{vendor.company.bankDetail?.routingNumber}}</div>
+            </div>
+          </div><!-- end address-container -->
+        </div><!-- end col-md-6 -->
+
+      </div><!-- end address-content -->
+    </div><!-- end address-section -->
+    <div class="divider" *ngIf="vendor?.company?.bankDetail"></div>
+
+    <!-- Membership Package -->
+    <div class="address-section">
+      <div class="top-button-section">
+        <h3 class="title-text">Membership Package</h3>
+        <button type="button" class="btn link link-small"
+          [routerLink]="['/admin/vendor-management/edit/membership/', vendorId]">Edit Details</button>
+      </div>
+      <div class="address-content">
+        <div class="col-12">
+          <div class="address-container bank-detail package">
+            <div class="col-12">
+              <div class="bank-text">Event Box %:
+                <span>{{vendor?.company?.memberPackage?.commissionPercent ? ( vendor.company?.memberPackage?.commissionPercent+percentSign): 'N/A'}}</span>
+              </div>
+              <div class="bank-text">Frequency:
+                <span>{{vendor?.company?.memberPackage?.planFrequency ? planFrequency[vendor.company?.memberPackage?.planFrequency] : 'N/A'}}</span>
+              </div>
+              <div class="bank-text">Fee:
+                <span>{{vendor?.company?.memberPackage?.yearlySubscriptionFee ? (vendor.company?.memberPackage?.yearlySubscriptionFee | currency:'USD':'symbol':'1.0-2') : 'N/A'}}</span>
+              </div>
+              <div class="bank-text">Plan Start Date:
+                <span
+                  *ngIf="vendor?.company?.memberPackage?.startDate">{{vendor?.company?.memberPackage?.startDate| date: 'mediumDate'}}</span>
+                <span *ngIf="!vendor?.company?.memberPackage?.startDate">N/A</span>
+              </div>
+
+              <div class="bank-text">One Time Set Up Fee:
+                <span>{{vendor?.company?.memberPackage?.setupFee ? (vendor.company?.memberPackage?.setupFee | currency:'USD':'symbol':'1.0-2') : 'N/A'}}</span>
+              </div>
+              <div class="bank-text">One Time Referral Fee:
+                <span>{{(vendor.company?.memberPackage?.plannerCommission | currency:'USD':'symbol':'1.0-2') }}</span>
+              </div>
+
+            </div>
+
+
+          </div><!-- end address-container -->
+        </div><!-- end col-12 -->
+      </div><!-- address-content-->
+    </div><!-- end address-section -->
+
+    <div class="divider"></div>
+    <div class="review-container" *ngIf="(ratingNreviewObservable$ | async) as ratingNreviewList;">
+      <div class="title-with-button">
+        <h2 class="section-title" *ngIf="ratingNreviewList?.totalDocs">Ratings & Reviews</h2>
+        <a href="javascript:void(0)" [routerLink]="[adminRoutes.admin.adminVendorRating, vendor?.company?._id]"
+          [queryParams]="{ vendor: vendor?._id}" *ngIf="ratingNreviewList?.totalDocs > numbers.five" class="link"
+          title="View all">View all <img src="assets/images/arrow-right.svg" alt="Arrow Righr" /></a>
+      </div>
+      <div class="table-listing admin-rating-table" *ngIf="ratingNreviewList?.totalDocs">
+        <app-product-rating-review-table-head [referrer]="false"></app-product-rating-review-table-head>
+        <app-product-rating-review-list-item [ratingNreviewData]="ratingNreviewList" [referrer]="true"
+          class="table-body-wrapper">
+        </app-product-rating-review-list-item>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.modal-body{
+    &.video-modal{
+        padding: 15px;
+        iframe{
+            min-height: 400px;
+            width: 100%;
+        }
+    }
+}
+
+.video-border{
+    border: 0px;
+}

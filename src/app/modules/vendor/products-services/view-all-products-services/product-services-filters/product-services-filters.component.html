@@ -1,0 +1,17 @@
+<div class="select-container">
+  <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter"></app-sort-by-filter>
+  <div class="select-container-ng-select" [ngClass]="{'show': productFilter}">
+      <span class="sm-modal-close-btn" (click)="cancel()">&#x2715;</span>
+    <ng-select [items]="categories" [formControl]="categoryField" (change)="categoryChanged($event)" placeholder="Category"
+    bindLabel="name" bindValue="_id">
+    </ng-select>
+    <ng-select [items]="subCategory" [formControl]="subCategoryField"  placeholder="Sub Category"  bindLabel="name" bindValue="_id">
+    </ng-select>
+    <ng-select [items]="statusFilter" [formControl]="status" id="statusFilter" placeholder="All"  bindLabel="text" bindValue="value">
+    </ng-select>
+    <div class="apply-filter-btn">
+      <button class="btn primary-outline" (click)="cancel()" >Cancel</button>
+      <button class="btn primary" (click)=onResponsiveFilter() >Apply</button>
+    </div>
+  </div>
+</div>

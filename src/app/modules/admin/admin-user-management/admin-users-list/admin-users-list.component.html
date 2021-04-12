@@ -1,0 +1,50 @@
+<div class="vendor-list-container">
+    <h2 class="page-title top-first-title">User Management</h2>
+
+    <div class="space-between-two">
+      <app-shared-search (search)="searchVendors($event)" class="search-container"></app-shared-search>
+      <app-sort-by-filter [sortByData]="sortingData" (sortFilterChange)=sort($event) class="sort-filter"></app-sort-by-filter>
+    </div>
+
+
+    <div class="table-listing user-table" *ngIf="userObservable | async as userDocs">
+        <div class="table-head-wrapper" *ngIf="userDocs?.docs.length > 0">
+          <div class="table-head">
+            <div class="thead-data">First Name</div>
+            <div class="thead-data">Last Name</div>
+            <div class="thead-data">Email Address</div>
+            <div class="thead-data">Mobile No.</div>
+            <div class="thead-data">Action</div>
+          </div>
+        </div>
+        <div class="table-body-wrapper">
+          <div class="table-body" *ngFor="let user of userDocs.docs"><!-- repeat this div -->
+            <div class="thead-data"><span>{{user?.firstName | titlecase}}</span> <span *ngIf="!user.isSubAdmin" class="master-tag">MASTER</span></div>
+            <div class="thead-data"><span>{{user?.lastName | titlecase}}</span></div>
+            <div class="tbody-data"><span>{{user?.email}}</span></div>
+            <div class="tbody-data"><span>{{ user?.phone ? (user.phone |  formatPhone) : blankData}}</span></div>
+            <div class="tbody-data" >
+              <div class="table-button-wrapper">
+                  <button class="btn primary" type="button" (click)="edit(user._id)">Edit</button>
+                  <button *ngIf="user.isSubAdmin && loggedInUserId != user._id" class="btn primary" type="button" (click)="askAdminUserStatus(user._id, user.status)">{{user.status ? 'Inactivate' : 'Activate'}}</button>
+                  <button *ngIf="user.isSubAdmin && loggedInUserId != user._id" class="btn link" type="button" (click)="askDelete(user._id)">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-pagination [metaData]="userDocs" (pageChange)="pageChange($event)"></app-pagination>
+        
+        <div class="table-listing product-table" *ngIf="userDocs?.totalDocs === 0 && !(params > 1)">
+          <div class="no-result">
+            <img src="/assets/images/no-data.svg" alt="No results" />
+            <p class="mt-5">Sorry! No results found :(</p>
+          </div>
+        </div>
+        <div class="table-listing product-table" *ngIf="userDocs?.totalDocs === 0 && params > 1">
+          <div class="no-result">
+            <img src="/assets/images/no-data.svg" alt="No results" />
+            <p class="mt-5">Sorry! No results found :(</p>
+          </div>
+        </div>
+      </div><!-- end table -->
+  </div>

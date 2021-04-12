@@ -1,0 +1,53 @@
+<ng-container [formGroup]="form">
+
+  <div class="form-group check-space">
+    <input type="checkbox" (change)="willTravelToggle($event)" formControlName="willTravel" name="all" id="all">
+    <label for="all">This product/service is offered throughout the U.S. and will be categorized as "will travel"</label>
+  </div>
+  <ng-container formArrayName="locations">
+    <ng-container *ngFor="let item of form?.get('locations')?.controls; let i = index;">
+      <div class="form-row" [formGroupName]="i">
+        <div class="form-group col-md-6">
+          <label for="">Select your location for this
+            {{form?.value?.type === productType? 'product': 'service'}}</label>
+          <ng-select formControlName="location" placeholder="Select" id="location{{i}}"
+            [ngClass]="{'is-invalid': (item?.controls?.location?.touched && item?.controls?.location?.errors)}">
+            <ng-container *ngFor="let locationItem of vendorLocations">
+              <ng-option
+                *ngIf="(selectedLocationsId.indexOf(locationItem?._id) < 0 || locationItem?._id === item?.controls?.location?.value)"
+                [value]="locationItem._id">
+                {{locationItem?.address}}, {{locationItem?.city}}, {{locationItem?.state}}, {{locationItem?.zipcode}}
+              </ng-option>
+            </ng-container>
+          </ng-select>
+          <div *ngIf="item?.controls?.location?.touched && item?.controls?.location?.errors?.required"
+            class="invalid-feedback d-block">Location {{validationMessage.required}}</div>
+
+        </div>
+        <div class="form-group col-md-6" *ngIf="item?.controls?.miles">
+          <label for="">How far will you travel for an event?</label>
+          <ng-select [items]="distanceInMiles" id=miles{{i}}
+            [ngClass]="{'is-invalid': (item?.controls?.miles?.touched && item?.controls?.miles?.errors)}"
+            formControlName="miles" placeholder="Select" bindLabel="text" bindValue="id">
+          </ng-select>
+
+          <div *ngIf="item?.controls?.miles?.touched && item?.controls?.miles?.errors?.required"
+            class="invalid-feedback d-block">
+            Distance {{validationMessage.required}}</div>
+        </div>
+
+      </div><!-- end form row -->
+      <!-- remove more button -->
+      <div class="remove-button-container" *ngIf="form.get('locations')?.controls?.length > 1">
+        <button class="btn text orange-text small" type="button" (click)="removeLocation(i)">Remove</button>
+      </div><!-- end remove more button -->
+    </ng-container>
+
+  </ng-container>
+
+</ng-container>
+
+<!-- add more button -->
+<div class="add-button-container" *ngIf="form.get('locations')?.controls?.length <  vendorLocations?.length">
+  <button class="btn text blue-text small" type="button" (click)="addLocation()">+ Add More</button>
+</div><!-- end add more button -->

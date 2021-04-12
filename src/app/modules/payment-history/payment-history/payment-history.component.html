@@ -1,0 +1,52 @@
+<div class="vendor-list-container">
+  <h2 class="page-title top-first-title">Payment Details </h2>
+  <ng-container *ngIf="(paymentDetails$ | async)">
+  </ng-container>
+  <div>
+    <app-infinite-scroll (scrolled)="scrolled(paymentDetails.has_more)" [isReverse]="false">
+      <div class="table-listing payment-detail-table" [ngClass]="{'payment-detail-table-admin': isAdmin}">
+        <div class="table-head-wrapper" *ngIf="paymentDetails?.data?.length > 0">
+          <div class="table-head">
+            <div class="thead-data">Transaction Id</div>
+            <div class="thead-data">Amount</div>
+            <div class="thead-data">Amount Reversed</div>
+            <div class="thead-data">Balance Transaction</div>
+            <div class="thead-data">Created</div>
+            <div class="thead-data">Currency</div>
+            <div class="thead-data">Source Type</div>
+            <div class="thead-data">Transfer Group</div>
+            <ng-container *ngIf="isAdmin">
+              <div class="thead-data">Vendor Name</div>
+              <div class="thead-data">Vendor Phone</div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="table-body-wrapper">
+          <div class="table-body" *ngFor="let item of paymentDetails?.data; trackBy: trackByFn">
+            <div class="tbody-data" data-label="Transaction Id"><span> {{item.id}}</span></div>
+            <div class="tbody-data" data-label="Amount"><span>{{ (item.amount/100) | currency:'USD':'symbol':'1.2-2'}}</span></div>
+            <div class="tbody-data" data-label="Amount Reversed"><span>{{(item.amount_reversed/100) | currency:'USD':'symbol':'1.2-2'}}</span></div>
+            <div class="tbody-data" data-label="Balance Transaction"><span>{{item.balance_transaction}}</span></div>
+            <div class="tbody-data" data-label="Created"><span>{{(item.created*1000) | date: 'MMM dd, yyyy hh:mm a'}}
+              </span>
+            </div>
+            <div class="tbody-data text-uppercase" data-label="Currency"><span> {{item.currency}}</span></div>
+            <div class="tbody-data text-capitalize" data-label="Source Type"><span> {{item.source_type}}</span></div>
+            <div class="tbody-data" data-label="Transfer Group"><span> {{item?.metadata?.orderId || item.transfer_group}}</span></div>
+            <ng-container *ngIf="isAdmin">
+              <div class="tbody-data" data-label="Vendor Name"><span> {{item?.metadata?.companyName}}</span></div>
+              <div class="tbody-data" data-label="Vendor Phone"><span> {{item?.metadata?.companyPhone | formatPhone}}</span></div>
+            </ng-container>
+          </div>
+          <div class="table-listing payment-detail-table w-100" *ngIf="!paymentDetails?.data?.length">
+            <div class="no-result">
+              <img src="/assets/images/no-data.svg" alt="No results" />
+              <p class="mt-5">Sorry! No results found :(</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-infinite-scroll>
+
+  </div>
+</div>

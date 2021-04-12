@@ -1,0 +1,232 @@
+<div class="create-event-container fixed-footer-padding">
+  <div class="page-title">{{editEvent ? 'Edit Event' :  duplicateEvent ? 'Duplicate Event' : 'Add New Event' }}</div>
+
+
+  <form [formGroup]="addEventForm" class="event-form">
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="eventName">Event Name*</label>
+        <input
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.name?.touched && addEventForm?.controls?.name?.errors)}"
+          formControlName="name" maxlength="{{eventValidation.nameMaxlength}}"
+          (input)="autoGenerateLabel($event.target.value)" type="text" class="form-control" id="eventName"
+          aria-describedby="eventNameHelp" placeholder="Enter event name" maxlength="60">
+        <div class="invalid-feedback"
+          *ngIf="addEventForm?.controls?.name?.touched && addEventForm?.controls?.name?.errors?.required">Event name is
+          required.</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="eventLabel">Event Label</label>
+        <input readonly=true
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.label?.touched && addEventForm?.controls?.label?.errors)}"
+          formControlName="label" type="text" class="form-control" id="eventLabel" aria-describedby="eventLabelHelp"
+          placeholder="Auto Generated">
+        <div class="invalid-feedback"
+          *ngIf="addEventForm?.controls?.label?.touched && addEventForm?.controls?.label?.errors?.required">Event label
+          is required.</div>
+      </div>
+    </div><!-- end form row -->
+
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="eventTimezone">Time Zone</label>
+        <ng-select [clearable]="false"
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.eventTimezone?.touched && addEventForm?.controls?.eventTimezone?.errors)}"
+          [items]="timeZones" placeholder="Select" bindLabel="text" bindValue="value" id="eventTimezone"
+          formControlName="eventTimezone">
+        </ng-select>
+        <div class="invalid-feedback d-block"
+          *ngIf="addEventForm?.controls?.eventTimezone?.touched && addEventForm?.controls?.eventTimezone?.errors?.required">
+          Time Zone is required.</div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="guestCount">Guest Count at Event*</label>
+          <input type="text" mask="0*" class="form-control"
+            [ngClass]="{'is-invalid': (addEventForm?.controls?.guestCount?.touched && addEventForm?.controls?.guestCount?.errors)}"
+            id="guestCount" aria-describedby="guestCountHelp" placeholder="Number of guests"
+            formControlName="guestCount">
+
+          <div class="invalid-feedback" *ngIf="addEventForm?.controls?.guestCount?.errors?.required">Guest count is
+            required.</div>
+          <div class="invalid-feedback"
+            *ngIf="addEventForm?.controls.guestCount?.errors?.guestCount && addEventForm?.controls?.guestCount?.touched">
+            Please enter numeric value greater then 0 & less than 9999999.</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="eventStartDate">
+          Event Start Date*
+          <img src="assets/images/icon-info.svg" alt="Info Icon" class="date-info-icon" placement="top" ngbTooltip="You can edit the date/time manually" />
+        </label>
+        <div class="input-group date-time-picker">
+          <input class="form-control" type="text" #startDate="dpDayPicker" [dpDayPicker]="dayPickerConfig['startDate']"
+            [theme]="'dp-material'" formControlName="startDate" [mode]="'daytime'"
+            (onSelect)="autoGenerateLabel($event)" (onChange)="date = $event" />
+          <div class="input-group-append" (click)="openDatePicker('startDate')">
+            <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+          </div>
+        </div>
+        <div class="invalid-feedback d-block"
+          *ngIf="addEventForm?.controls?.startDate?.touched && addEventForm?.controls?.startDate?.errors?.required">
+          {{messageConst['startDate']?.required}}</div>
+        <div class="invalid-feedback d-block"
+          *ngIf="addEventForm?.controls?.startDate?.touched && addEventForm?.controls?.startDate?.errors?.invalid">
+          {{messageConst['startDate']?.invalid}}</div>
+        <div class="invalid-feedback d-block"
+          *ngIf="addEventForm?.controls?.startDate?.touched && addEventForm?.controls?.startDate?.errors?.format">
+          Invalid date format</div>
+
+      </div>
+      <div class="form-group col-md-6">
+        <label for="eventEndDate">
+          Event End Date*
+          <img src="assets/images/icon-info.svg" alt="Info Icon" class="date-info-icon" placement="top" ngbTooltip="You can edit the date/time manually" />
+        </label>
+        <div class="input-group date-time-picker">
+          <input class="form-control" type="text" #endDate="dpDayPicker" [dpDayPicker]="dayPickerConfig['endDate']"
+            [theme]="'dp-material'" formControlName="endDate" [mode]="'daytime'" (onSelect)="autoGenerateLabel($event)"
+            (onChange)="date = $event" [minDate]="addEventForm?.controls?.startDate?.value" />
+          <div class="input-group-append" (click)="openDatePicker('endDate')">
+            <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+          </div>
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.endDate?.errors?.minDate">
+          {{messageConst['eventEndDate']?.mustBeAfterCurrentDate}}</div>
+        <div class="invalid-feedback d-block"
+          *ngIf="addEventForm?.controls?.endDate?.touched && addEventForm?.controls?.endDate?.errors?.required">
+          {{messageConst['endDate']?.required}}</div>
+        <div class="invalid-feedback d-block"
+          *ngIf="addEventForm?.controls?.endDate?.touched && addEventForm?.controls?.endDate?.errors?.format">
+          Invalid date format</div>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="eventType">Event Type*</label>
+        <ng-select
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.eventType?.touched && addEventForm?.controls?.eventType?.errors)}"
+          [items]="(eventObservable$ | async)" placeholder="Select" bindLabel="name" bindValue="name" id="eventType"
+          formControlName="eventType">
+        </ng-select>
+        <div class="invalid-feedback d-block"
+          *ngIf="addEventForm?.controls?.eventType?.touched && addEventForm?.controls?.eventType?.errors?.required">
+          Event type is required.</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="venueName">Venue Name*</label>
+        <input formControlName="venueName"
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.venueName?.touched && addEventForm?.controls?.venueName?.errors)}"
+          type="text" class="form-control" id="venueName" aria-describedby="venueNameHelp"
+          placeholder="Enter venue name">
+        <div class="invalid-feedback"
+          *ngIf="addEventForm?.controls?.venueName?.touched && addEventForm?.controls?.venueName?.errors?.required">
+          Venue name is required.</div>
+      </div>
+    </div><!-- end form row -->
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="eventAddress">Event Address*</label>
+        <input formControlName="address"
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.address?.touched && addEventForm?.controls?.address?.errors)}"
+          maxlength="{{eventValidation.address}}" type="text" class="form-control" id="eventAddress"
+          aria-describedby="eventAddressHelp" placeholder="Enter event address">
+        <div class="invalid-feedback" *ngIf="addEventForm?.controls?.address?.errors?.required">Event address is
+          required.</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="eventCity">Event City*</label>
+        <input formControlName="city"
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.city?.touched && addEventForm?.controls?.city?.errors)}"
+          type="text" class="form-control" id="eventCity" aria-describedby="eventCityHelp"
+          placeholder="Enter event city">
+        <div class="invalid-feedback" *ngIf="addEventForm?.controls?.city?.errors?.required">Event city is required.
+        </div>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="eventState">Event State*</label>
+        <app-shared-states [form]="addEventForm" [selectedField]="'state'" [msgErrText]="'Event state'">
+        </app-shared-states>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="eventZipCode">Event Zip Code*</label>
+        <input formControlName="zipCode"
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.zipCode?.touched && addEventForm?.controls?.zipCode?.errors)}"
+          maxlength="{{eventValidation.zipCodeMaxLength}}" mask="0*" type="text" class="form-control" id="eventZipCode"
+          aria-describedby="eventZipCodeHelp" placeholder="Enter Zip Code">
+        <div class="invalid-feedback" *ngIf="addEventForm?.controls?.zipCode?.errors?.required">Event zipcode is
+          required.</div>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="onSiteName">On Site Contact Name</label>
+        <input formControlName="onSiteName" maxlength="{{eventValidation.nameMaxlength}}" type="text"
+          class="form-control" id="onSiteName" aria-describedby="eventNameHelp" placeholder="Enter contact name">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="onsitePhone">On Site Phone Number</label>
+        <div class="phone-number-input-group">
+          <div class="country-input">
+            <ng-container>
+              <app-country-code-input [countryCode]="addEventForm?.controls?.countryCode"></app-country-code-input>
+            </ng-container>
+          </div>
+          <div class="number-input">
+            <input type="text" class="form-control"
+              [ngClass]="{'is-invalid': (addEventForm?.controls?.onSitePhone?.touched && addEventForm?.controls?.onSitePhone?.errors)}"
+              id="onsitePhone" aria-describedby="onsitePhoneHelp" placeholder="Enter phone number" mask="(000) 000-0000"
+              formControlName="onSitePhone">
+          </div>
+        </div>
+        <div class="invalid-feedback" *ngIf="addEventForm?.controls?.onSitePhone?.errors?.required">On site phone
+          number is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="eventDetail">Overview*</label>
+        <textarea formControlName="details"
+          [ngClass]="{'is-invalid': (addEventForm?.controls?.details?.touched && addEventForm?.controls?.details?.errors)}"
+          class="form-control" id="eventDetail"
+          placeholder="Ex. Please add additional information the vendor will need to know about your event when providing a quote."
+          maxlength="{{eventValidation?.descMaxLength}}"></textarea>
+        <!-- please put "is-invalid" class for error -->
+        <div class="invalid-feedback" *ngIf="addEventForm?.controls?.details?.errors?.required">Details of specifics
+          are
+          required.</div>
+        <div class="form-help-text">You have {{eventValidation.descMaxLength - addEventForm?.value?.details?.length}}
+          characters remaining</div>
+      </div>
+    </div><!-- end form row -->
+
+    <h3 class="form-subhead">Filling in this information now will save time later when requesting a quote for
+      products/services for your event</h3>
+    <div class="col-12 variable-space">
+      <app-variable-info-form [addEventForm]="addEventForm"></app-variable-info-form>
+    </div>
+
+    <div class="fixed-footer">
+      <div class="container-fluid">
+        <div class="button-container">
+          <button type="button" class="btn link mw-220" (click)="cancel()">Cancel</button>
+          <button type="button" class="btn primary mw-220" [disabled]="!addEventForm.valid"
+            (click)="editEvent ? updateEvent() : createEvent()">{{editEvent ? 'Update' :  duplicateEvent ? 'Duplicate' : 'Create Event' }}</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+</div><!-- end create-event-container -->

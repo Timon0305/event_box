@@ -1,0 +1,93 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+.top-first-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 35px;
+}
+.promocode-table-container{
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+    margin: 15px 0 40px;
+  }
+
+  .space-between-two{
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-container{
+    width: 50%;
+    max-width: 270px;
+  }
+  .sort-selectbox{
+    width: 160px;
+  }
+}
+.admin-planner-table {
+  min-height: 310px;
+  .tbody-data .product-col{
+    width: calc(100% - 36px);
+  }
+  .product-image{
+    width: 65px !important;
+    height: 65px !important;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+  .product-col{
+    span{
+      padding-left: 12px;
+    }
+  }
+  .btn {
+    width: 100px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+
+    &+.btn {
+      margin-top: 10px;
+    }
+  }
+  span{
+    display: block;
+    width: 100%;
+  }
+  .table-head,
+  .table-body {
+    justify-content: space-between;
+  }
+  .table-body {
+    color: rgba(#000, 0.8);
+  }
+}
+.planner-counts {
+  display: flex;
+  margin-bottom: 15px;
+  p {
+    font-size: 14px;
+    padding-right: 10px;
+    margin-right: 10px;
+    &:not(:last-child) {
+      border-right: 1px solid #ccc;
+    }
+    span {
+      font-weight: 600;
+    }
+  }
+}
+.fixed-footer{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  .btn{
+    width: auto;
+    height: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 35px;
+  }
+}

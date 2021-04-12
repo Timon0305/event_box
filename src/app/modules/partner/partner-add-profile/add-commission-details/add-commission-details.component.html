@@ -1,0 +1,101 @@
+<div class="step-form">
+
+    <form [formGroup]="commissionDetailsForm" >
+        <div class="commission-form">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="eventStartDate">Start Date*</label>
+                    <div class="input-group date-time-picker">
+                        <input class="form-control" type="text" #startDate="dpDayPicker" placeholder="Enter start date"
+                            [theme]="'dp-material'" [mode]="'day'" [dpDayPicker]="dayPickerConfig['startDate']"
+                            formControlName="startDate"
+                            [ngClass]="{'is-invalid': (commissionDetailsForm?.controls?.startDate?.touched && commissionDetailsForm?.controls?.startDate?.errors)}" />
+                        <div class="input-group-append" (click)="openSeletedDatePicker('startDate')">
+                            <img src="assets/images/calendar.svg" alt="Calender" />
+                        </div>
+                    </div>
+                    <ng-container *ngIf="commissionDetailsForm?.controls?.startDate?.touched">
+                        <div class="invalid-feedback d-block"
+                            *ngIf="commissionDetailsForm?.controls?.startDate?.errors?.required">
+                            Start date is required
+                        </div>
+                        <div class="invalid-feedback d-block"
+                            *ngIf="commissionDetailsForm?.controls?.startDate?.errors?.invalidFormat || commissionDetailsForm?.controls?.startDate?.errors?.format">
+                            Inavlid date
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="eventStartDate">End Date*</label>
+                    <div class="input-group date-time-picker">
+                        <input class="form-control" type="text" #endDate="dpDayPicker" [theme]="'dp-material'"
+                            [mode]="'day'" [dpDayPicker]="dayPickerConfig['endDate']"
+                            [minDate]="minEndDate" formControlName="endDate"
+                            placeholder="Enter end date"
+                            [ngClass]="{'is-invalid': (commissionDetailsForm?.controls?.endDate?.touched && commissionDetailsForm?.controls?.endDate?.errors)}" />
+                        <div class="input-group-append" (click)="openSeletedDatePicker('endDate')">
+                            <img src="assets/images/calendar.svg" alt="Calender" />
+                        </div>
+                    </div>
+                    <ng-container *ngIf="commissionDetailsForm?.controls?.endDate?.touched">
+                        <div class="invalid-feedback d-block"
+                            *ngIf="commissionDetailsForm?.controls?.endDate?.errors?.required">
+                            End date is required
+                        </div>
+                        <div class="invalid-feedback d-block"
+                            *ngIf="commissionDetailsForm?.controls?.endDate?.errors?.invalidFormat || commissionDetailsForm?.controls?.endDate?.errors?.format">
+                            Inavlid date
+                        </div>
+                        <div class="invalid-feedback d-block"
+                            *ngIf="commissionDetailsForm?.controls?.endDate?.errors?.minDate">
+                            End date must be greater than start date
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="divider form-divider"></div>
+            <h5 class="second-title">Partner % for Referring Vendor</h5>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="companyState">Partner % on each transaction*</label>
+                        <input type="text" [dropSpecialCharacters]="false" mask="0*.00" class="form-control" id="companyState" aria-describedby="companyStateHelp"
+                        placeholder="Enter partner % on each transaction" formControlName="commissionForVendors" [ngClass]="{'is-invalid': (commissionDetailsForm?.controls?.commissionForVendors?.touched 
+                        && commissionDetailsForm?.controls?.commissionForVendors?.errors)}" [maxlength]="6">
+                    <ng-container *ngIf="commissionDetailsForm?.controls?.commissionForVendors?.touched">
+                        <div class="invalid-feedback d-block"
+                            *ngIf="commissionDetailsForm?.controls?.commissionForVendors?.errors?.required">
+                            Partner % on each transaction is required
+                        </div>
+                        <div class="invalid-feedback d-block"
+                            *ngIf="commissionDetailsForm?.controls?.commissionForVendors?.errors?.max || commissionDetailsForm?.controls?.commissionForVendors?.errors?.pattern">
+                            Inavlid partner % on each transaction
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="divider form-divider"></div>
+            <h5 class="second-title">Partner Amount for Referring Planner</h5>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="companyState">One time referral fee*</label>
+                    <input type="text" [prefix]="amountPrefixSign" mask="0*.00" [dropSpecialCharacters]="false" class="form-control" id="companyState" aria-describedby="companyStateHelp"
+                        placeholder="Enter one time referral fee" maxlength="10" formControlName="commissionForPlanners"
+                        [ngClass]="{'is-invalid': (commissionDetailsForm?.controls?.commissionForPlanners?.touched 
+                        && commissionDetailsForm?.controls?.commissionForPlanners?.errors)}">
+
+                    <ng-container *ngIf="commissionDetailsForm?.controls?.commissionForPlanners?.touched">
+                        <div class="invalid-feedback d-block"
+                            *ngIf="commissionDetailsForm?.controls?.commissionForPlanners?.errors?.required">
+                            One time referral fee is required
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="bottom-btn-space fixed-footer ml-0 ">
+    <button class="btn link" type="button" (click)="back()">Back</button>
+    <button class="btn primary" (click)="saveAndContinue()" type="button" [disabled]="!commissionDetailsForm.valid">Save and Continue</button>
+</div>

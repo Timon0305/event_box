@@ -1,0 +1,154 @@
+<div class="container fixed-header-padding product-list-container fixed-subheader">
+
+  <app-breadcrumbs [dynamicBreadcrumb]="dynamicBreadcrumb"></app-breadcrumbs>
+  <div class="page-title" *ngIf="getCategoryName ">
+    {{getCategoryName }}
+  </div>
+  <div class="page-head-section" *ngIf="checkCompanyKeyExist && products?.data as data">
+    <span class="page-head-logo">
+      <img src="{{data.company.logoUrl}}" class="img-cover" alt="product" appNoImage />
+    </span>
+    <div class="page-head-detail">
+      <h2>{{data.company.name}}</h2>
+      <span class="cursor-pointer" (click)="messageVendor()" *ngIf="!(isVendor || isAdmin)">Message Vendor</span>
+      <div class="select-box-without-border">
+        <span class="location-icon"><img src="assets/images/location-gray.svg" alt="Location" /></span>
+        <ng-select placeholder="Addresses" [searchable]="false">
+          <ng-option [disabled]="true"  *ngFor="let location of data?.locations">
+            {{location?.address}}, {{location?.city}}, {{location?.state}}, {{location?.zipcode}}
+          </ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <div class="page-title page-title-lg" *ngIf="checkCompanyKeyExist || (!getCategoryName)">All Products</div>
+  <div class="row">
+    <div class="col d-flex flex-wrap">
+      <div class="filter-section" [ngClass]="{'show': filterOpen}">
+        <form class="search-filter-form" [formGroup]="searchFilterForm">
+          <div class="filter-head">
+            <span class="material-icons filter-back-arrow" (click)=onFilterBack()> keyboard_backspace </span>
+            <div class="filter-title">Filters</div>
+            <button class="btn text blue-text no-underline" (click)="clearAllFilter()">Clear All</button>
+          </div>
+
+          <div class="filter-container">
+            <p class="title info-section">Location:
+              <img src="assets/images/icon-info.svg" (click)="isSearchInfoVisible = !isSearchInfoVisible;" alt="Info" class="info-icon ml-2" />
+              <span class="info-text" [ngClass]="{'d-none': isSearchInfoVisible == true}">To get tailored results, please enter location here <span class="nav-close-btn" (click)="isSearchInfoVisible = !isSearchInfoVisible;">&#x2715;</span></span>
+            </p>
+            <div class="input-with-sign">
+              <app-shared-google-location [fromSearchFilter]="true" [isLocationExist]="isLocationExist" [form]="searchFilterForm" class="form-control"></app-shared-google-location>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="filter-container">
+            <p class="title">Choose the Radius</p>
+            <div class="check-container" *ngFor="let item of distanceInMiles">
+              <input type="radio" formControlName="radius" [value]="item.id" id="{{item.id}}"
+                (change)="applySearch($event, true)">
+              <label for="{{item.id}}">{{item.text}}</label>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="filter-container">
+            <p class="title">Search by</p>
+            <div class="check-container" *ngFor="let item of searchByFilter">
+              <input formControlName="willTravel" type="radio" (change)="applySearch($event, true)" [value]="item.value"
+                id="{{item.id}}">
+              <label for="{{item.id}}">{{item.text}}</label>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="filter-container">
+            <p class="title">Price ($)</p>
+            <div class="custom-range-slider">
+              <ng5-slider
+              [(value)]="minValue"
+              [(highValue)]="maxValue"
+              (userChangeEnd)="onChangeSlider($event)"
+              [options]="options"></ng5-slider>
+            </div>
+            <div class="form-row slider-data-form d-none">
+              <div class="form-group col-6">
+                <label for="minPrice">Min</label>
+                <input (blur)="priceChange()"  formControlName="minPrice" class="form-control" min="1"  type="number" [(ngModel)]="minValue">
+              </div>
+              <div class="form-group col-6">
+                <label for="maxPrice">Max</label>
+                <input (blur)="priceChange()" formControlName="maxPrice" class="form-control" min="1" type="number" [(ngModel)]="maxValue">
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="filter-container">
+            <div class="title-with-button">
+              <p class="title">Ratings</p>
+              <div (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="rating">
+                <span class="arrow"></span>
+              </div>
+            </div>
+            <div id="rating" [ngbCollapse]="isCollapsed">
+              <div class="check-container" *ngFor="let item of ratingFilter; let i = index;">
+                <input type="radio" (change)="applySearch($event, true)" formControlName="ratings" [value]="item.id" id="{{item.id}}">
+                <label for="{{item.id}}">
+                  <span *ngFor="let i of counter(5, 1)" class="star {{ (i <= item.id)?'active':''}}"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="filter-footer-sm">
+            <div class="result-container" *ngIf="productsCount >=0" >({{(productsCount > 1) ? productsCount+ ' results': productsCount+ ' result'}})</div>
+              <button type="button" class="btn primary" (click)=onFilterClick()>Apply</button>
+          </div>
+        </form>
+      </div><!-- end filter-section -->
+
+      <div class="product-container">
+        <div class="result-container" *ngIf="productsCount >=0" >({{(productsCount > 1) ? productsCount+ ' results': productsCount+ ' result'}})</div>
+        <div class="filter-toggle-icon" (click)=onFilterClick()>
+          <span>Filter</span>
+        </div>
+        <div class="sort-container">
+          <span class="text">Sort by:</span>
+          <app-sort-by-filter [sortByData]="sortByData" [fromSearchPage]="true" (sortFilterChange)=sortFilterChange($event)  class="sort-filter">
+          </app-sort-by-filter>
+        </div>
+        <div class="page-title page-title-sm" *ngIf="checkCompanyKeyExist || (!getCategoryName)">All Products</div>
+        <div class="row" *ngIf="productsCount > 0">
+          <app-product-item class="product-item-container col-6 col-lg-4 col-xl-4"
+            *ngFor="let productEl of products?.hits?.hits;" [product]="productEl?._source" [fromSearch]="true" [productId]="productEl?._id"></app-product-item>
+          <!-- please see the pagination code here https://ng-bootstrap.github.io/#/components/pagination/overview -->
+          <ngb-pagination [rotate]="true" class="table-pagination" *ngIf="productsCount > queryStrParams.size"
+            [collectionSize]=productsCount [maxSize]=paginationMaxSize [pageSize]=queryStrParams.size
+            [(page)]="queryStrParams.page" (pageChange)="pageChange($event)"></ngb-pagination>
+        </div>
+
+        <div class="row" *ngIf="productsCount === 0 && paramsLength === 0">
+          <div class="no-result">
+            <img src="assets/images/no-data.svg" alt="No results" />
+            <p class="mt-5">Sorry! No results found :(</p>
+          </div>
+        </div>
+        <div class="row" *ngIf="productsCount == 0 && paramsLength !== 0 ">
+          <div class="no-result">
+            <img src="assets/images/no-data.svg" alt="No results" />
+            <p class="mt-5">Sorry! No search results found :(</p>
+          </div>
+        </div>
+
+      </div><!-- end product-container -->
+
+    </div><!-- end col -->
+  </div><!-- end row -->
+
+</div>
+<app-footer></app-footer>

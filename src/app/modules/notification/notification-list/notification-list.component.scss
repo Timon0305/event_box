@@ -1,0 +1,22 @@
+@import "../../../../assets/scss/variables";
+@import "../../../../assets/scss/table";
+
+.notification-table{
+  .tbody-data{
+    color: rgba(#000, 0.8);
+  }
+  .space{
+    white-space: pre-wrap;
+  }
+  p{
+    line-height: 1.5;
+  }
+}
+.page-title {
+  &.top-first-title {
+    @media screen and (max-width: $phone-landscape) {
+      padding-top: 24px;
+      margin-bottom: 24px;
+    }
+  }
+}

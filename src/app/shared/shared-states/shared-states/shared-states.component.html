@@ -1,0 +1,10 @@
+<div [formGroup]="form" class="state-ng-select">
+    <ng-select [ngClass]="{'is-invalid': isErrror}" [items]="(statesObservable$ | async)" placeholder="Select state"
+        bindLabel="name" bindValue="name" id="state" formControlName="{{selectedField}}">
+    </ng-select>
+
+    <ng-container *ngIf="isErrror">
+        <div class="invalid-feedback d-block" *ngIf="form?.controls[selectedField]?.errors?.required">
+            {{msgErrText+ message.isRequired}}</div>
+    </ng-container>
+</div>

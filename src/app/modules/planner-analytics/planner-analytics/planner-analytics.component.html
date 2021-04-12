@@ -1,0 +1,186 @@
+<div *ngIf="plannerObservable | async as plannerDocs">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)" [routerLink]="['/admin/planner-management']">Planner
+          Management</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Profile - {{plannerDocs.firstName | titlecase}}
+        {{plannerDocs.lastName | titlecase}}</li>
+    </ol>
+  </nav>
+  <div class="admin-vendor-profile">
+    <div class="page-title">Profile - {{plannerDocs.firstName | titlecase}} {{plannerDocs.lastName | titlecase}}</div>
+
+    <div class="top-button-section analytics-head">
+      <h3 class="title-text">Analytics</h3>
+      <div class="date-filter-box">
+        <app-shared-date-filter (filterDateEvent)="dateFilter($event)"></app-shared-date-filter>
+      </div>
+      <!-- put selectbox here -->
+    </div>
+    <ng-container *ngIf="(analytics$ | async)">
+    </ng-container>
+    <div class="row box-container" >
+      <div class="col-lg-6 col-xl-4 cursor-pointer">
+        <div class="box" [routerLink]="['./quotes/accept-reject-quotes/list']">
+          <div class="box-content">
+            <div class="title">{{analyticsData?.acceptRejectQuotes}}</div>
+            <div class="name">Accept/ Reject Quotes</div>
+          </div>
+          <img src="assets/images/icon-quote.svg" class="bid-icon" alt="Analytics image">
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-4 cursor-pointer">
+        <div class="box" [routerLink]="['./quotes/awaiting-vendor-quotes/list']">
+          <div class="box-content">
+            <div class="title">{{analyticsData?.awaitedVendorQuotes}}</div>
+            <div class="name">Awaiting Vendor Quotes</div>
+          </div>
+          <img src="assets/images/bid-icon.svg" class="bid-icon" alt="Analytics image">
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-xl-4 cursor-pointer">
+        <div class="box" [routerLink]="['./quotes/quote-pending-payment/list']">
+          <div class="box-content">
+            <div class="title">{{analyticsData?.quotesPendingPayment}}</div>
+            <div class="name">Quotes Pending Payment</div>
+          </div>
+          <img src="assets/images/icon-cart-payemnt.svg" class="bid-icon" alt="Analytics image">
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-xl-6 cursor-pointer">
+        <div class="box" [routerLink]="['./events']">
+          <div class="box-content">
+            <div class="title">{{analyticsData?.myEvents}}</div>
+            <div class="name">My Events</div>
+          </div>
+          <img src="assets/images/icon-event.svg" class="bid-icon" alt="Analytics image">
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-6 cursor-pointer">
+        <div class="box" [routerLink]="['./orders/purchased']">
+          <div class="box-content">
+            <div class="title">{{analyticsData?.totalOrders}}</div>
+            <div class="name">Total Orders</div>
+          </div>
+          <img src="assets/images/icon-order.svg" class="bid-icon" alt="Analytics image">
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card-border-box cursor-pointer">
+          <div class="box box-col-2" [routerLink]="['./products-services-purchased']">
+            <div class="box-content">
+              <div class="title">{{analyticsData?.totalGrossAmount | currency:'USD':'symbol':'1.2-2'}}</div>
+              <div class="name">Total Gross</div>
+            </div>
+          </div>
+          <div class="box box-col-2" [routerLink]="['./products-services-purchased']">
+            <div class="box-content">
+              <div class="title">{{analyticsData?.totalNetAmount | currency:'USD':'symbol':'1.2-2'}}</div>
+              <div class="name">Total Net</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="view-profile-container">
+      <div class="top-button-section">
+        <h3 class="title-text">Profile Details</h3>
+      </div>
+
+      <div class="profile-image-section">
+        <img src="{{plannerDocs?.imageUrl}}" onError="this.src='assets/images/no-image.png'" alt="User image"
+          class="upload-image" />
+      </div>
+      <div class="profile-content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="user-name">{{plannerDocs?.firstName | titlecase}} {{plannerDocs?.lastName | titlecase}}</div>
+            <div class="user-email">{{ plannerDocs?.email ? plannerDocs.email : blankData }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Mobile Number</div>
+            <div class="text-content">{{ plannerDocs?.phone ? (plannerDocs.phone |  formatPhone) : blankData}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Company Name</div>
+            <div class="text-content">{{ plannerDocs?.companyName ? plannerDocs.companyName : blankData  }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Company Phone Number</div>
+            <div class="text-content">
+              {{ plannerDocs?.companyPhone ? (plannerDocs.companyPhone |formatPhone  ) : blankData}}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-label">Website</div>
+            <div class="text-content">
+              {{ (plannerDocs?.companyWebsiteUrl) ? plannerDocs.companyWebsiteUrl : blankData  }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="address-section" *ngIf="plannerDocs.payment.cards.length > 0">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="section-title">Saved Cards</div>
+        </div>
+        <div class="address-content">
+          <div class="col-lg-12 col-xl-6" *ngFor="let payment of plannerDocs.payment.cards;  let i = index">
+            <div class="card-outer-container">
+              <div class="check-container">
+                <label for="card{{i}}">&nbsp;</label>
+              </div>
+              <div class="card-container">
+                <div class="address-container bank-detail">
+                  <div class="col-8 col-md-7">
+                    <div class="user-bank-name text-break">{{payment?.name | titlecase}} <span
+                        class="badge badge-outline-primary" *ngIf="payment?.isDefault">Default</span></div>
+                  </div>
+                  <div class="col-4 col-md-5">
+                    <div class="action-buttons">
+                      <img src="../../../../assets/images/{{payment?.brand}}.svg" alt="{{payment?.brand}}"
+                        class="card-image" />
+
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="bank-text">XXXX-XXXX-XXXX-{{payment?.last4}}</div>
+                    <div class="bank-text">Expires: {{payment?.exp_month}}/{{payment?.exp_year}}</div>
+                  </div>
+                </div><!-- end address-container -->
+                <div class="address-container">
+                  <div class="col-12">
+                    <div class="billing-title">Billing Info:</div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="text-label">Address</div>
+                    <div class="text-content">{{payment?.address_line1}}</div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="text-label">City</div>
+                    <div class="text-content">{{payment?.address_city}}</div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="text-label">State</div>
+                    <div class="text-content">{{payment?.address_state}}</div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="text-label">Zip Code</div>
+                    <div class="text-content">{{payment?.address_zip}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- end col-md-6 -->
+        </div>
+      </div><!-- end row -->
+    </div><!-- end address-section -->
+  </div>
+</div>

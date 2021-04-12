@@ -1,0 +1,120 @@
+<span *ngIf="!vendorCreditCard && !fromPayment ">
+    <app-breadcrumbs [dynamicBreadcrumb]="dynamicBreadcrumb"></app-breadcrumbs>
+</span>
+<div class="add-card-container">
+
+  <h2 class="page-title" *ngIf="!fromPayment && !vendorCreditCard">Add Credit Card</h2>
+  <h2 class="page-title" *ngIf="!fromPayment && vendorCreditCard">Make Payment</h2>
+
+
+  <form class="card-form" [formGroup]="f">
+
+    <h4 class="card-sub-title">Card Details</h4>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="cardHolderName">Card Holder Name*</label>
+        <input maxlength="30"
+          [ngClass]="{'is-invalid': (f?.controls?.cardHolderName?.touched && f?.controls?.cardHolderName?.errors)}"
+          type="text" class="form-control" formControlName="cardHolderName" id="cardHolderName"
+          aria-describedby="cardHolderNameHelp" data-stripe="name" placeholder="Enter card holder name">
+        <div class="invalid-feedback" *ngIf="f?.controls?.cardHolderName?.touched">Card Holder Name is required.</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="cardNumber">Card Number*</label>
+        <input type="text" maxlength="19"
+          [ngClass]="{'is-invalid': (f?.controls?.cardNumber?.touched && f?.controls?.cardNumber?.errors)}"
+          formControlName="cardNumber" mask="0000-0000-0000-0000" class="form-control" id="cardNumber"
+          name="card-number" data-stripe="number" aria-describedby="cardNumberHelp" placeholder="Enter card number" [validation]="false">
+        <div class="invalid-feedback" *ngIf="f?.controls?.cardNumber?.touched">Card Number is required.</div>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="expirationDate">Expiration Date*</label>
+        <div class="row">
+          <div class="col-6 col-md-6">
+            <ng-select [items]="constant?.MONTHS" placeholder="MM" bindLabel="name" bindValue="name" id="eventType"
+              [ngClass]="{'is-invalid': (f?.controls?.month?.touched && (f?.controls?.month?.errors || f?.errors?.misMatchMonth))}"
+              formControlName="month">
+            </ng-select>
+            <ng-container *ngIf="f?.controls?.month?.touched">
+              <div class="invalid-feedback  d-block" *ngIf="f?.controls?.month?.errors?.required">Expiration Month is
+                required.
+              </div>
+              <div class="invalid-feedback  d-block" *ngIf="f?.errors?.misMatchMonth">Invalid Month
+              </div>
+            </ng-container>
+          </div>
+          <div class="col-6 col-md-6">
+            <ng-select [items]="expirationYears" placeholder="YYYY" bindLabel="name" bindValue="id" id="eventType"
+              [ngClass]="{'is-invalid': (f?.controls?.year?.touched && f?.controls?.year?.errors)}"
+              formControlName="year">
+            </ng-select>
+            <div class="invalid-feedback  d-block"
+              *ngIf="f?.controls?.year?.touched && f?.controls?.year?.errors?.required">Expiration Year is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="cvvNumber">CVV*</label>
+        <input type="number" [ngClass]="{'is-invalid': (f?.controls?.cvv?.touched && f?.controls?.cvv?.errors)}"
+          class="form-control" data-stripe="cvc" id="cvvNumber" aria-describedby="cvvNumberHelp"
+          placeholder="Enter CVV number" formControlName="cvv" appPreventKeys [controlValue]="f?.controls?.cvv?.value"
+          [maxLngth]="999">
+        <div class="invalid-feedback" *ngIf="f?.controls?.cvv?.touched && f?.controls?.cvv?.errors?.required">CVV is
+          required.</div>
+        <div class="invalid-feedback" *ngIf="f?.controls.cvv?.errors?.cvvCount && f?.controls?.cvv?.touched">CVV should
+          be maximum of 4 digits.</div>
+      </div>
+    </div><!-- end form row -->
+
+    <h4 class="card-sub-title">Billing Information</h4>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="companyAddress">Address*</label>
+        <input type="text" class="form-control" id="companyAddress" formControlName="address"
+          aria-describedby="companyAddressHelp" placeholder="Enter address"
+          [ngClass]="{'is-invalid': (f?.controls?.address?.touched && f?.controls?.address?.errors)}">
+        <div class="invalid-feedback" *ngIf="f?.controls?.address?.touched">Address is required.</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="companyCity">City*</label>
+        <input type="text" class="form-control"
+          [ngClass]="{'is-invalid': (f?.controls?.city?.touched && f?.controls?.city?.errors)}" formControlName="city"
+          id="companyCity" aria-describedby="companyCityHelp" placeholder="Enter city">
+        <div class="invalid-feedback" *ngIf="f?.controls?.city?.touched">City is required</div>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="companyState">State*</label>
+        <app-shared-states [form]="f" [msgErrText]="'State'" [selectedField]="'state'"></app-shared-states>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="companyZipCode">Zip Code*</label>
+        <input type="text" class="form-control"
+          [ngClass]="{'is-invalid': (f?.controls?.zipcode?.touched && f?.controls?.zipcode?.errors)}"
+          formControlName="zipcode" id="companyZipCode" aria-describedby="companyZipCodeHelp"
+          placeholder="Enter zip code" mask="0*" maxlength="5">
+        <div class="invalid-feedback" *ngIf="f?.controls?.zipcode?.touched">Zip Code is required
+        </div>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="btn-space" *ngIf="!fromPayment">
+      <button type="button" class="btn link" [routerLink]="['/planner/profile']" *ngIf="!vendorCreditCard">Cancel</button>
+      <button type="button" class="btn link" [routerLink]="['/vendor/dashboard']" *ngIf="vendorCreditCard">Cancel</button>
+
+      <button type="submit" class="btn primary" [disabled]='!f?.valid' (click)="getToken()">{{vendorCreditCard ? 'Pay' : 'Add'}}</button>
+    </div>
+    <button *ngIf="fromPayment" type="submit" class="btn primary btn-block" [disabled]='!f?.valid' (click)="getToken()">
+      Pay
+      {{amountToPay | currency:'USD'}}
+    </button>
+
+  </form>
+</div><!-- end add-card-container -->

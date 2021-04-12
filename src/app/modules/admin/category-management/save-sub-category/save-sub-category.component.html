@@ -1,0 +1,42 @@
+<div class="package-container fixed-footer-padding" *ngIf="categoryObservable$ | async as categoryData">
+  <div class="page-title" ngbAutoFocus>{{formEdit ? 'Edit' : 'Add New'}} Sub Category</div>
+
+  <form [formGroup]="saveSubCategoryForm" (submit)="saveSubCategory()" class="event-form">
+
+    <div class="form-row">
+      <div class="form-group col-md-6">        
+        <label for="packagePercent">Main Navigation/Master Category*</label>
+        <ng-select [items]="categoryData.docs" placeholder="Select Main Category" bindLabel="name"
+          [ngClass]="{'is-invalid': (f?.controls?.categoryName?.touched && f?.controls?.categoryName?.errors)}"
+          bindValue="_id" selectedValue="categoryId" id="categoryName" formControlName="categoryName">
+        </ng-select>
+
+        <div class="invalid-feedback d-block"
+          *ngIf="f?.controls?.categoryName?.touched && f?.controls?.categoryName?.errors?.required">
+          Main Category is required.</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="packagePercent">Sub Category Title*</label>
+        <input type="text" class="form-control" formControlName="name"
+          [ngClass]="{'is-invalid': (f?.controls?.name?.touched && f?.controls?.name?.errors)}"
+          aria-describedby="packagePercentHelp" placeholder="Enter sub category name.">
+
+        <ng-container *ngIf="f?.controls?.name?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.name?.errors?.required">Sub Category Title is required.
+          </div>
+        </ng-container>
+      </div>
+    </div><!-- end form row -->
+  </form>
+</div>
+
+<div class="fixed-footer">
+  <div class="container-fluid">
+    <div class="button-container">
+      <button type="button" class="btn link mw-220"
+        [routerLink]="['/admin/category-management/sub-categories']">Cancel</button>
+      <button type="button" class="btn primary mw-220" [disabled]="!f.valid"
+        (click)="saveSubCategory()">{{formEdit ? 'Edit' : 'Add'}} Sub Category</button>
+    </div>
+  </div>
+</div>

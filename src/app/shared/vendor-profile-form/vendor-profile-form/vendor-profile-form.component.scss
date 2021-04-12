@@ -1,0 +1,26 @@
+.edit-profile{
+    .page-title{
+      font-size: 26px;
+      font-weight: 600;
+      margin-top: 30px;
+      margin-bottom: 40px;
+    }
+  }
+  .edit-profile-form{
+    .btn-space{
+      padding: 23px 15px;
+      width: calc(100% + 30px);
+      margin-left: -15px;
+      margin-top: 76px;
+      border-top: 1px solid #e2e2e2;
+      text-align: right;
+      background: transparent;
+      .btn{
+        width: 200px;
+        + .btn{
+          margin-left: 16px;
+        }
+      }
+    }
+  }
+  

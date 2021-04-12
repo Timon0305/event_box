@@ -1,0 +1,61 @@
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/table";
+.user-table {
+  min-height: 310px;
+
+  .product-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+  }
+
+  .btn {
+    width: 130px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+
+    &+.btn {
+      margin-top: 10px;
+    }
+  }
+
+  .table-head,
+  .table-body {
+    justify-content: space-between;
+  }
+}
+.table-listing {
+  &.product-table {
+    min-height: 310px;
+  }
+}
+.vendor-list-container{
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+    margin: 15px 0 40px;
+  }
+  .space-between-two{
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-container{
+    width: 50%;
+    max-width: 270px;
+  }
+  .sort-selectbox{
+    width: 160px;
+  }
+  .master-tag{
+    background-color: #FE6516;
+    color: #fff;
+    margin-left: 8px;
+    padding: 2px 7px;
+    font-size: 10px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+}

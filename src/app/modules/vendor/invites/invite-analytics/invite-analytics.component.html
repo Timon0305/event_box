@@ -1,0 +1,56 @@
+<ng-container  *ngIf="analyticsData$|async"></ng-container>
+<ng-container>
+    <div class="dashboard-container">
+        <h2 class="page-title top-first-title">My Invites</h2>
+        <div class="dashboard-head">
+            <div class="filter-section">
+                <!-- <app-shared-date-filter (filterDateEvent)="quoteDateFilter($event)"></app-shared-date-filter> -->
+            </div>
+        </div>
+
+        <div class="row box-container">
+            <div class="col-lg-4">
+              <div class="box">
+                <div class="box-content">
+                    <div class="title">{{analytics?.referringPlanners}}</div>
+                    <div class="name">Total Planners Invited</div>
+                </div>
+                <img src="assets/images/select-planner-icon.svg" class="bid-icon" alt="Analytics image">
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="box">
+                <div class="box-content">
+                    <div class="title">{{analytics?.totalNet| currency:'USD':'symbol':'1.2-2'}}</div>
+                    <div class="name">Total Net</div>
+                </div>
+                <img src="assets/images/icon-purchase.svg" class="bid-icon" alt="Analytics image">
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="box">
+                <div class="box-content">
+                    <div class="title">{{analytics?.ordersCount}}</div>
+                    <div class="name">Total Orders</div>
+                </div>
+                <img src="assets/images/icon-cart-payemnt.svg" class="bid-icon" alt="Analytics image">
+              </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+
+      <ng-container >
+        <div class="form-group input-with-sign">
+          <label for="referralInput">YOUR REFERRAL URL </label>
+          <div class="input-group date-time-picker">
+            <input class="form-control" [value]="referralUrl"  [readonly]="true" id="referralInput">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-default" (click)="copyUrl()" >COPY URL</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="divider"></div>
+      <app-partner-planner-list  class="partner-vendor-table-list"></app-partner-planner-list>
+    </div>
+</ng-container>

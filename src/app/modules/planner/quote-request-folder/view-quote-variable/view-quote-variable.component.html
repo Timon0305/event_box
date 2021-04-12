@@ -1,0 +1,10 @@
+<div class="modal-header with-sub-header">
+  <h4 class="modal-title">Quote Detail</h4>
+</div>
+<div class="modal-body">
+  <app-view-variable-info [quoteInfo]="quoteInfo"></app-view-variable-info>
+  <div class="btn-space with-border float-right-buttons">
+    <button type="button" class="btn link mw-200" (click)="activeModal.close()">Cancel</button>
+    <button type="button" class="btn primary mw-200" (click)="edit()">Edit</button>
+  </div>
+</div>

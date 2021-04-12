@@ -1,0 +1,46 @@
+<div class="card-wrapper sale-card-wrapper" *ngIf="(purchasedOrder$|async) as purchasedOrder">
+  <div class="divider"></div>
+  <div class="dashboard-head p-0 border-0 mb-4">
+    <h3>New Orders</h3>
+    <div class="filter-section">
+        <button type="button" class="btn btn-print" (click)="export()">Export</button>
+    </div>
+  </div>
+  <!-- table start form here -->
+<div class="table-listing admin-dashboard-table w-100">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data">Product/Service Purchased</div>
+      <div class="thead-data">Date of Purchase</div>
+      <div class="thead-data">Event Date and Time</div>
+      <div class="thead-data">Event Name</div>
+      <div class="thead-data">Planner Name</div>
+      <div class="thead-data">Vendor Company</div>
+      <div class="thead-data">Quantity</div>
+      <div class="thead-data">Total Paid</div>
+    </div>
+  </div>
+  <div class="table-body-wrapper">
+    <div class="table-body"  *ngFor="let item of purchasedOrder"><!-- repeat this div -->
+      <div class="tbody-data" data-label="Product/Service Name">
+        <div class="product-col">
+          <em><img src="{{item?.products?.defaultImageUrl}}" appNoImage alt="Product Image" class="product-image" /></em>
+          <span class="cursor-pointer" [routerLink]="['/admin/reports/orders', item._id]">{{item?.products?.name}}</span>
+        </div>
+      </div>
+      <div class="tbody-data" data-label="Event Name">{{item?.createdAt | date: 'MMM dd, yyyy | hh:mm a'}}</div>
+      <div class="tbody-data" data-label="Planner Name">{{item?.events?.startDate | timezoneDateFormat: item?.events?.eventTimezone}}
+        {{mapTimezone[item?.events?.eventTimezone]}}
+      </div>
+      <div class="tbody-data" data-label="Quote Expiration">{{item?.events?.name}}</div>
+      <div class="tbody-data" data-label="Quantity">{{item?.planners?.firstName}} {{item?.planners?.lastName}}</div>
+      <div class="tbody-data" data-label="Price Quote">{{item?.vendors?.name}}</div>
+      <div class="tbody-data" data-label="Status">{{item?.quantity}}</div>
+      <div class="tbody-data" data-label="Status">{{item?.discount?.finalAmount | currency:'USD':'symbol':'1.0-2'}}</div>
+    </div>
+  </div>
+
+</div><!-- end table -->
+<a href="javascript:void(0)"  [routerLink]="['/admin/reports/orders/purchased']" routerLinkActive="router-link-active"  class="link d-inline-block mb-5" title="View all">View all New Orders <img src="assets/images/arrow-right.svg"
+  alt="Arrow Right" /></a>
+</div>

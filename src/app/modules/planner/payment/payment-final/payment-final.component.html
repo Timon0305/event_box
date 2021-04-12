@@ -1,0 +1,45 @@
+<ng-container *ngIf="(finalPaymentObj$| async) as finalPaymentObj">
+
+<div class="container" *ngIf="(priceAndDiscount$| async) as priceAndDiscount">
+  <div class="order-page-wrapper">
+    <div class="order-detail-row">
+      <div class="order-detail-box">
+        <ng-container *ngIf="finalPaymentObj?.quotesList[0]?.status === paymentStatus.CANCELLED">
+          <h2 class="failed">Payment Failed!</h2>
+          <p>Sorry, your payment of <span>$4338</span> has failed.</p>
+        </ng-container>
+        <ng-container
+        *ngIf="finalPaymentObj?.quotesList[0]?.status === paymentStatus.PURCHASED">
+          <h2>Thank you for your order!</h2>
+          <p>Please check your email for order confirmation and delivery details information.</p>
+        </ng-container>
+        <h4>Order Date: <span>{{ finalPaymentObj?.quotesList[0]?.createdAt | date: 'MMM dd, yyyy | hh:mm a'}}</span></h4>
+        <button type="button" class="btn primary btn-lg"
+         (click)="makePayment(finalPaymentObj.paymentPayload)"
+          *ngIf="finalPaymentObj?.quotesList[0]?.status === paymentStatus.CANCELLED">
+          Try Again</button>
+        <button type="button" class="btn primary btn-lg" [routerLink]="[purchasedOrdersRoute]"
+          *ngIf="finalPaymentObj?.quotesList[0]?.status === paymentStatus.PURCHASED">
+          Go to My Orders</button>
+
+      </div>
+      <app-order-price-summary [priceAndDiscount]="priceAndDiscount" class="order-price-summary-flow"></app-order-price-summary>
+    </div>
+    <h1 class="page-title">
+      Order Details
+      <span *ngIf="finalPaymentObj?.quotesList?.length === 1; else items">(1 item)</span>
+      <ng-template #items>
+        <span>
+          ({{finalPaymentObj?.quotesList.length}} items)</span>
+      </ng-template>
+    </h1>
+
+    <!-- table start form here -->
+    <div class="final-payment-table">
+      <app-shared-cart-table [quotesList]="finalPaymentObj.quotesList" [finalPaymentPage]="true"></app-shared-cart-table>
+    </div>
+    <!-- end table -->
+  </div>
+</div>
+</ng-container>
+

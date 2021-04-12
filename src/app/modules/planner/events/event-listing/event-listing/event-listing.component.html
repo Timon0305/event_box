@@ -1,0 +1,42 @@
+<div class="event-list-container">
+  <ng-container *ngIf="isAdmin">
+    <app-breadcrumbs *ngIf="!plannerId"  [dynamicBreadcrumb]="dynamicBreadcrumb"></app-breadcrumbs>
+    <nav aria-label="breadcrumb" *ngIf="plannerId">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item" [routerLink]="['/admin/planner-management']">
+          <a>Planner Management</a>
+        </li>
+        <li class="breadcrumb-item" [routerLink]="['/admin/planner-management/view', plannerId]">
+          <a>Profile - {{plannerName}}</a>
+        </li>
+        <li class="breadcrumb-item active">
+          Events - {{plannerName}}
+        </li>
+      </ol>
+    </nav>
+  </ng-container>
+  <div class="title-with-button text-with-action-sm" [ngClass]="{'extra-padding': !isAdmin}">
+    <h2 class="page-title" *ngIf="isPlanner">My Events</h2>
+    <h2 class="page-title" *ngIf="isAdmin && !plannerId">Events</h2>
+    <h2 class="page-title" *ngIf="plannerId">Events - {{plannerName}}</h2>
+
+    <div class="action-items">
+      <button class="btn primary large" *ngIf="isPlanner" [routerLink]="['/planner/event/add-event']" type="button">Add New Event</button>
+    </div>
+  </div><!-- end title-with-button -->
+
+  <div class="tab-head">
+    <ul class="nav" >
+      <li class="nav-item" [ngClass]="{'active': upcomingEvent}"  (click)="navigateToUpcoming(constant?.EVENT_TYPE.upcomingEvent)">
+        <a class="nav-link" title="Upcoming Events">Upcoming Events</a>
+      </li>
+      <li class="nav-item" [ngClass]="{'active': !upcomingEvent}" (click)="navigateToUpcoming(constant?.EVENT_TYPE?.pastEvent)">
+        <a class="nav-link" title="Past Events">Past Events</a>
+      </li>
+    </ul>
+  </div>
+  <app-upcoming-events *ngIf="upcomingEvent" [isPlanner]="isPlanner" [paramsLength]="paramsLength" (updatePage)="fetchUpdatedList($event)"  [upcomingEvents] = "(upcomingEventObservable$ | async)"></app-upcoming-events>
+  <app-past-events *ngIf="!upcomingEvent" [isPlanner]="isPlanner" [paramsLength]="paramsLength" (updatePage)="fetchUpdatedList($event)"  [pastEventObservable] = "pastEventObservable$ | async"></app-past-events>
+
+
+</div>

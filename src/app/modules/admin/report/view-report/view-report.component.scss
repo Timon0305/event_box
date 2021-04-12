@@ -1,0 +1,96 @@
+.admin-report-container{
+    .report-title{
+      font-size: 14px;
+      font-weight: 600;
+      color: #5a5a5a;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .divider{
+      margin: 16px 0 30px;
+    }
+    .row{
+      margin-left: -10px;
+      margin-right: -10px;
+    }
+    .box-container{
+      >.col, >[class*=col-]{
+        margin-bottom: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+    .box{
+      border-radius: 6px;
+      box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+      border: solid 1px #f0f0f0;
+      background-color: #ffffff;
+      height: 100%;
+      padding: 24px 18px 24px 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &.cursor-default{
+        &:hover{
+          box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+        }
+        &:focus{
+          box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+          outline: 0;
+        }
+      }
+      &:hover{
+        box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.2);
+      }
+      &:focus{
+        box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.2);
+        outline: 0;
+      }
+      .box-content{
+        width: calc(100% - 50px);
+        padding-right: 10px;
+        word-break: break-word;
+        .title{
+          font-size: 22px;
+          font-weight: 600;
+          color: #000000;
+          margin-bottom: 8px;
+          line-height: normal;
+        }
+        .name{
+          font-size: 12px;
+          font-weight: 500;
+          color: #545454;
+          text-transform: uppercase;
+        }
+      }
+      .box-image{
+        height: 50px;
+        width: 50px;
+      }
+      &.no-image{
+        .box-content{
+          width: 100%;
+          padding-right: 0;
+        }
+      }
+      @media screen and (max-width: 1360px) {
+        padding: 24px 15px;
+        .box-content{
+          .title{
+            font-size: 20px;
+          }
+          .name{
+            font-size: 11px;
+          }
+        }
+      }
+    }
+  }
+.quote-report-head {
+  display: inline-flex;
+  width: auto;
+  .date-filter-box {
+    margin-left: 10px;
+  }
+}

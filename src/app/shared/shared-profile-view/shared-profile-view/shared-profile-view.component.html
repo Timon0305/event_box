@@ -1,0 +1,51 @@
+<div class="view-profile-container">
+  <app-upload-logo [fileUrl]="profile?.company?.logo || profile?.imageUrl" [fromViewProfile]="true" class="upload-login-box"></app-upload-logo>
+  <div class="profile-content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="user-name">{{profile?.firstName}} {{profile?.lastName}}</div>
+              <div class="user-email">{{profile?.email}}</div>
+          </div>
+          <div class="col-md-6" *ngIf="profile?.company?.name">
+              <div class="text-label">Company Name</div>
+              <div class="text-content">{{profile?.company?.name}}</div>
+          </div>
+          <div class="col-md-6" *ngIf="profile?.phone">
+              <div class="text-label">Mobile Number</div>
+              <div class="text-content">{{profile?.phone |  formatPhone}}</div>
+          </div>
+          <div class="col-md-6" *ngIf="profile?.company">
+              <div class="text-label">Company Phone</div>
+              <div class="text-content">{{profile?.company?.phone |  formatPhone}}</div>
+          </div>
+          <div class="col-md-6"  *ngIf="profile?.company?.website">
+              <div class="text-label">Website Link</div>
+              <div class="text-content">{{profile?.company?.website}}</div>
+          </div>
+          <div class="col-md-6" *ngIf="profile?.company?.instagram">
+              <div class="text-label">Instagram Handle</div>
+              <div class="text-content">{{profile?.company?.instagram}}</div>
+          </div>
+          <div class="col-md-6" *ngIf="profile?.company?.facebook" >
+              <div class="text-label">Facebook Address</div>
+              <div class="text-content">{{profile?.company?.facebook}}</div>
+          </div>
+          <div class="col-md-6"  *ngIf="profile?.companyName && profile.role === planner">
+            <div class="text-label">Company Name</div>
+            <div class="text-content">{{profile?.companyName}}</div>
+        </div>
+        <div class="col-md-6" *ngIf="profile?.companyPhone">
+            <div class="text-label">Company Phone Number</div>
+            <div class="text-content">{{profile?.companyPhone |  formatPhone}}</div>
+        </div>
+        <div class="col-md-6" *ngIf="profile?.companyWebsiteUrl" >
+            <div class="text-label">Company Website Address</div>
+            <div class="text-content">{{profile?.companyWebsiteUrl}}</div>
+        </div>
+      </div>
+  </div>
+  <div class="profile-action">
+      <button type="button" class="btn link link-small" (click)="editProfile()" >Edit
+          Profile</button>
+  </div>
+</div>

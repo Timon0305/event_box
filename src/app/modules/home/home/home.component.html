@@ -1,0 +1,75 @@
+
+<app-home-search></app-home-search>
+
+
+
+<section class="bg-gray">
+    <div class="container text-center">
+        <h4 class="section-title">Why Event Box?</h4>
+        <p class="section-text">My Event Box is an online marketplace and booking platform which connects best in class
+            vendors with event planners to streamline any event. We give the planner an opportunity to request vendor
+            quotes
+            in a timely fashion, manage all event elements and conduct all transactions in one secure location.</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="section-info">
+                    <img src="../assets/images/icon-event-planners.svg" alt="Event Planner" />
+                    <h5>Event Planners</h5>
+                    <p class="with-right-sign">Seamless platform that allows you to manage all of your event needs.</p>
+                    <p class="with-right-sign">Receive competitive quotes & manage the entirety of your event.</p>
+                </div>
+            </div><!-- end col-md-4 -->
+            <div class="col-md-4">
+                <div class="section-info">
+                    <img src="../assets/images/icon-vetted-vendors.svg" alt="Vetted Vendors" />
+                    <h5>Vetted Vendors</h5>
+                    <p class="with-right-sign">Best in class vendors showcasing innovative products and services for the
+                        planners
+                        upcoming event.</p>
+                    <p class="with-right-sign">Providing exclusive vendors with 24/7 access to potential new clients.
+                    </p>
+                </div>
+            </div><!-- end col-md-4 -->
+            <div class="col-md-4">
+                <div class="section-info">
+                    <img src="../assets/images/icon-secured-marketplace.svg" alt="Secured Marketplace" />
+                    <h5>Secured Marketplace</h5>
+                    <p class="with-right-sign">Ability for event planners to book multiple vendors for any event.</p>
+                    <p class="with-right-sign">A way for a planner to consolidate transactions and order status within a
+                        single
+                        secure platform.</p>
+                </div>
+            </div><!-- end col-md-4 -->
+        </div>
+    </div>
+</section>
+
+<section class="item-section">
+    <div class="container">
+        <div class="title-with-button" *ngIf="homePageData?.newArrivals.length">
+            <h3>New Arrivals</h3>
+            <a href="javascript:void(0)" [routerLink]="['/search']" [queryParams]="{ sort:sortBy}" class="link" title="View all">View all <img
+                    src="assets/images/arrow-right.svg" alt="Arrow Righr" /></a>
+        </div>
+
+        <div class="row" *ngIf="homePageData?.newArrivals.length">
+            <app-product-item class="col-6 col-md-4 col-lg-3 col-xl-2 product-item-col" [referrer]="pages.HOME" *ngFor="let productEl of homePageData?.newArrivals;" [product]="productEl" [productId]="productEl?._id">
+            </app-product-item>
+        </div>
+
+        <div class="divider" *ngIf="homePageData?.newArrivals.length"></div>
+
+        <div class="title-with-button" *ngIf="homePageData?.recentPurchased.length">
+            <h3>Recently Purchased Items</h3>
+            <a href="javascript:void(0)" [routerLink]="['/search']"  class="link" title="View all">View all <img src="assets/images/arrow-right.svg"
+                    alt="Arrow Righr" /></a>
+        </div>
+        <div class="row" *ngIf="homePageData?.recentPurchased.length">
+            <app-product-item class="col-6 col-md-4 col-lg-3 col-xl-2 product-item-col" [referrer]="pages.HOME" *ngFor="let productEl of homePageData?.recentPurchased;" [product]="productEl" [productId]="productEl?._id">
+            </app-product-item>
+        </div>
+        <div class="divider slide-carousel-divider" *ngIf="homePageData?.recentPurchased.length"></div>
+        <app-shared-slide-carousel class="slide-carousel-box" *ngIf="homePageData?.topRatedReviews.length" [referrer]="pages.HOME" [setLocations]="homePageData?.topRatedReviews"></app-shared-slide-carousel>
+    </div>
+</section>
+<hero-loader moduleName="src/app/modules/footer/footer.module#FooterModule"></hero-loader>

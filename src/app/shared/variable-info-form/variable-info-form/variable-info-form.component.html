@@ -1,0 +1,180 @@
+<form [formGroup]="addEventForm" class="variable-info-form">
+  <div class="form-row">
+    <div class="form-group datepicker-input col-12 col-md-6">
+      <label for="deliveryDateFrom">
+        Delivery Date From{{fromQuoteVariable? '*': ''}}
+        <img src="assets/images/icon-info.svg" alt="Info Icon" class="date-info-icon" placement="top" ngbTooltip="You can edit the date/time manually" />
+      </label>
+      <div class="input-group date-time-picker">
+        <input class="form-control" type="text" #deliveryStartDate="dpDayPicker"
+          [dpDayPicker]="dayPickerConfig['deliveryStartDate']" [theme]="'dp-material'"
+          formControlName="deliveryStartDate" [mode]="'daytime'" (onChange)="date = $event"
+          [maxDate]="addEventForm?.controls?.startDate?.value || addEventForm?.controls?.eventStartDate?.value" />
+        <div class="input-group-append" (click)="openSeletedDatePicker('deliveryStartDate')">
+          <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+        </div>
+      </div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.deliveryStartDate?.touched && addEventForm?.controls?.deliveryStartDate?.errors?.required">
+        {{messageConst['deliveryStartDate']?.required}}</div>
+
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.deliveryStartDate?.errors?.maxDate">
+        Delivery Date From should occur before or on Event Start Date</div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.deliveryStartDate?.errors?.invalid">
+        Delivery Date From is invalid </div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.deliveryStartDate?.touched && addEventForm?.controls?.deliveryStartDate?.errors?.format">
+        Invalid date format </div>
+
+
+    </div>
+    <div class="form-group datepicker-input col-12 col-md-6">
+      <label for="deliveryDateTo">
+        Delivery Date To{{fromQuoteVariable? '*': ''}}
+        <img src="assets/images/icon-info.svg" alt="Info Icon" class="date-info-icon" placement="top" ngbTooltip="You can edit the date/time manually" />
+      </label>
+      <div class="input-group date-time-picker">
+        <input class="form-control" type="text" #deliveryEndDate="dpDayPicker"
+          [dpDayPicker]="dayPickerConfig['deliveryEndDate']" [theme]="'dp-material'" formControlName="deliveryEndDate"
+          [mode]="'daytime'" (onChange)="date = $event" [minDate]="addEventForm?.controls?.deliveryStartDate?.value"
+          [maxDate]="addEventForm?.controls?.startDate?.value || addEventForm?.controls?.eventStartDate?.value" />
+        <div class="input-group-append" (click)="openSeletedDatePicker('deliveryEndDate')">
+          <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+        </div>
+      </div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.deliveryEndDate?.errors?.minDate">
+        {{messageConst['deliveryEndDate']?.mustBeAfterCurrentDate}}</div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.deliveryEndDate?.errors?.maxDate">
+        Delivery Date To should occur before or on Event Start Date</div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.deliveryEndDate?.errors?.invalid">
+        Delivery Date To is invalid</div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.deliveryEndDate?.touched && addEventForm?.controls?.deliveryEndDate?.errors?.required">
+        {{messageConst['deliveryEndDate']?.required}}</div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.deliveryEndDate?.touched && addEventForm?.controls?.deliveryEndDate?.errors?.format">
+        Invalid date format </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-12 form-group bold-checkbox">
+      <input class="form-control" [checked]="checkEquality" [disabled]="checkSetUpEnable()"
+        formControlName="duplicateSetUp" type="checkbox" (change)="resetSetUpTime()" class="form-check-input"
+        id="staySignin">
+      <label for="staySignin">&nbsp;</label>
+      <span class="form-check-label">If Setup Dates/Times are the same as Delivery, check here which duplicates the
+        info.</span>
+    </div>
+  </div>
+
+
+  <div class="form-row">
+    <div class="form-group datepicker-input col-12 col-md-6">
+      <label for="setUpDateFrom">
+        Set Up Date From{{fromQuoteVariable? '*': ''}}
+        <img src="assets/images/icon-info.svg" alt="Info Icon" class="date-info-icon" placement="top" ngbTooltip="You can edit the date/time manually" />
+      </label>
+      <div class="input-group date-time-picker">
+        <input class="form-control" type="text" #setUpStartDate="dpDayPicker"
+          [dpDayPicker]="dayPickerConfig['setUpFromDate']" [theme]="'dp-material'" formControlName="setUpFromDate"
+          [mode]="'daytime'" (onChange)="date = $event"
+          [maxDate]="addEventForm?.controls?.startDate?.value || addEventForm?.controls?.eventStartDate?.value" />
+        <div class="input-group-append" (click)="openSeletedDatePicker('setUpStartDate')">
+          <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+        </div>
+      </div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.setUpFromDate?.touched && addEventForm?.controls?.setUpFromDate?.errors?.required">
+        {{messageConst['setUpFromDate']?.required}}</div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.setUpFromDate?.errors?.maxDate">
+        Set Up Date From should occur before or on Event Start Date</div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.setUpFromDate?.errors?.invalid">
+        Set Up Date From is invalid</div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.setUpFromDate?.touched && addEventForm?.controls?.setUpFromDate?.errors?.format">
+        Invalid date format</div>
+
+
+
+    </div>
+    <div class="form-group datepicker-input col-12 col-md-6">
+      <label for="SetUpDateTo">
+        Set Up Date To{{fromQuoteVariable? '*': ''}}
+        <img src="assets/images/icon-info.svg" alt="Info Icon" class="date-info-icon" placement="top" ngbTooltip="You can edit the date/time manually" />
+      </label>
+      <div class="input-group date-time-picker">
+        <input class="form-control" type="text" #setUpEndDate="dpDayPicker"
+          [dpDayPicker]="dayPickerConfig['setUpToDate']" [theme]="'dp-material'" formControlName="setUpToDate"
+          [mode]="'daytime'" (onChange)="date = $event"
+          [maxDate]="addEventForm?.controls?.startDate?.value || addEventForm?.controls?.eventStartDate?.value" />
+        <div class="input-group-append" (click)="openSeletedDatePicker('setUpEndDate')">
+          <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+        </div>
+      </div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.setUpToDate?.errors?.minDate">
+        {{messageConst['setUpToDate']?.mustBeAfterCurrentDate}}</div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.setUpToDate?.touched && addEventForm?.controls?.setUpToDate?.errors?.required">
+        {{messageConst['setUpToDate']?.required}}</div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.setUpToDate?.errors?.maxDate">
+        Set Up Date To should occur before or on Event Start Date</div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.setUpToDate?.errors?.invalid">
+        Set Up Date To is invalid</div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.setUpToDate?.touched && addEventForm?.controls?.setUpToDate?.errors?.format">
+        Invalid date format</div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group datepicker-input col-12 col-md-6">
+      <label for="breakdownDateFrom">
+        Breakdown Date From{{fromQuoteVariable? '*': ''}}
+        <img src="assets/images/icon-info.svg" alt="Info Icon" class="date-info-icon" placement="top" ngbTooltip="You can edit the date/time manually" />
+      </label>
+      <div class="input-group date-time-picker">
+        <input class="form-control" type="text" #brkDownStartDate="dpDayPicker"
+          [dpDayPicker]="dayPickerConfig['breakDownStartDate']" [theme]="'dp-material'"
+          formControlName="breakDownStartDate" [mode]="'daytime'" (onChange)="date = $event"
+          [minDate]="addEventForm?.controls?.endDate?.value || addEventForm?.controls?.eventEndDate?.value" />
+        <div class="input-group-append" (click)="openSeletedDatePicker('brkDownStartDate')">
+          <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+        </div>
+      </div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.breakDownStartDate?.touched && addEventForm?.controls?.breakDownStartDate?.errors?.required">
+        {{messageConst['breakDownStartDate']?.required}}</div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.breakDownStartDate?.errors?.minDate">
+        Breakdown Time From should occur after or on Event End Date</div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.breakDownStartDate?.touched && addEventForm?.controls?.breakDownStartDate?.errors?.format">
+        Invalid date format</div>
+
+
+
+    </div>
+    <div class="form-group datepicker-input col-12 col-md-6">
+      <label for="breakdownDateTo">
+        Breakdown Date To{{fromQuoteVariable? '*': ''}}
+        <img src="assets/images/icon-info.svg" alt="Info Icon" class="date-info-icon" placement="top" ngbTooltip="You can edit the date/time manually" />
+      </label>
+      <div class="input-group date-time-picker">
+        <input class="form-control" type="text" #brekDownEndDate="dpDayPicker"
+          [dpDayPicker]="dayPickerConfig['breakDownEndDate']" [theme]="'dp-material'" formControlName="breakDownEndDate"
+          [mode]="'daytime'" (onChange)="date = $event" [minDate]="addEventForm?.controls?.breakDownStartDate?.value" />
+        <div class="input-group-append" (click)="openSeletedDatePicker('brekDownEndDate')">
+          <img src="../../../../assets/images/calendar.svg" alt="Calender" />
+        </div>
+      </div>
+      <div class="invalid-feedback d-block" *ngIf="addEventForm?.controls?.breakDownEndDate?.errors?.minDate">
+        {{messageConst['breakDownEndDate']?.mustBeAfterCurrentDate}}</div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.breakDownEndDate?.touched && addEventForm?.controls?.breakDownEndDate?.errors?.required">
+        {{messageConst['breakDownEndDate']?.required}}</div>
+      <div class="invalid-feedback d-block"
+        *ngIf="addEventForm?.controls?.breakDownEndDate?.touched && addEventForm?.controls?.breakDownEndDate?.errors?.format">
+        Invalid date format</div>
+
+    </div>
+  </div>
+</form>

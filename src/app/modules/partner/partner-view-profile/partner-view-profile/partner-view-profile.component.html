@@ -1,0 +1,147 @@
+<ng-container *ngIf="partnerDetails">
+    <div class="view-profile-container admin-vendor-profile">
+        <div class="top-button-section space-between-section">
+            <h3 class="title-text">Profile Details</h3>
+            <button type="button" *ngIf="isAdmin" class="btn link link-small" [routerLink]="['/admin/partner', partnerDetails._id]">Edit
+                Profile</button>
+        </div>
+        <div class="profile-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="user-name  capitalize">{{partnerDetails?.firstName}} {{partnerDetails?.lastName}}</div>
+                    <div class="user-email">{{partnerDetails?.email}}</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-label">Partner Business Name</div>
+                    <div class="text-content">{{partnerDetails?.partnerDetails?.businessName}}</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-label">Phone</div>
+                    <div class="text-content">{{partnerDetails?.phone | formatPhone}}</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-label">Mobile Number</div>
+                    <div class="text-content">{{partnerDetails?.partnerDetails?.mobile| formatPhone}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="address-section">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="section-title">Partner Location</div>
+            </div>
+            <div class="address-content">
+                <div class="col-md-6">
+                    <div class="address-container">
+                        <div class="col-md-8">
+                            <div class="text-label">Address</div>
+                            <div class="text-content">{{partnerDetails?.partnerDetails?.address}}</div>
+                        </div>
+                        <div class="col-md-4" *ngIf="isAdmin">
+                            <div class="action-buttons">
+                                <a class="link edit" [routerLink]="['/admin/partner', partnerDetails._id]"
+                                    title="Edit"><span class="icon-edit"></span>
+                                    Edit</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-label">City</div>
+                            <div class="text-content">{{partnerDetails?.partnerDetails?.city}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-label">State</div>
+                            <div class="text-content">{{partnerDetails?.partnerDetails?.state}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-label">Zip Code</div>
+                            <div class="text-content">{{partnerDetails?.partnerDetails?.zipCode}}</div>
+                        </div>
+                    </div><!-- end address-container -->
+                </div><!-- end col-md-6 -->
+            </div>
+
+        </div><!-- end row -->
+    </div><!-- end address-section -->
+
+    <div class="divider"></div>
+    <div class="address-section">
+        <div class="top-button-section">
+            <h3 class="title-text">Partner %</h3>
+            <button type="button" *ngIf="isAdmin" class="btn link link-small"
+                [routerLink]="['/admin/partner/commission-details', partnerDetails._id]">Edit Details</button>
+        </div>
+        <div class="address-content">
+            <div class="col-12">
+                <div class="address-container bank-detail package">
+                    <div class="col-12">
+                        <div class="bank-text">% for Referring Vendor:
+                            <span
+                                *ngIf="(partnerDetails?.partnerDetails?.commissionForVendors || partnerDetails?.partnerDetails?.commissionForVendors === 0); else emptyVendorCommission">{{partnerDetails?.partnerDetails?.commissionForVendors}}%
+                            </span>
+                            <ng-template #emptyVendorCommission>
+                                <span>-
+                                </span>
+                            </ng-template>
+                        </div>
+                        <div class="bank-text">Amount for Referring Planner:
+                            <span
+                                *ngIf="(partnerDetails?.partnerDetails?.commissionForPlanners || partnerDetails?.partnerDetails?.commissionForPlanners === 0); else emptyCommissionPlanners">{{partnerDetails?.partnerDetails?.commissionForPlanners | currency: 'USD'}}</span>
+                            <ng-template #emptyCommissionPlanners>
+                                <span>
+                                    -
+                                </span>
+                            </ng-template>
+                        </div>
+                        <div class="bank-text">Start Date:
+                            <span>{{partnerDetails?.partnerDetails?.startDate | formatDate}}</span></div>
+                        <div class="bank-text">End Date:
+                            <span>{{partnerDetails?.partnerDetails?.endDate | formatDate}}</span></div>
+                    </div>
+                </div><!-- end address-container -->
+            </div><!-- end col-12 -->
+        </div><!-- address-content-->
+    </div><!-- end address-section -->
+    <!-- Bank Details -->
+
+    <div class="divider"></div>
+
+    <div class="address-section"
+        *ngIf="partnerDetails?.partnerDetails?.bankDetail?.accountHolderName; else addBakDetail">
+        <div class="section-title pt-2">Bank Details</div>
+        <div class="address-content">
+            <div class="col-md-6">
+                <div class="address-container bank-detail">
+                    <div class="col-md-8">
+                        <div class="user-bank-name">{{partnerDetails?.partnerDetails?.bankDetail?.accountHolderName}}
+                        </div>
+                    </div>
+                    <div class="col-md-4" *ngIf="isAdmin">
+                        <div class="action-buttons">
+                            <a (click)="deleteBank()" class="link" title="Delete"><span class="icon-delete"></span>
+                                Delete</a>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="bank-text">{{partnerDetails?.partnerDetails?.bankDetail?.bankName}}</div>
+                        <div class="bank-text">{{partnerDetails?.partnerDetails?.bankDetail?.accountNumber}}</div>
+                        <div class="bank-text">{{partnerDetails?.partnerDetails?.bankDetail?.routingNumber}}</div>
+                        <div class="bank-text">{{partnerDetails?.partnerDetails?.bankDetail?.tax_id}}</div>
+
+                    </div>
+                </div><!-- end address-container -->
+            </div><!-- end col-md-6 -->
+        </div><!-- end address-content -->
+    </div><!-- end address-section -->
+    <ng-template #addBakDetail>
+        <button *ngIf="isAdmin" type="button" class="btn primary add-bank-button"
+            [routerLink]="['/admin/partner/bank-details', partnerDetails._id]">Add
+            Bank Details</button>
+    </ng-template>
+
+
+    <!-- Membership Package -->
+</ng-container>

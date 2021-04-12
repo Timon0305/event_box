@@ -1,0 +1,132 @@
+.main-title{
+    font-size: 26px;
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 9px;
+  }
+  .subtitle{
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.47;
+    margin-bottom: 24px;
+  }
+  .divider{
+    width: 100%;
+    height: 1px;
+    background-color: #e2e2e2;
+    margin-bottom: 40px;
+  }
+  .vendor-steps{
+    display: flex;
+    justify-content: space-between;
+    width: 490px;
+    position: relative;
+    margin-bottom: 50px;
+    .vendor-steps-container{
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      min-width: 108px;
+      .vendor-image{
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        background: #5067eb;
+        border: 1px solid #5067eb;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img{
+          filter: brightness(0) invert(1);
+        }
+      }
+      .title{
+        font-weight: 600;
+        text-align: center;
+        margin-top: 12px;
+      }
+      &.inactive{
+        &:first-child{
+          .vendor-image{
+            opacity: 0.3;
+          }
+          .title{
+            opacity: 0.5;
+            font-weight: 400;
+          }
+        }
+        &:last-child{
+          .vendor-image{
+            border: 1px solid rgba(#5067eb, 0.3);
+            background: #FFF;
+            img{
+              filter: none;
+            }
+          }
+          .title{
+            opacity: 0.5;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+    .divider{
+      width: calc(100% - 190px);
+      height: 1px;
+      background-color: #e2e2e2;
+      top: 32px;
+      position: absolute;
+      left: 93px;
+      z-index: 1;
+    }
+  }
+  .upload-image-section{
+    margin-bottom: 80px;
+    display: flex;
+    width: 355px;
+    align-items: center;
+    .help-text{
+      line-height: 1.57;
+      color: #818181;
+    }
+  }
+
+  .second-title{
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 0.92;
+    margin-top: 36px;
+    margin-bottom: 30px;
+  }
+
+  .bank-detail-container{
+    margin-bottom: 66px;
+  }
+  
+
+  .fixed-footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background: #fafafa;
+    border-top: 1px solid #e2e2e2;
+  }
+  .button-container{
+    display: flex;
+    widows: 100%;
+  }
+  .btn.text{
+    margin-bottom: 80px;
+    font-size: 16px;
+    margin-top: 12px;
+  }
+  .back-arrow{
+    margin-right: 9px;
+  }
+  

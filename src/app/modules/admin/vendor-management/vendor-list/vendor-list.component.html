@@ -1,0 +1,100 @@
+<div class="vendor-list-container">
+ <div class="top-first-title">
+  <h2 class="page-title m-0">Vendor Management</h2>
+  <button class="btn primary medium" type="button" (click)="export()">Export</button>
+ </div>
+
+  <div class="space-between-two">
+    <app-shared-search (search)="searchVendors($event)" class="search-container"></app-shared-search>
+    <app-sort-by-filter [sortByData]="sortingData" (sortFilterChange)=sort($event) class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+
+
+  <div class="table-listing vendor-management-table" *ngIf="vendorObservable | async as vendorDocs">
+    <div class="table-head-wrapper" *ngIf="vendorDocs?.docs.length > 0">
+      <div class="table-head">
+        <div class="thead-data">Company</div>
+        <div class="thead-data">Vendor Name</div>
+        <div class="thead-data">Email Address</div>
+        <div class="thead-data">Mobile No.</div>
+        <div class="thead-data">City and State</div>
+        <div class="thead-data">% Rate</div>
+        <div class="thead-data">Total Gross</div>
+        <div class="thead-data">Last Login</div>
+        <div class="thead-data">Action</div>
+      </div>
+    </div>
+    <div class="table-body-wrapper" *ngIf="vendorDocs?.docs.length > 0">
+      <div class="table-body" *ngFor="let vendor of vendorDocs.docs;let i = index">
+        <!-- repeat this div -->
+        <div class="tbody-data data-col-22" data-label="Name">
+          <div class="form-group mb-0 mt-4" *ngIf="vendor?.company?.status">
+            <input type="checkbox" (change)="toggleCheck($event, vendor?.company?._id)" class="form-check-input"
+              id="vendorList{{i}}" [checked]="checkList && checkList.indexOf(vendor._id) >=0">
+            <label class="form-check-label" for="vendorList{{i}}">&nbsp;</label>
+          </div>
+          <div class="product-col cursor-pointer" [routerLink]="['./view/', vendor._id]">
+            <em><img src="{{vendor?.company?.imageUrl}}" onError="this.src='assets/images/no-image-table.png'"
+                alt="Product Image" class="product-image" /></em>
+            <span> {{ vendor?.company?.name ? (vendor.company.name ) : blankData}}</span>
+          </div>
+        </div>
+        <div class="tbody-data" data-label="Event Name">
+          <span>{{ vendor?.firstName ? (vendor.firstName | titlecase) : blankData }}
+            {{ vendor?.lastName ? (vendor.lastName | titlecase) : blankData}}</span></div>
+        <div class="tbody-data" data-label="Planner Name"><span>{{ vendor?.email ? vendor.email : blankData}}</span>
+        </div>
+        <div class="tbody-data" data-label="Quote Expiration">
+          <span>{{ vendor?.company?.phone ? (vendor.company.phone |  formatPhone) : blankData}}</span>
+        </div>
+        <div class="tbody-data" data-label="Quote Expiration">
+          <div class="d-flex flex-wrap" *ngIf="vendor?.locations?.length">
+            <div class="w-100" *ngFor="let address of vendor.locations; let i = index;">
+              <span *ngIf="(i < constNumber.three)">{{address?.city}}, {{address?.state}} </span>
+            </div>
+            <a href="javascript:void(0)" *ngIf="vendor?.locations.length > constNumber.three"
+              title="+{{(vendor?.locations.length - constNumber.three) }} more">+{{ (vendor?.locations.length - constNumber.three) }}
+              more</a>
+          </div>
+          <span *ngIf="!vendor?.locations?.length">-</span>
+
+        </div>
+
+        <div class="tbody-data" data-label="Price Quote"><span>{{vendor.company?.memberPackage?.commissionPercent ? ( vendor.company?.memberPackage?.commissionPercent+percentSign): blankData}}</span></div>
+        <div class="tbody-data" data-label="Price Quote"><span>{{vendor?.totalGrossAmount ? (vendor?.totalGrossAmount | currency:'USD':'symbol':'1.2-2') : (0 | currency:'USD':'symbol':'1.2-2')}}</span></div>
+        <div class="tbody-data"><span>{{vendor?.lastLogin ? (vendor.lastLogin | date: 'mediumDate'): blankData}}
+            <br>
+            {{vendor?.lastLogin ? (vendor?.lastLogin | date:'hh:mm a') : ''}}
+          </span></div>
+
+        <div class="tbody-data">
+          <div class="table-button-wrapper">
+            <button class="btn primary" type="button" [routerLink]="[viewVendorProfileRoute, vendor._id]">Edit</button>
+            <button class="btn link" type="button" (click)="askVendorStatusChange(vendor._id, vendor.company.status)">{{vendor.company.status ? 'Inactivate' : 'Activate'}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-pagination [metaData]="vendorDocs" (pageChange)="pageChange($event)"></app-pagination>
+    <div class="table-listing product-table" *ngIf="vendorDocs?.totalDocs === 0 && !(params > 1)">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="table-listing product-table" *ngIf="vendorDocs?.totalDocs === 0 && params > 1">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="fixed-footer" *ngIf="checkList?.length" >
+      <div class="container-fluid">
+        <div class="button-container">
+          <button class="btn primary" type="button" (click)="initiateAssociationChange()">Associate Partner</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- end table -->
+</div>

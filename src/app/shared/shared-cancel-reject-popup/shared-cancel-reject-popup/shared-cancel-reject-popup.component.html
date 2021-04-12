@@ -1,0 +1,24 @@
+<div class="modal-header" ngbAutoFocus>
+  <h4 class="modal-title">{{quoteDetail.title}}</h4>
+</div>
+<div class="modal-body">
+  <form class="signin-form" [formGroup]="reasonForm">
+    <div class="form-group">
+      <label for="reason">Reason*</label>
+      <textarea maxlength="1000" class="form-control" id="reason" type="text" placeholder="Write a reason to reject quote.."formControlName="notes" ></textarea>
+      <div class="invalid-feedback"
+        *ngIf="reasonForm?.controls?.notes?.touched && reasonForm?.controls?.notes?.errors?.required">Reason is
+        required.</div>
+      <div class="form-help-text color-black">You have {{1000 - reasonForm?.value?.notes?.length}}
+        characters remaining</div>
+    </div>
+    <div class="form-group" *ngIf="(quoteDetail?.replies?.length < constantNumber.three) && showCunterOfferReq">
+      <input type="checkbox" class="form-check-input" id="staySignin" formControlName="wantCuonterOffer">
+      <label class="form-check-label" for="staySignin">Request for Counter Offer</label>
+    </div>
+    <div class="btn-space with-border">
+      <button type="button" class="btn link" (click)="activeModal.close(false)">Cancel</button>
+      <button  type="submit" class="btn primary" [disabled]="!reasonForm.valid" (click)="activeModal.close(reasonForm)">Send</button>
+    </div>
+  </form>
+</div>

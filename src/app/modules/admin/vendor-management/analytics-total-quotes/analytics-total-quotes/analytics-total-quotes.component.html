@@ -1,0 +1,58 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/']">
+      <a>Vendor Management</a>
+    </li>
+    <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/view', vendorId]">
+      <a>Profile - {{vendorName}}</a>
+    </li>
+    <li class="breadcrumb-item active">
+      <ng-container *ngIf="viewType === constant?.QUOTE_STATUS?.ACCEPT_REJECT_QUOTES">
+        Awaiting Quotes Acceptance - {{vendorName}}
+      </ng-container>
+      <ng-container *ngIf="viewType === constant?.QUOTE_STATUS?.EXPIRED_QUOTES" >
+        Expired/Declined Quotes - {{vendorName}}
+      </ng-container>
+      <ng-container *ngIf="viewType === constant?.QUOTE_STATUS?.CANCELED_QUOTES ">
+        Canceled Quotes - {{vendorName}}
+      </ng-container>
+    </li>
+  </ol>
+</nav>
+
+<div class="event-list-container">
+  <h2 class="page-title top-first-title" *ngIf="viewType === constant?.QUOTE_STATUS?.ACCEPT_REJECT_QUOTES">Awaiting
+    Quotes
+    Acceptance</h2>
+  <h2 class="page-title top-first-title"
+    *ngIf="viewType === constant?.QUOTE_STATUS?.EXPIRED_QUOTES ">
+    Expired/Declined Quotes</h2>
+  <h2 class="page-title top-first-title"
+    *ngIf="viewType === constant?.QUOTE_STATUS?.CANCELED_QUOTES ">
+    Canceled Quotes</h2>
+  <div class="tab-head">
+    <ul class="nav multi-tab-buttons button-count-3">
+      <li class="nav-item" [ngClass]="{'active': viewType === constant?.QUOTE_STATUS?.ACCEPT_REJECT_QUOTES}"
+        (click)="navigateToUpcoming(constant?.QUOTE_STATUS?.ACCEPT_REJECT_QUOTES, constant?.NUMBER?.zero, 'quoteExpirationDate')">
+        <a class="nav-link" title="Awaiting Quotes Acceptance">Awaiting Quotes Acceptance</a>
+      </li>
+      <li class="nav-item"
+        [ngClass]="{'active': (viewType === constant?.QUOTE_STATUS?.EXPIRED_QUOTES )}"
+        (click)="navigateToUpcoming(constant?.QUOTE_STATUS?.EXPIRED_QUOTES, constant?.NUMBER?.one, 'updatedAt')">
+        <a class="nav-link" title="Expired/Declined Quotes">Expired/Declined Quotes</a>
+      </li>
+      <li class="nav-item"
+        [ngClass]="{'active': (viewType === constant?.QUOTE_STATUS?.CANCELED_QUOTES )}"
+        (click)="navigateToUpcoming(constant?.QUOTE_STATUS?.CANCELED_QUOTES, constant?.NUMBER?.two, 'updatedAt')">
+        <a class="nav-link" title="Canceled Quotes">Canceled Quotes</a>
+      </li>
+    </ul>
+  </div>
+  <app-awaiting-quotes-acceptance [isAdmin]='true' *ngIf="viewType === constant?.QUOTE_STATUS?.ACCEPT_REJECT_QUOTES"
+    [paramsLength]="paramsLength" (updatePage)="fetchUpdatedList($event)" (quoteUpdated)="getUpdatedList($event)"
+    [awaitingQuotes]="(awaitingQuotesObservable$ | async)">
+  </app-awaiting-quotes-acceptance>
+  <app-expired-cancelled-listing
+    *ngIf="viewType === constant?.QUOTE_STATUS?.EXPIRED_QUOTES || viewType === constant?.QUOTE_STATUS?.CANCELED_QUOTES">
+  </app-expired-cancelled-listing>
+</div>

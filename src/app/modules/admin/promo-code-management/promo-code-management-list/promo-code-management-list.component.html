@@ -1,0 +1,73 @@
+<h2 class="page-title top-first-title">Promo Code Management</h2>
+
+<!-- promocode section -->
+<div class="promocode-table-container" *ngIf="promoCodeObservable | async as promoCodeDocs">
+
+  <div class="space-between-two" *ngIf="promoCodeDocs?.totalDocs > 0 || (paramsLength > 0)" >
+    <app-shared-search (search)="searchpromoCode($event)" class="search-container"></app-shared-search>
+    <app-sort-by-filter [sortByData]="sortingData" (sortFilterChange)=sortPromoCode($event) class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+
+  <!-- table start form here -->
+  <div class="table-listing promocode-table">
+    <div class="table-head-wrapper" *ngIf="promoCodeDocs?.totalDocs > 0">
+      <div class="table-head">
+        <div class="thead-data">Promo Code </div>
+        <div class="thead-data">Type</div>
+        <div class="thead-data">Value</div>
+        <div class="thead-data">Order Above</div>
+        <div class="thead-data">Start Date</div>
+        <div class="thead-data">End Date</div>
+        <div class="thead-data">Associate Vendor</div>
+        <div class="thead-data">Action</div>
+      </div>
+    </div>
+    <div class="table-body-wrapper" *ngIf="promoCodeDocs?.totalDocs > 0">
+      <div class="table-body" *ngFor="let promocode of promoCodeDocs.docs">
+        <div class="tbody-data" data-label="Promo Code"><span>{{ promocode?.promoCodeTitle }}</span></div>
+        <div class="tbody-data" data-label="Type">
+          <span>{{ (promocode?.promoCodeType === promoCodeConst.AMOUNT) ? promoCodeConst.DOLLOR_SIGN : promoCodeConst.PERCENT_SIGN }}</span>
+        </div>
+        <div class="tbody-data" data-label="Value">
+          <span>{{ (promocode?.promoCodeType === promoCodeConst.AMOUNT) ? promoCodeConst.DOLLOR_SIGN+promocode?.promoCodeValue : promocode?.promoCodeValue+promoCodeConst.PERCENT_SIGN }}</span>
+        </div>
+        <div class="tbody-data" data-label="Order Above"><span>{{ promocode?.promoCodeThreshold}}</span></div>
+        <div class="tbody-data" data-label="Start Date"><span>{{ promocode?.promoCodeStartDate | date: 'mediumDate' }}</span></div>
+        <div class="tbody-data" data-label="End Date"><span>{{ promocode?.promoCodeEndDate | date: 'mediumDate'}}</span></div>
+        <div class="tbody-data" data-label="Associate Vendor" *ngIf="promocode?.associatedVendors.length">
+          <div class="d-flex flex-wrap">
+            <div class="w-100" *ngFor="let associateVendor of promocode.associatedVendors; let i = index;">
+              <span *ngIf="(i < promoCodeConst.ASSOCIATE_MORE_COUNT )">{{ associateVendor.name }}</span>
+            </div>
+          </div>
+          <a href="javascript:void(0)" *ngIf="promocode?.associatedVendors.length > promoCodeConst.ASSOCIATE_MORE_COUNT"
+            (click)="viewAllAssociatedVendors(promocode.associatedVendors)"
+            title="+{{(promocode?.associatedVendors.length - promoCodeConst.ASSOCIATE_MORE_COUNT) }} more">+{{ (promocode?.associatedVendors.length - promoCodeConst.ASSOCIATE_MORE_COUNT) }}
+            more</a>
+        </div>
+        <div class="tbody-data" data-label="Associate Vendor" *ngIf="!promocode?.associatedVendors.length"><span>All</span></div>
+        <div class="tbody-data">
+          <div class="table-button-wrapper">
+            <button class="btn primary" type="button" (click)="editPromoCode(promocode._id)">Edit </button>
+            <button class="btn link" type="button" (click)="deletePromoCode(promocode._id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-pagination [metaData]="promoCodeDocs" (pageChange)="pageChange($event)"></app-pagination>
+    <div class="table-listing product-table" *ngIf="promoCodeDocs?.totalDocs === 0 && !(params > 1)">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="table-listing product-table" *ngIf="promoCodeDocs?.totalDocs === 0 && params > 1">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+  </div><!-- end table -->
+
+</div><!-- end user-table-container -->

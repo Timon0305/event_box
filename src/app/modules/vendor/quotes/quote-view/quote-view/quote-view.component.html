@@ -1,0 +1,571 @@
+<div class="quote-detail-container" *ngIf="(quoteDataObservable$ | async)?.data as quoteDetail;">
+  <ng-container *ngIf="!isAdmin; else adminBreadcrumb">
+    <ng-container *ngIf="role === partnerRole && !activatedRoute?.snapshot?.params?.payoutTo">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/partner/orders']">Orders Report</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Order Details
+          </li>
+        </ol>
+      </nav>
+    </ng-container>
+    <app-breadcrumbs *ngIf="activatedRoute.snapshot.params.quoteViewId; else orderBreadcrumb"
+      [dynamicBreadcrumb]="dynamicBreadcrumbObj[quoteDetail?.status]"></app-breadcrumbs>
+    <ng-template #orderBreadcrumb>
+      <app-breadcrumbs [dynamicBreadcrumb]="dynamicBreadcrumbObj[orderType]"></app-breadcrumbs>
+    </ng-template>
+  </ng-container>
+  <ng-template #adminBreadcrumb>
+    <!-- From Planner management page -->
+    <ng-container *ngIf="partnerId">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/admin/partner-management/list']">Partner Management</a></li>
+          <ng-container *ngIf="(partnerName$| async) as partnerName; else getName">
+            <li class="breadcrumb-item" aria-current="page">
+              <a [routerLink]="['/admin/partner-management/view', partnerId]">Profile - {{partnerName}}</a>
+            </li>
+          </ng-container>
+          <ng-template #getName>
+            <ng-container *ngIf="(partnerDetails$| async)">
+              <li class="breadcrumb-item" aria-current="page">
+                <a [routerLink]="['/admin/partner-management/view', partnerId]">Profile -
+                  {{partnerName$|async}}</a>
+              </li>
+            </ng-container>
+          </ng-template>
+          <li class="breadcrumb-item" aria-current="page">
+            <a (click)="back()">Orders - {{partnerName$|async}}</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Orders Details
+          </li>
+
+        </ol>
+      </nav>
+    </ng-container>
+    <ng-container *ngIf="!partnerId && !activatedRoute?.snapshot?.params?.payoutTo">
+      <ng-container *ngIf="plannerId">
+        <!--Planner Mgmt event details quote view-->
+        <nav aria-label="breadcrumb" *ngIf="eventViewId">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" [routerLink]="['/admin/planner-management']">
+              <a>Planner Management</a>
+            </li>
+            <li class="breadcrumb-item" [routerLink]="['/admin/planner-management/view', plannerId]">
+              <a>Profile - {{plannerName}}</a>
+            </li>
+            <li class="breadcrumb-item" (click)="back()">
+              <a> Event Details - {{plannerName}}</a>
+            </li>
+            <li class="breadcrumb-item active">
+              Quote Details
+            </li>
+          </ol>
+        </nav>
+        <!-- Planner Mgmt Quote view-->
+        <nav aria-label="breadcrumb" *ngIf="!eventViewId">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" [routerLink]="['/admin/planner-management']">
+              <a>Planner Management</a>
+            </li>
+            <li class="breadcrumb-item" [routerLink]="['/admin/planner-management/view', plannerId]">
+              <a>Profile - {{plannerName}}</a>
+            </li>
+            <ng-container *ngIf="activatedRoute.snapshot.params.quoteViewId">
+              <li class="breadcrumb-item" (click)="back()">
+                <a> {{quoteHeading[quoteDetail?.status]}} - {{plannerName}}</a>
+              </li>
+              <li class="breadcrumb-item active">
+                Quote Details
+              </li>
+            </ng-container>
+            <ng-container *ngIf="activatedRoute.snapshot.params.orderId">
+              <li class="breadcrumb-item" (click)="back()">
+                <a> Orders - {{plannerName}}</a>
+              </li>
+              <li class="breadcrumb-item active">
+                Order Details
+              </li>
+            </ng-container>
+          </ol>
+        </nav>
+      </ng-container>
+      <!-- From Any page except planner mgmt page at admin -->
+      <ng-container *ngIf="!plannerId && !activatedRoute.snapshot.params.companyId">
+        <app-breadcrumbs *ngIf="activatedRoute.snapshot.params.orderId && !navigationId"
+          [dynamicBreadcrumb]="adminDynamicBreadcrumbObj[quoteDetail?.status]"></app-breadcrumbs>
+        <app-breadcrumbs *ngIf="navigationId == 1" [dynamicBreadcrumb]="purchasedOrderListBreadcrumb">
+        </app-breadcrumbs>
+        <app-breadcrumbs *ngIf="activatedRoute.snapshot.params.quoteViewId && !navigationId"
+          [dynamicBreadcrumb]="adminQuoteDetailBreadcrumb[quoteDetail?.status]"></app-breadcrumbs>
+        <nav aria-label="breadcrumb" *ngIf="navigationId == 2">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" [routerLink]="['/admin/reports']">
+              <a>Reports</a>
+            </li>
+            <li class="breadcrumb-item" (click)="back()">
+              <a>{{quoteHeading[quoteDetail?.status]}}</a>
+            </li>
+            <li class="breadcrumb-item active">
+              Quote Details
+            </li>
+          </ol>
+        </nav>
+      </ng-container>
+
+      <ng-container *ngIf="activatedRoute.snapshot.params.companyId">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/']">
+              <a>Vendor Management</a>
+            </li>
+            <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/view', vendorId]">
+              <a>Profile - {{vendorName}}</a>
+            </li>
+            <ng-container *ngIf="activatedRoute.snapshot.params.orderId">
+              <li class="breadcrumb-item active" (click)="back()">
+                <a>Orders - {{vendorName}}</a>
+              </li>
+              <li class="breadcrumb-item ">
+                Order Details
+              </li>
+            </ng-container>
+            <ng-container *ngIf="!activatedRoute.snapshot.params.orderId">
+              <li class="breadcrumb-item active" (click)="back()">
+                <a> Quotes - {{vendorName}} </a>
+              </li>
+              <li class="breadcrumb-item">
+                Quote Details
+              </li>
+            </ng-container>
+          </ol>
+        </nav>
+      </ng-container>
+    </ng-container>
+
+
+
+  </ng-template>
+  <div class="title-with-button flex-wrap">
+    <ng-container *ngIf="!activatedRoute.snapshot.params.orderId">
+      <h2 class="page-title" *ngIf="!isAdmin; else adminQuoteHeading">Quote Request Information</h2>
+      <ng-template #adminQuoteHeading>
+        <h2 class="page-title">Quote Details</h2>
+      </ng-template>
+
+    </ng-container>
+    <h2 class="page-title" *ngIf="activatedRoute.snapshot.params.orderId">Order Details</h2>
+    <button class="btn primary small" type="button"
+      *ngIf="(quoteDetail?.status === constant?.QUOTE_STATUS.AWAITING_VENDOR_QUOTES) && !quoteDetail?.wantCuonterOffer && !isAdmin"
+      (click)="requote(quoteDetail, false)">Quote</button>
+    <button class="btn primary small"
+      *ngIf="((quoteDetail?.status === constant?.QUOTE_STATUS.AWAITING_VENDOR_QUOTES && quoteDetail?.wantCuonterOffer) && !isAdmin)"
+      (click)="requote(quoteDetail, true)">Counter Offer</button>
+    <div class="button-wrap">
+      <button class="btn primary small" type="button"
+        *ngIf="(quoteDetail?.status === constant?.QUOTE_STATUS.AWAITING_VENDOR_QUOTES)  && !isAdmin"
+        (click)="rejectQuote(quoteDetail._id)">Reject Quote</button>
+    </div>
+  </div><!-- end title-with-button -->
+  <div>
+    <div class="quote-container">
+
+      <div class="detail-head">
+        <div class="image-with-content">
+          <img src="{{quoteDetail?.products?.defaultImageUrl}}" alt="product-image"
+            onError="this.src='../../../../../../assets/images/no-image.png'" />
+          <div class="content">
+            <h5>{{quoteDetail?.products?.name}}</h5>
+            <p>Quantity Needed:
+              {{quoteDetail?.latestReply?.quantity ? quoteDetail?.latestReply?.quantity : quoteDetail?.quantity}}
+              <ng-container *ngIf="!isAdmin && !activatedRoute.snapshot.params.orderId">
+                <span class="d-inline-block mx-2">|</span>
+                <a href="javascript:void(0)" title="Message Planner"
+                  (click)="messagePlanner(quoteDetail.planner || quoteDetail?.planners?._id, quoteDetail?.quote)">Message
+                  Planner</a>
+              </ng-container>
+              <ng-container *ngIf="activatedRoute.snapshot.params.orderId">
+                <ng-container *ngIf="(!isAdmin && (role !== partnerRole)); else adminDateFields">
+                  <p *ngIf="orderType === constant?.ORDER_TYPES?.NEW_ORDERS; else dayOutFulFilledOrder">Date of
+                    Purchase:
+                    {{quoteDetail?.createdAt | date: 'mediumDate'}} <span *ngIf="activatedRoute.snapshot.params.orderId"
+                      class="d-inline-block mx-2">|</span>
+                    <a href="javascript:void(0)" title="Message Planner"
+                      (click)="messagePlannerOrder(quoteDetail.planner || quoteDetail?.planners?._id, quoteDetail?._id)">Message
+                      Planner</a>
+                  </p>
+                  <ng-template #dayOutFulFilledOrder>
+                    <p>Order Date:
+                      {{quoteDetail?.createdAt | date: 'MMM dd, yyyy | hh:mm a'}} <span
+                        *ngIf="activatedRoute.snapshot.params.orderId" class="d-inline-block mx-2">|</span>
+                      <a href="javascript:void(0)" title="Message  Planner"
+                        (click)="messagePlannerOrder(quoteDetail.planner || quoteDetail?.planners?._id, quoteDetail?._id)">Message
+                        Planner</a></p>
+                  </ng-template>
+                </ng-container>
+                <ng-template #adminDateFields>
+                  <p *ngIf="orderType === constant?.ORDER_TYPES?.NEW_ORDERS; else dayOutFulFilledOrder">Date of
+                    Purchase:
+                    {{quoteDetail?.createdAt | date: 'mediumDate'}} <span *ngIf="activatedRoute.snapshot.params.orderId"
+                      class="d-inline-block mx-2"></span>
+                  </p>
+                  <ng-template #dayOutFulFilledOrder>
+                    <p>Order Date:
+                      {{quoteDetail?.createdAt | date: 'MMM dd, yyyy | hh:mm a'}} <span
+                        *ngIf="activatedRoute.snapshot.params.orderId" class="d-inline-block mx-2"></span>
+                    </p>
+                  </ng-template>
+                </ng-template>
+              </ng-container>
+
+
+
+          </div>
+        </div>
+        <div class="detail-right">
+          <p class="price-head"
+            *ngIf="quoteDetail?.status === constant?.QUOTE_STATUS?.AWAITING_VENDOR_QUOTES && !quoteDetail?.latestReply &&  !activatedRoute.snapshot.params.orderId">
+            Price Starting At: </p>
+          <p class="price"
+            *ngIf="quoteDetail?.status === constant?.QUOTE_STATUS?.AWAITING_VENDOR_QUOTES && !quoteDetail?.latestReply && !activatedRoute.snapshot.params.orderId">
+            {{(quoteDetail?.totalPrice) | currency:'USD' }}</p>
+          <p class="price-head"
+            *ngIf="quoteDetail?.status === constant?.QUOTE_STATUS?.AWAITING_VENDOR_QUOTES && quoteDetail?.latestReply &&  !activatedRoute.snapshot.params.orderId">
+            Price: </p>
+          <p class="price"
+            *ngIf="quoteDetail?.status === constant?.QUOTE_STATUS?.AWAITING_VENDOR_QUOTES && quoteDetail?.latestReply && !activatedRoute.snapshot.params.orderId">
+            {{(quoteDetail?.totalPrice) | currency:'USD' }}</p>
+          <ng-container
+            *ngIf="quoteDetail?.status !== constant?.QUOTE_STATUS?.AWAITING_VENDOR_QUOTES && !activatedRoute.snapshot.params.orderId">
+            <ng-container *ngIf="quoteDetail?.replies.length; else expiredWithoutQuote">
+              <p class="price-head">
+                Price Quote: </p>
+              <p class="price">
+                {{(quoteDetail?.totalPrice | currency:'USD')}}
+              </p>
+            </ng-container>
+
+            <ng-template #expiredWithoutQuote>
+              <p class="price-head">
+                Price Starting At: </p>
+              <p class="price">
+                {{(quoteDetail?.totalPrice | currency:'USD')}}
+              </p>
+            </ng-template>
+
+            <p>
+              <a class="link" (click)="viewQuote(quoteDetail)" *ngIf="!isAdmin && quoteDetail.replies?.length">View
+                Quote</a>
+            </p>
+          </ng-container>
+
+          <p *ngIf="(quoteDetail?.status === 'CANCELLED' || quoteDetail?.status === 'CANCELED_QUOTES')&& isAdmin">
+            <span class="canceled">
+              Canceled On {{(quoteDetail?.cancelledAt || quoteDetail?.quoteCancelledAt) | date: 'mediumDate'}} by
+              Planner
+            </span>
+          </p>
+          <p class="price-head" *ngIf="activatedRoute.snapshot.params.orderId">Total Paid: </p>
+          <div class="price position-relative" *ngIf="activatedRoute.snapshot.params.orderId">
+            <span>{{(quoteDetail?.discount?.finalAmount) | currency:'USD' }}</span>
+            <img (click)="openDetail = true" src="assets/images/icon-info.svg" alt="Info" class="info-icon ml-2" />
+            <div class="price-breakdown" *ngIf="openDetail">
+              <div class="header">
+                Price Summary <span (click)="openDetail = false">&#x2715;</span>
+              </div>
+              <div class="list">
+                <span>Item(s) Subtotal:</span>
+                <span>{{(quoteDetail?.totalPrice) | currency:'USD' }}</span>
+              </div>
+              <div class="list">
+                <span>Promotion Applied:</span>
+                <span class="text-danger">-
+                  {{(quoteDetail?.discount?.discountAmount) | currency:'USD' }}</span>
+              </div>
+              <div class="list total">
+                <span>Grand Total:</span>
+                <span>{{(quoteDetail?.discount?.finalAmount) | currency:'USD' }}</span>
+              </div>
+            </div>
+
+          </div>
+          <p class="mt-1">
+            <a class="font-medium" href="javascript:void(0)" title="View Order Details"
+              *ngIf="activatedRoute.snapshot.params.orderId" (click)="viewQuote(quoteDetail)">View Order
+              Details</a>
+          </p>
+          <p class="mt-1">
+            <a class="font-medium" href="javascript:void(0)" title="View Quote" *ngIf="isAdmin &&  (quoteDetail?.status === constant?.QUOTE_STATUS.ACCEPT_REJECT_QUOTES || quoteDetail?.status === constant?.QUOTE_STATUS?.EXPIRED_QUOTES)
+              && quoteDetail?.replies.length" (click)="viewQuoteFromAdmin(quoteDetail)">View Quote</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="detail-content">
+
+        <div class="detail-content-left">
+          <div class="row">
+
+            <div class="col-md-4" *ngIf="quoteDetail?.events?.name">
+              <p class="title">Event Title</p>
+              <p class="des">{{ quoteDetail?.events?.name}}</p>
+            </div><!-- end col-md-4 -->
+
+            <div class="col-md-4" *ngIf="quoteDetail?.events?.eventType || quoteDetail?.event?.eventType">
+              <p class="title">Event Type</p>
+              <p class="des">{{ quoteDetail?.events?.eventType }}</p>
+            </div>
+            <!-- end col-md-4 -->
+
+            <div class="col-md-4" *ngIf="quoteDetail?.events?.guestCount">
+              <p class="title">Number of Guests</p>
+              <p class="des">{{ quoteDetail?.events?.guestCount }}</p>
+            </div>
+            <!-- end col-md-4 -->
+
+            <div class="col-md-4" *ngIf="quoteDetail?.varriableInfo?.eventStartDate">
+              <p class="title">Start Date & Time</p>
+              <p class="des">
+                {{quoteDetail?.varriableInfo?.eventStartDate| timezoneDateFormat: quoteDetail?.events?.eventTimezone}}
+                {{timezoneMap[quoteDetail?.events?.eventTimezone]}}
+              </p>
+            </div><!-- end col-md-4 -->
+
+            <div class="col-md-4" *ngIf="quoteDetail?.varriableInfo?.eventEndDate">
+              <p class="title">End Date & Time</p>
+              <p class="des">
+                {{quoteDetail?.varriableInfo?.eventEndDate | timezoneDateFormat: quoteDetail?.events?.eventTimezone}}
+                {{timezoneMap[quoteDetail?.events?.eventTimezone]}}
+              </p>
+
+            </div><!-- end col-md-4 -->
+            <div class="col-md-4" *ngIf="quoteDetail?.events?.endDate < currentDate">
+              <p class="title">Date Order Filled</p>
+              <p class="des">{{quoteDetail?.events?.endDate | date: 'mediumDate'}}
+              </p>
+            </div>
+            <div class="col-md-4" *ngIf="activatedRoute.snapshot.params.orderId">
+              <p class="title">Order Id</p>
+              <p class="des">#{{quoteDetail?.orderId}}</p>
+            </div><!-- end col-md-4 -->
+
+            <div class="col-md-4" *ngIf="!activatedRoute.snapshot.params.orderId">
+              <p class="title">Request Date & Time</p>
+              <p class="des">
+                {{quoteDetail?.quoteRequestedDate ? (quoteDetail?.quoteRequestedDate | eventDate) : '-' }}
+              </p>
+            </div><!-- end col-md-4 -->
+
+            <div class="col-md-4" *ngIf="activatedRoute.snapshot.params.quoteViewId">
+              <p class="title">Quote Expiration</p>
+              <p class="des">
+                {{ quoteDetail?.quoteExpirationDate? (quoteDetail?.quoteExpirationDate | eventDate) : '-' }}
+              </p>
+            </div><!-- end col-md-4 -->
+
+            <div class="col-md-4">
+              <p class="title">Delivery Date</p>
+              <p class="des mb-0">From:
+                {{ quoteDetail?.varriableInfo?.deliveryStartDate? (quoteDetail?.varriableInfo?.deliveryStartDate | timezoneDateFormat: quoteDetail?.events?.eventTimezone) : '-'}}
+              </p>
+              <p class="des">To:
+                {{ quoteDetail?.varriableInfo?.deliveryEndDate? (quoteDetail?.varriableInfo?.deliveryEndDate | timezoneDateFormat: quoteDetail?.events?.eventTimezone) : '-'}}
+                {{timezoneMap[quoteDetail?.events?.eventTimezone]}}
+              </p>
+              
+
+            </div><!-- end col-md-4 -->
+            <div class="col-md-4">
+              <p class="title">Setup Date </p>
+              <p class="des mb-0">From:
+                {{quoteDetail?.varriableInfo?.setUpFromDate ? (quoteDetail?.varriableInfo?.setUpFromDate | timezoneDateFormat: quoteDetail?.events?.eventTimezone): '-'}}
+              </p>
+              <p class="des">To:
+                {{ quoteDetail?.varriableInfo?.setUpToDate ? (quoteDetail?.varriableInfo?.setUpToDate | timezoneDateFormat: quoteDetail?.events?.eventTimezone) : '-'}}
+                {{timezoneMap[quoteDetail?.events?.eventTimezone]}}
+              </p>
+              
+            </div>
+            <div class="col-md-4">
+              <p class="title">Breakdown Date </p>
+              <p class="des mb-0">From:
+                {{quoteDetail?.varriableInfo?.breakDownStartDate ? (quoteDetail?.varriableInfo?.breakDownStartDate | timezoneDateFormat: quoteDetail?.events?.eventTimezone): '-'}}
+              </p>
+              <p class="des">To:
+                {{ quoteDetail?.varriableInfo?.breakDownEndDate ? (quoteDetail?.varriableInfo?.breakDownEndDate | timezoneDateFormat: quoteDetail?.events?.eventTimezone) : '-'}}
+                {{timezoneMap[quoteDetail?.events?.eventTimezone]}}
+              </p>
+              
+            </div><!-- end col-md-4 -->
+
+            <div class="col-12">
+              <div class="divider"></div>
+            </div>
+
+            <div class="col-md-4">
+              <p class="title">Planner Name</p>
+              <p class="des">{{ quoteDetail?.planners  ? (quoteDetail?.planners  | formatPlannerName): '-' }}</p>
+            </div><!-- end col-md-4 -->
+
+            <div class="col-md-4">
+              <p class="title">Planner Company</p>
+              <p class="des">{{ quoteDetail?.planners?.companyName  ? quoteDetail?.planners?.companyName:'-'  }}</p>
+            </div><!-- end col-md-4 -->
+
+
+            <div class="col-md-4">
+              <p class="title">Planner Phone Number</p>
+              <p class="des">
+                {{ quoteDetail?.planners?.phone ? (quoteDetail?.planners?.phone | formatPhone) :'-' }}</p>
+            </div><!-- end col-md-4 -->
+
+            <div class="col-md-4">
+              <p class="title">Planner Email Address </p>
+              <p class="des">{{ (quoteDetail?.planners?.email) ? ( quoteDetail?.planners?.email): '-' }}</p>
+            </div><!-- end col-md-4 -->
+
+            <ng-container *ngIf="isAdmin">
+              <div class="col-12">
+                <div class="divider"></div>
+              </div>
+
+              <div class="col-md-4">
+                <p class="title">Vendor Name</p>
+                <p class="des">{{ quoteDetail?.companyAdmin?.firstName }} {{ quoteDetail?.companyAdmin?.lastName }}</p>
+              </div><!-- end col-md-4 -->
+
+              <div class="col-md-4">
+                <p class="title">Vendor Company</p>
+                <p class="des">{{ quoteDetail?.vendors?.name }}</p>
+              </div><!-- end col-md-4 -->
+
+
+              <div class="col-md-4">
+                <p class="title">Vendor Phone Number</p>
+                <p class="des">
+                  {{ quoteDetail?.companyAdmin?.phone ? (quoteDetail?.companyAdmin?.phone | formatPhone) :'-' }}</p>
+              </div><!-- end col-md-4 -->
+
+              <div class="col-md-4">
+                <p class="title">Vendor Email Address </p>
+                <p class="des">{{ (quoteDetail?.companyAdmin?.email)}}</p>
+              </div><!-- end col-md-4 -->
+            </ng-container>
+
+            <div class="col-12">
+              <div class="divider"></div>
+            </div>
+
+            <div class="col-12" *ngIf="quoteDetail?.products?.description">
+              <p class="title">Description Of Product/Service</p>
+              <p class="des font-weight-normal">{{ quoteDetail?.products?.description }}</p>
+            </div><!-- end col-md-4 -->
+            <div class="col-12" *ngIf="quoteDetail?.products?.description">
+              <div class="divider"></div>
+            </div>
+
+            <div class="col-12" *ngIf="quoteDetail?.products?.additionalDetails ">
+              <p class="title">Additional Details</p>
+              <p class="des font-weight-normal">{{ quoteDetail?.products?.additionalDetails}}</p>
+            </div><!-- end col-md-4 -->
+            <div class="col-12" *ngIf="quoteDetail?.products?.additionalDetails">
+              <div class="divider"></div>
+            </div>
+
+            <div class="col-12" *ngIf="quoteDetail?.notes">
+              <p class="title" *ngIf="!activatedRoute.snapshot.params.orderId">Planner Notes</p>
+              <p class="title" *ngIf="activatedRoute.snapshot.params.orderId">Notes</p>
+              <p class="des font-weight-normal">{{quoteDetail?.notes}}</p>
+            </div><!-- end col-md-4 -->
+
+            <div class="col-12" *ngIf="quoteDetail?.events?.details && !activatedRoute.snapshot.params.orderId">
+              <p class="title">Event Overview</p>
+              <p class="des font-weight-normal">{{quoteDetail?.events?.details}}</p>
+            </div><!-- end col-md-4 -->
+          </div><!-- end row -->
+        </div>
+
+        <div class="detail-content-right">
+          <div class="address-block">
+            <p class="title">Venue Details</p>
+            <p class="des">{{quoteDetail?.events?.venueName}}</p>
+            <p class="address">
+              <span>{{quoteDetail?.events?.address}}</span>
+              <span>{{quoteDetail?.events?.city}}, {{quoteDetail?.events?.state}}, {{quoteDetail?.events?.zipCode}}
+              </span>
+            </p>
+          </div>
+        </div>
+
+      </div><!-- end detail-content -->
+    </div><!-- end quote-container -->
+    <div class="counter-offer-container"
+      *ngIf="quoteDetail?.replies?.length && ((!activatedRoute.snapshot.params.orderId && (quoteDetail?.replies[0]?.status !== constant.QUOTE_UPDATE_STATUS.PENDING) || isAdmin))">
+      <h1 *ngIf="quoteDetail?.replies?.length && !activatedRoute.snapshot.params.orderId" class="page-title">Quote
+        Summary Report</h1>
+      <div *ngIf="quoteDetail?.replies?.length" class="table-listing counter-offer-table">
+        <div class="table-head-wrapper">
+          <div class="table-head">
+            <div class="thead-data">Quoted Price</div>
+            <div class="thead-data">{{isAdmin ? 'Vendor Message': 'Message'}}</div>
+            <div class="thead-data">{{isAdmin ? 'Planner Notes' : 'View Counter Offer Notes'}}</div>
+            <div class="thead-data">Date of Quote</div>
+            <div class="thead-data">Date of Rejected Quote</div>
+            <div class="thead-data">Status</div>
+            <div class="thead-data">Action</div>
+          </div>
+        </div>
+        <div class="table-body-wrapper">
+          <div class="table-body"
+            [ngClass]="{'disabled': reply.status === constant.QUOTE_UPDATE_STATUS.REJECTED_QUOTES}"
+            *ngFor="let reply of quoteDetail?.replies | reverseArray; let i = index;">
+            <!-- repeat this div -->
+            <div class="tbody-data" data-label="Quoted Price">
+              <span>{{(reply?.totalAmount) | currency:'USD'}}</span></div>
+            <div class="tbody-data" data-label="Message"><span>{{reply?.vendorNotes ? reply?.vendorNotes : '-'}}</span>
+            </div>
+            <div class="tbody-data">
+              <a class="text" href="javascript:void(0)" title="View Counter Offer Notes"
+                (click)="viewNotes(reply)">{{reply?.plannerNotes ? (isAdmin ? 'View Notes': 'View Counter Offer Notes') : '-'}}</a>
+            </div>
+            <div class="tbody-data" data-label="Date of Quote">
+              <span>{{reply?.createdAt  | date: 'mediumDate'}} | {{reply?.createdAt  | date: 'shortTime'}}</span></div>
+            <div class="tbody-data"
+              *ngIf="reply.status === constant.QUOTE_UPDATE_STATUS.REJECTED_QUOTES; else noRejectDate"
+              data-label="Date Canceled/Rejected">
+              <span>{{reply?.updatedAt  | date: 'mediumDate'}} | {{reply?.updatedAt  | date: 'shortTime'}}</span>
+            </div>
+            <div class="tbody-data" data-label="Status"><span>{{quoteStatus[reply?.status]?.status}}</span></div>
+
+            <ng-template #noRejectDate>
+              <div class="tbody-data" data-label="Date Canceled/Rejected">
+                <span>N/A</span></div>
+            </ng-template>
+            <div class="tbody-data">
+              <div class="table-button-wrapper"
+                *ngIf="(reply.status !== constant.QUOTE_UPDATE_STATUS.REJECTED_QUOTES) && !isAdmin && quoteDetail.status !== constant.QUOTE_UPDATE_STATUS.EXPIRED_QUOTES">
+                <button class="btn link" [disabled]="reply?.status !== constant?.QUOTE_STATUS?.PENDING_REPLIES"
+                  [ngClass]="{'disabled': reply?.status !== constant?.QUOTE_STATUS?.PENDING_REPLIES}" type="button"
+                  (click)="cancelQuote(quoteDetail._id)">Cancel Quote</button>
+                <a class="btn link" href="javascript:void(0)" title="View Quote"
+                  (click)="viewQuote(quoteDetail, reply?._id)">View Quote</a>
+              </div>
+              <button class="btn primary small"
+                *ngIf="((quoteDetail?.status === constant?.QUOTE_STATUS.AWAITING_VENDOR_QUOTES && quoteDetail?.wantCuonterOffer) && !isAdmin)"
+                (click)="requote(quoteDetail, true)">Counter Offer</button>
+              <button class="btn primary small" type="button"
+                *ngIf="(quoteDetail?.status === constant?.QUOTE_STATUS.AWAITING_VENDOR_QUOTES)  && !isAdmin"
+                (click)="rejectQuote(quoteDetail._id)">Reject Quote</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- end quote-detail-container -->

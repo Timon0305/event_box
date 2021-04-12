@@ -1,0 +1,18 @@
+<div class="message-container">
+  <div class="title-with-button">
+    <h2 class="page-title">Messages</h2>
+  </div><!-- end title-with-button -->
+  <div class="message-dashboard" *ngIf="!isMessageListEmpty">
+    <app-message-list (messageEvent)="onMessageEvent($event)" [fromSearch]="fromSearch"
+     [setMessageListData]="(messageList$| async)?.data" (fetchData)="getMessageList($event)"
+      (isListEmpty)="isListEmpty($event)" [ngClass]="{'hide': messageSection}" [loading]="loading" class="message-list-wrapper">
+    </app-message-list>
+    <app-message-window (messageEvent)="onMessageEvent($event)" class="user-message-box"></app-message-window>
+  </div>
+</div>
+<div class="table-listing awaited-quote-table" *ngIf="!loading  && isMessageListEmpty">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No messages found :(</p>
+  </div>
+</div>

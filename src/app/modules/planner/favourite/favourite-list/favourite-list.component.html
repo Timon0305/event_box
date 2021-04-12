@@ -1,0 +1,58 @@
+<!-- promocode section -->
+<div class="my-favorites-container" *ngIf="favouritesList | async as favouriteList">
+  <h2 class="page-title top-first-title">My Favorites</h2>
+  <div class="space-between-two" *ngIf="favouriteList?.totalDocs > 0 || (paramsLength > 0)">
+    <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+    <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+
+  <!-- table start form here -->
+  <!-- table start form here -->
+  <div class="table-listing my-favorites-table">
+    <div class="table-head-wrapper" *ngIf="favouriteList?.totalDocs > 0">
+      <div class="table-head">
+        <div class="thead-data">Product/Service Name</div>
+        <div class="thead-data">Vendor Name</div>
+        <div class="thead-data">Ratings</div>
+        <div class="thead-data">Starting Price</div>
+        <div class="thead-data">Action</div>
+      </div>
+    </div>
+    <div class="table-body-wrapper" *ngIf="favouriteList?.totalDocs > 0">
+      <div class="table-body" *ngFor="let favourite of favouriteList.docs">
+        <!-- repeat this div -->
+        <div class="tbody-data" data-label="Product">
+          <div class="product-col">
+            <img src="{{favourite?.defaultImageUrl}}" appNoImage alt="Product Image" class="product-image" />
+            <span> {{favourite?.name }}</span>
+          </div>
+        </div>
+        <div class="tbody-data" data-label="Vendor Name">{{favourite?.company?.name | titlecase}}</div>
+        <app-shared-view-rating-star class="tbody-data" data-label="Rating" [rating]="favourite?.avgRating" [ratingCount]="favourite?.ratingCount"></app-shared-view-rating-star>
+        <div class="tbody-data" data-label="Starting Price">{{favourite?.price | currency:'USD'}}</div>
+        <div class="tbody-data">
+          <div class="table-button-wrapper">
+            <button class="btn link" type="button" (click)="navigateDetailPage(favourite._id)">View Details</button>
+            <button class="btn link" type="button" (click)="unFavourite(favourite)">Unfavorite</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-pagination [metaData]="favouriteList" (pageChange)="pageChange($event)"></app-pagination>
+    <div class="table-listing product-table" *ngIf="favouriteList?.totalDocs === number.zero && !(params > number.one)">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="table-listing product-table" *ngIf="favouriteList?.totalDocs === number.zero && params > number.one">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+
+  </div><!-- end table -->
+
+</div><!-- end user-table-container -->

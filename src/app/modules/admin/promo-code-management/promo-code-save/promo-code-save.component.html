@@ -1,0 +1,137 @@
+<div class="admin-add-promocode-container fixed-footer-padding">
+    <h2 class="page-title" ngbAutoFocus>{{editForm ? 'Update' : 'Create'}} Promo Code </h2>
+    <form [formGroup]="savePromoCodeForm" (submit)="addPromoCode()" class="add-promocode-form">
+        <div class="row">
+            <div class="form-group col-12 mb-2">
+                <label for="">Select Promo Code Type*</label>
+            </div>
+            <div class="radio-btn-wrapper">
+                <div class="form-group" *ngFor="let item of constPromoCodeType">
+                    <input formControlName="promoCodeType" type="radio" [value]="item.value" id="{{item.id}}"
+                        (click)="changeType(item.id)">
+                    <label for="{{item.id}}">{{item.text}}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="discountValue">Value*</label>
+                <input type="text" class="form-control" formControlName="promoCodeValue"
+                    aria-describedby="discountValueHelp" placeholder="Enter Value" onpaste="return false;"
+                    onCopy="return false;" onCut="return false;" autocomplete="off"
+                    [prefix]="promoCodePrefixSuffix.PREFIX_SIGN" [suffix]="promoCodePrefixSuffix.SUFFIX_SIGN" mask="0*"
+                    [maxlength]="promoCodePrefixSuffix.MAX_LENGTH">
+                <div class="invalid-feedback d-block"
+                    *ngIf="f?.controls?.promoCodeValue?.touched && f?.controls?.promoCodeValue?.errors?.required">
+                    Value is required.</div>
+                <div class="invalid-feedback d-block"
+                    *ngIf="f?.controls?.promoCodeValue?.touched && f?.controls?.promoCodeValue?.errors?.invalidPercent">
+                    Value should be less than or equal to 100%.</div>
+                <div class="invalid-feedback d-block"
+                    *ngIf="f?.controls?.promoCodeValue?.touched && (f?.controls?.promoCodeValue?.errors?.customOrderAbove || f?.controls?.promoCodeValue?.errors?.customThreshold)">
+                    Value should be less than order above.</div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="discountOrderAbove">Order Above*</label>
+                <input type="text" formControlName="promoCodeThreshold" [prefix]="promoCodePrefixDollar"
+                    class="form-control" id="discountOrderAbove" aria-describedby="discountOrderAboveHelp"
+                    placeholder="Enter Amount" [maxlength]="10" onpaste="return false;" onCopy="return false;"
+                    onCut="return false;" autocomplete="off" mask="0*" maxlength="10">
+                <div class="invalid-feedback d-block"
+                    *ngIf="f?.controls?.promoCodeThreshold?.touched && f?.controls?.promoCodeThreshold?.errors?.required">
+                    Order Above is required.</div>
+                <div class="invalid-feedback d-block"
+                    *ngIf="f?.controls?.promoCodeThreshold?.touched && (f?.controls?.promoCodeThreshold?.errors?.customOrderAbove || f?.controls?.promoCodeThreshold?.errors?.customThreshold)">
+                    Order above should be greater than value.</div>
+
+            </div>
+        </div><!-- end form row -->
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="discountValue">Promo Code Title*</label>
+                <input appCapitalizeInput type="text" class="form-control" maxlength="100" [control]="f?.controls?.promoCodeTitle" formControlName="promoCodeTitle"
+                    id="discountValue" aria-describedby="discountValueHelp" placeholder="Enter Promo Code Title"
+                    onpaste="return false;" onCopy="return false;" onCut="return false;" autocomplete="off" mask="A*">
+                <div class="invalid-feedback d-block"
+                    *ngIf="f?.controls?.promoCodeTitle?.touched && f?.controls?.promoCodeTitle?.errors?.required">
+                    Promo Code Title is required.</div>
+            </div>
+
+            <div class="form-group col-md-6 multi-select-input">
+                <label for="associatedVendors">Associate Vendor*</label>
+                <ng-select [multiple]="multiplleSelect" (change)="getSelectedAssociateVendor($event)"
+                    [items]="(associatedVendorObservable$ | async)" placeholder="Select Associate Vendor"
+                    [virtualScroll]="multiplleSelect" (scrollToEnd)="onScrollToEnd()" bindLabel="name" bindValue="_id"
+                    id="associatedVendors" [(ngModel)]="selected" formControlName="associatedVendors"
+                    (scrollToEnd)="onScrollToEnd()" (search)="onSearch($event)">
+                </ng-select>
+                <div class="invalid-feedback d-block"
+                    *ngIf="f?.controls?.associatedVendors?.touched && f?.controls?.associatedVendors?.errors?.required">
+                    Associate Vendor is required.</div>
+            </div>
+        </div><!-- end form row -->
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="eventStartDate">Start Date*</label>
+                <div class="input-group date-time-picker">
+                    <input class="form-control" type="text" #startDate="dpDayPicker"
+                        [dpDayPicker]="dayPickerConfig['promoCodeStartDate']" [theme]="'dp-material'"
+                        formControlName="promoCodeStartDate" [mode]="'day'" (onChange)="date = $event" />
+                    <div class="input-group-append" (click)="openSeletedDatePicker('startDate')">
+                        <img src="assets/images/calendar.svg" alt="Calender" />
+                    </div>
+                </div>
+                <div class="invalid-feedback d-block"
+                    *ngIf="savePromoCodeForm?.controls?.promoCodeStartDate?.touched && savePromoCodeForm?.controls?.promoCodeStartDate?.errors?.required">
+                    {{messageConst['promoCodeStartDate']?.required}}</div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="eventEndDate">End Date*</label>
+                <div class="input-group date-time-picker">
+                    <input class="form-control" type="text" #endDate="dpDayPicker"
+                        [dpDayPicker]="dayPickerConfig['promoCodeEndDate']" [theme]="'dp-material'"
+                        formControlName="promoCodeEndDate" [mode]="'day'" (onChange)="date = $event"
+                        [minDate]="savePromoCodeForm?.controls?.promoCodeStartDate?.value" />
+                    <div class="input-group-append"  (click)="openSeletedDatePicker('endDate')">
+                        <img src="assets/images/calendar.svg" alt="Calender" />
+                    </div>
+                </div>
+                <div class="invalid-feedback d-block"
+                    *ngIf="savePromoCodeForm?.controls?.promoCodeEndDate?.errors?.minDate">
+                    {{messageConst['promoCodeStartDate']?.compare}}</div>
+                <div class="invalid-feedback d-block"
+                    *ngIf="savePromoCodeForm?.controls?.promoCodeEndDate?.touched && savePromoCodeForm?.controls?.promoCodeEndDate?.errors?.required">
+                    {{messageConst['promoCodeEndDate']?.required}}</div>
+            </div>
+        </div><!-- end form row -->
+
+        <div class="form-row">
+            <div class="form-group col-12">
+                <label for="termsNConditions">Terms & Conditions*</label>
+                <textarea formControlName="termsNConditions" readonly class="form-control" id="termsNConditions"
+                    placeholder="Enter Terms & Conditions"></textarea>
+                <div class="invalid-feedback d-block"
+                    *ngIf="f?.controls?.termsNConditions?.touched && f?.controls?.termsNConditions?.errors?.required">
+                    Terms & Conditions is required.</div>
+            </div>
+        </div><!-- end form row -->
+
+        <div class="fixed-footer">
+            <div class="container-fluid">
+                <div class="button-container">
+                    <button type="button" class="btn link mw-220"
+                        [routerLink]="['/admin/promo-code-management']">Cancel</button>
+                    <button type="button" *ngIf="!editForm" class="btn primary mw-220" [disabled]="!f.valid"
+                        (click)="addPromoCode()">Publish Promo Code</button>
+                    <button type="button" *ngIf="editForm" class="btn primary mw-220" [disabled]="!f.valid"
+                        (click)="updatePromoCode()">Update Promo Code</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>

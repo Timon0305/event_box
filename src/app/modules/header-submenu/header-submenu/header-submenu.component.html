@@ -1,0 +1,28 @@
+<section class="top-subheader" [ngClass]="{'product-page-header': (!isHomePage && isPublicPages)}" *ngIf="(categoriesObservable$ | async) as data;">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg">
+            <div class="menu-text">Menu</div>
+            <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+                &#9776;
+            </button>
+            <div [ngbCollapse]="isMenuCollapsed" [ngClass]="{'show': !isMenuCollapsed}" class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item" *ngFor="let category of data;">
+                        <div class="dropdown">
+                            <a class="nav-link lg-device-nav-link"(click)="isMenuCollapsed = !isMenuCollapsed" (click)="searchCategory({categoryId: category?._id, categoryName: category?.name})" id="{{category._id}}"
+                            [attr.data-title]=category.name>{{category?.name}}</a>
+                            <a class="nav-link sm-device-nav-link" href="javascript:void(0)"><span (click)="isMenuCollapsed = !isMenuCollapsed" (click)="searchCategory({categoryId: category?._id, categoryName: category?.name})" id="{{category._id}}"
+                              [attr.data-title]=category.name>{{category?.name}}</span> <em></em></a>
+                            <div class="dropdown-menu" [attr.aria-label]="category?._id" *ngIf="category.children.length">
+                              <div *ngFor="let subcategory of category.children;" class="w-100">
+                                <button *ngIf="subcategory.status" class="dropdown-item" (click)="isMenuCollapsed = !isMenuCollapsed"
+                                    (click)="searchCategory({categoryId: category?._id, categoryName: category?.name,subCategoryName: subcategory?.name,subCategoryId: subcategory?._id})">{{subcategory?.name}}</button>
+                                  </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</section>

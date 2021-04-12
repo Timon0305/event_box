@@ -1,0 +1,68 @@
+<ng-container *ngIf="(filteredAnalytics$|async)"></ng-container>
+<ng-container *ngIf="(totlAnalytics$|async)"></ng-container>
+<ng-container >
+  <div class="dashboard-container">
+    <div class="title-with-button">
+      <h2 class="page-title">My Dashboard</h2>
+      <div class="analytics-cards">
+        <div class="box btn-col-3">
+          <div class="box-content">
+            <div class="name">Total Gross Sales</div>
+            <div class="title">{{totalAnalytics?.orders?.totalGross | currency:'USD':'symbol':'1.2-2'}}</div>
+          </div>
+        </div>
+        <div class="box btn-col-3">
+          <div class="box-content">
+            <div class="name">Total Net Sales</div>
+            <div class="title">{{totalAnalytics?.orders?.totalEB | currency:'USD':'symbol':'1.2-2'}}</div>
+          </div>
+        </div>
+        <div class="box btn-col-3">
+          <div class="box-content">
+            <div class="name">Total Orders</div>
+            <div class="title">{{totalAnalytics?.orders?.purchased}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-head quote-report-head">
+      <h3>Analytics</h3>
+      <div class="filter-section">
+        <div class="date-range-box">
+          <app-shared-date-range [showClearAll]="true" (dateFilterEvent)="quoteDateFilter($event)">
+          </app-shared-date-range>
+        </div>
+        <app-shared-date-filter (filterDateEvent)="quoteDateFilter($event)"></app-shared-date-filter>
+      </div>
+    </div>
+    <div class="analytics-cards">
+      <div class="box no-image btn-col-3 box-shadow-none analytics-card cursor-default">
+        <div class="box-content">
+          <div class="name mb-2">Total Gross Sales</div>
+          <div class="title m-0">{{dashboardData?.orders?.totalGross | currency:'USD':'symbol':'1.2-2'}}</div>
+        </div>
+      </div>
+      <div class="box no-image btn-col-3 box-shadow-none analytics-card cursor-default">
+        <div class="box-content">
+          <div class="name mb-2">Total Net Sales</div>
+          <div class="title m-0">{{dashboardData?.orders?.totalEB | currency:'USD':'symbol':'1.2-2'}}</div>
+        </div>
+      </div>
+      <div class="box no-image btn-col-3 box-shadow-none analytics-card cursor-default">
+        <div class="box-content">
+          <div class="name mb-2">Total Orders</div>
+          <div class="title m-0">{{dashboardData?.orders?.purchased}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <app-graph></app-graph>
+    <app-members [members]="dashboardData?.members"></app-members>
+    <app-members-section [memberSection]="dashboardData?.quotes"></app-members-section>
+    <app-categories-sales *ngIf="dashboardData?.salesByCategories?.length || dashboardData?.topSellers?.length" [categories]="dashboardData?.salesByCategories" [topSellers] = "dashboardData?.topSellers"></app-categories-sales>
+    <app-new-orders></app-new-orders>
+  </div>
+</ng-container>
+

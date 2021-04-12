@@ -1,0 +1,37 @@
+<div class="container-fluid fixed-header-padding">
+  <div class="main-container">
+    <div class="left-navigation">
+      <span class="left-navigation-toggle"></span>
+      <ul class="nav">
+        <li class="nav-item">
+          <a href="javascript:void(0)" class="nav-link" routerLinkActive="active" [routerLink]="['/partner']"
+            [routerLinkActiveOptions]="{exact:
+              true}">My Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['./vendor-list']" [routerLinkActiveOptions]="{exact:
+              true}" routerLinkActive="active" class="nav-link">Vendors List
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['./planner-list']" [routerLinkActiveOptions]="{exact:
+                true}" routerLinkActive="active" class="nav-link">Planners List
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['./orders']" [routerLinkActiveOptions]="{exact:
+                false}" routerLinkActive="active" class="nav-link">Orders Report
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['./payment-history']" [routerLinkActiveOptions]="{exact:
+                false}" routerLinkActive="active" class="nav-link">Payment History
+          </a>
+        </li>
+      </ul>
+    </div><!-- end left navigation -->
+    <div class="right-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

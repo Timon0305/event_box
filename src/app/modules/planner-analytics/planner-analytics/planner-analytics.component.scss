@@ -1,0 +1,330 @@
+.admin-vendor-profile {
+  .text-label {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.69;
+    color: #818181;
+    margin-bottom: 6px;
+  }
+
+  .text-content {
+    font-size: 14px;
+    line-height: 1.57;
+    color: #000;
+    margin-bottom: 20px;
+    word-break: break-all;
+  }
+
+  .top-button-section {
+    display: flex;
+    width: 100%;
+    margin: 20px 0 28px;
+    justify-content: space-between;
+    .title-text {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      line-height: 2.57;
+      color: #5a5a5a;
+    }
+
+    &.analytics-head {
+      margin: 30px 0 25px;
+    }
+  }
+
+  .profile-image-section {
+    display: flex;
+    width: 160px;
+    height: 160px;
+    margin-right: 40px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  .view-profile-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    .profile-content {
+      width: calc(100% - 260px);
+
+      .col-md-6 {
+        &:nth-child(odd) {
+          padding-left: 5px;
+        }
+
+        &:nth-child(even) {
+          padding-right: 5px;
+        }
+      }
+    }
+
+    .user-name {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1;
+      color: #000000;
+      margin-bottom: 7px;
+    }
+
+    .user-email {
+      font-size: 14px;
+      line-height: 1.38;
+      color: #000000;
+      margin-bottom: 20px;
+    }
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: #e2e2e2;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    @media screen and (max-width: 576px) {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.box-container {
+
+  >.col,
+  >[class*=col-] {
+    margin-bottom: 20px;
+  }
+}
+
+.box {
+  border-radius: 6px;
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px #f0f0f0;
+  background-color: #ffffff;
+  height: 100%;
+  padding: 28px 16px 28px 24px;
+  display: flex;
+  align-items: center;
+
+  .box-content {
+    width: calc(100% - 50px);
+    padding-right: 10px;
+    word-break: break-word;
+
+    .title {
+      font-size: 26px;
+      font-weight: 600;
+      color: #000000;
+      margin-bottom: 8px;
+      line-height: normal;
+    }
+
+    .name {
+      line-height: 1.57;
+    }
+  }
+
+  .box-image {
+    height: 50px;
+    width: 50px;
+  }
+}
+.card-border-box {
+  width: 100%;
+  height: auto;
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px #f0f0f0;
+  background-color: #ffffff;
+  display: flex;
+  .box {
+    border: 0;
+    border-radius: 0;
+    &:not(:last-child) {
+      border: solid 1px #f0f0f0;
+    }
+    &.box-col-2 {
+      width: calc(100% / 2);
+    }
+    &.box-col-3 {
+      width: calc(100% / 3);
+    }
+
+  }
+}
+
+.address-section {
+  margin-bottom: 20px;
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    line-height: 2.57;
+    color: #5a5a5a;
+    margin: 20px 0 20px 0;
+  }
+
+  .address-content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    .col-md-6 {
+      &:nth-child(odd) {
+        padding-right: 10px;
+      }
+
+      &:nth-child(even) {
+        padding-left: 10px;
+      }
+    }
+  }
+
+  .address-container {
+    border-radius: 5px;
+    box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+    border: solid 1px #e2e2e2;
+    background-color: #ffffff;
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+
+    .action-buttons {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      .link {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        color: #000;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        span {
+          font-size: 22px;
+          display: inline-block;
+          margin-right: 5px;
+        }
+
+        &.edit {
+          margin-right: 20px;
+          color: #5067eb;
+        }
+      }
+    }
+
+    &.bank-detail {
+      padding-bottom: 12px;
+
+      .user-bank-name {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.5;
+        color: #000;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+      }
+
+      .badge-outline-primary {
+        width: 48px;
+        height: 18px;
+        border-radius: 1px;
+        border: solid 0.8px #5067eb;
+        font-size: 11px;
+        line-height: 2;
+        font-weight: normal;
+        color: #5067eb;
+        margin-left: 9px;
+      }
+
+      .bank-text {
+        font-size: 14px;
+        line-height: 1.57;
+        color: #111210;
+        margin-bottom: 8px;
+      }
+    }
+
+    &.package {
+      padding-bottom: 10px;
+
+      .bank-text {
+        margin-bottom: 10px;
+
+        span {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.card-outer-container {
+  border-radius: 5px;
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px #e2e2e2;
+  background-color: #ffffff;
+  display: flex;
+  padding: 30px;
+  margin-bottom: 20px;
+  @media screen and (max-width: 576px) {
+    padding: 20px;
+  }
+  .check-container {
+    height: 100%;
+  }
+
+  .card-container {
+    flex: 1 1;
+  }
+
+  .address-container {
+    border: 0;
+    border-radius: 7px;
+    background-color: #fafafa;
+    box-shadow: none;
+    padding: 20px 10px 10px 10px;
+    margin-bottom: 0;
+    @media screen and (max-width: 576px) {
+      margin-left: -36px;
+    }
+    .card-image {
+      width: 46px;
+      height: 25px;
+      object-fit: contain;
+    }
+
+    &.bank-detail {
+      border-radius: 0;
+      background-color: #ffffff;
+      padding: 0;
+      margin: 0 -15px 25px;
+
+      .link {
+        margin-left: 20px;
+      }
+    }
+
+    .billing-title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.57;
+      color: #111210;
+      margin-bottom: 20px;
+    }
+  }
+}
+.date-filter-box {
+  margin-left: 10px;
+}

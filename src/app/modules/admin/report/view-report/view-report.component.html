@@ -1,0 +1,170 @@
+<h2 class="page-title top-first-title">Reports</h2>
+
+<div class="admin-report-container" *ngIf="(reportData$|async) as reportData">
+
+  <div class="row box-container">
+    <div class="col-12">
+      <h3 class="report-title">Product Report</h3>
+    </div>
+    <div class="col-lg-6 col-xl-4">
+      <div class="box" [routerLink]="[adminRoutes.productsServicesList]" [queryParams]="{ isArchive: false}">
+        <div class="box-content">
+          <div class="title">{{reportData?.products?.activeProducts}}</div>
+          <div class="name">Active Products</div>
+        </div>
+        <img src="assets/images/active-product.svg" class="bid-icon" alt="Active Products Image">
+      </div>
+    </div>
+    <div class="col-lg-6 col-xl-4">
+      <div class="box" [routerLink]="[adminRoutes.productsServicesList]" [queryParams]="{ isArchive: true}">
+        <div class="box-content">
+          <div class="title">{{reportData?.products?.inActiveProducts}}</div>
+          <div class="name">Archive Products</div>
+        </div>
+        <img src="assets/images/inactive-product.svg" class="bid-icon" alt="Inactive Products Image">
+      </div>
+    </div>
+    <div class="col-lg-6 col-xl-4">
+      <div class="box" [routerLink]="[adminRoutes.productsServicesPurchased]">
+        <div class="box-content">
+          <div class="title">{{reportData?.products?.productPurchased | currency:'USD':'symbol':'1.2-2'}}</div>
+          <div class="name">Products/Services Purchased</div>
+        </div>
+        <img src="assets/images/icon-purchase.svg" class="bid-icon" alt="Products Purchased Image">
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <ng-container *ngIf="(filteredReportsData$|async)">
+  </ng-container>
+  <ng-container>
+
+    <div class="row box-container">
+      <div class="col-12">
+
+        <div class="d-flex w-100 justify-content-between align-items-center">
+          <h3 class="report-title m-0">Quote Report</h3>
+          <div class="quote-report-head">
+            <div class="date-range-box">
+              <app-shared-date-range [showClearAll]="true" (dateFilterEvent)="quoteDateFilter($event)">
+              </app-shared-date-range>
+            </div>
+            <div class="date-filter-box">
+              <app-shared-date-filter (filterDateEvent)="quoteDateFilter($event)"></app-shared-date-filter>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-3">
+        <div class="box no-image" [queryParams]="{ order: 1, sort: 'quoteExpirationDate' }"
+          [routerLink]="['./quotes/accept-reject-quotes/list']">
+          <div class="box-content">
+            <div class="title">{{filteredReportsData?.quotes?.acceptReject}}</div>
+            <div class="name">Accept / Reject Quotes</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-3">
+        <div class="box no-image" [queryParams]="{ order: 1, sort: 'quoteExpirationDate' }"
+          [routerLink]="['./quotes/awaiting-vendor-quotes/list']">
+          <div class="box-content">
+            <div class="title">{{filteredReportsData?.quotes?.awatingVendor}}</div>
+            <div class="name">Awaiting Vendor Quotes</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-3">
+        <div class="box no-image" [queryParams]="{ order: 1, sort: 'events.startdate' }"
+          [routerLink]="['./quotes/quote-pending-payment/list']">
+          <div class="box-content">
+            <div class="title">{{filteredReportsData?.quotes?.pendingPayment}}</div>
+            <div class="name">Quotes Pending Payment</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-3">
+        <div class="box no-image" [queryParams]="{ order: -1, sort: 'updatedAt' }"
+          [routerLink]="['./quotes/expired-quotes/list']">
+          <div class="box-content">
+            <div class="title">{{filteredReportsData?.quotes?.expired}}</div>
+            <div class="name">Expired Quotes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row box-container">
+      <div class="col-12">
+        <h3 class="report-title">Order Report</h3>
+      </div>
+      <div class="col-lg-6 col-xl-3">
+        <div class="box" [routerLink]="['./orders/purchased']">
+          <div class="box-content">
+            <div class="title">{{filteredReportsData?.orders?.purchased}}</div>
+            <div class="name">Purchased Orders</div>
+          </div>
+          <img src="assets/images/purchased-order.svg" class="bid-icon" alt="Purchased Orders Image">
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-3">
+        <div class="box" [routerLink]="['./orders/canceled']">
+          <div class="box-content">
+            <div class="title">{{filteredReportsData?.orders?.canceled}}</div>
+            <div class="name">Canceled Orders</div>
+          </div>
+          <img src="assets/images/canceled-order.svg" class="bid-icon" alt="Canceled Orders Image">
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-3">
+        <div class="box cursor-default">
+          <div class="box-content">
+            <div class="title">
+              {{filteredReportsData?.products?.productPurchased | currency:'USD':'symbol':'1.2-2'}}</div>
+            <div class="name">Products/Services Purchased</div>
+          </div>
+          <img src="assets/images/icon-purchase.svg" class="bid-icon" alt="Products Purchased Image">
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-3">
+        <div class="box cursor-default">
+          <div class="box-content">
+            <div class="title">{{(filteredReportsData?.orders?.averagePurchasedOrders) | currency:'USD':'symbol':'1.2-2'}}</div>
+            <div class="name">Average Purchased Order</div>
+          </div>
+          <img src="assets/images/avg-purchase-order.svg" class="bid-icon" alt="Products Purchased Image">
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="divider"></div>
+
+
+  <div class="row box-container">
+    <div class="col-12">
+      <h3 class="report-title">Events Report</h3>
+    </div>
+    <div class="col-lg-6 col-xl-4">
+      <div class="box" [routerLink]="[adminRoutes.events]">
+        <div class="box-content">
+          <div class="title">{{reportData?.events?.upcomings}}</div>
+          <div class="name">Upcoming Events</div>
+        </div>
+        <img src="assets/images/upcoming-events.svg" class="bid-icon" alt="Upcoming Events Image">
+      </div>
+    </div>
+    <div class="col-lg-6 col-xl-4">
+      <div class="box" [routerLink]="[adminRoutes.events]" [queryParams]="{ type: pastEventType}">
+        <div class="box-content">
+          <div class="title">{{reportData?.events?.past}}</div>
+          <div class="name">Past Events</div>
+        </div>
+        <img src="assets/images/past-events.svg" class="bid-icon" alt="Past Events Image">
+      </div>
+    </div>
+  </div>
+
+
+
+</div><!-- end admin-report-container -->

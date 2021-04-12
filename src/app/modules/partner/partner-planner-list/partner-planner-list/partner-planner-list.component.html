@@ -1,0 +1,34 @@
+<nav aria-label="breadcrumb" *ngIf="isAdmin">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/admin/partner-management/list']">Partner Management</a></li>
+    <ng-container *ngIf="(partnerName$| async) as partnerName; else getName">
+      <li class="breadcrumb-item" aria-current="page" (click)="loc.back()"><a>Profile - {{partnerName}}</a>
+      </li>
+    </ng-container>
+    <ng-template #getName>
+      <ng-container *ngIf="(partnerDetails$| async)">
+        <li class="breadcrumb-item" aria-current="page" (click)="loc.back()"><a>Profile - {{partnerName$|async}}</a>
+        </li>
+      </ng-container>
+    </ng-template>
+    <li class="breadcrumb-item active" aria-current="page">Planners List
+    </li>
+  </ol>
+</nav>
+
+
+<h2 class="page-title top-first-title" [ngClass]="{'partner-section-heading-space': isPartner}">Planners List</h2>
+<!-- promocode section -->
+<div class="partner-vendor-list-container">
+
+  <div class="space-between-two" *ngIf="loader || isFilter || plannerList?.docs?.length">
+    <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+    <app-sort-by-filter [sortByData]="plannerSortFilter" (sortFilterChange)="sortFilterChange($event)"
+      class="sort-filter"></app-sort-by-filter>
+  </div>
+  <app-partner-planner-table [isAdmin]="isAdmin" [loader]="loader" (checkListLen)="checkListLen($event)"
+    [plannerList]="plannerList" (pageChangeEvent)="pageChange($event)" (fetchList)="getPlannerList($event)"
+    (unlinkPlanner)="unlinkPlanner($event)">
+
+  </app-partner-planner-table>
+</div><!-- end user-table-container -->

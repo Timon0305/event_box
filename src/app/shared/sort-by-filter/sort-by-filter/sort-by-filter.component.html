@@ -1,0 +1,6 @@
+<ng-select [formControl]="sortBy" placeholder="Sort by" [searchable]="false">
+  <ng-option *ngFor="let data of sortByData" [value]="data.id">
+    <img src="../../../../assets/images/{{data.iconName}}" alt="sort-icon" />
+    {{data.text}}
+  </ng-option>
+</ng-select>

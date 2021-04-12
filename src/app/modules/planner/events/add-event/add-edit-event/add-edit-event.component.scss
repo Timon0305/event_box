@@ -1,0 +1,71 @@
+@import "~assets/scss/variables";
+.create-event-container{
+  margin-bottom: 80px;
+  .page-title{
+    margin: 0 0 40px;
+    padding-top: 30px;
+  }
+  .form-group{
+    margin-bottom: 40px;
+    @media screen and (max-width: $phone-landscape) {
+      margin-bottom: 16px;
+    }
+  }
+  textarea{
+    min-height: 163px;
+  }
+  .form-subhead{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #000000;
+    margin-bottom: 20px;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    &.fixed-footer-padding {
+      padding-bottom: 0;
+    }
+    .page-title {
+      margin: 0 0 24px;
+      padding-top: 24px;
+    }
+    .form-subhead{
+      font-size: 14px;
+    }
+    .variable-space {
+      padding: 15px;
+    }
+    .fixed-footer {
+      padding: 15px;
+      .container-fluid {
+        padding: 0;
+        .button-container {
+          padding: 0;
+          display: flex;
+          .btn {
+            min-width: calc(50% - 8px);
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+  }
+}
+.variable-space{
+  background-color: #fafafa;
+  padding: 27px 30px 0 30px;
+}
+.fixed-footer {
+  .button-container {
+    padding: 0 25px;
+  }
+}
+.form-group{
+  margin-bottom: 40px;
+  @media screen and (max-width: $phone-landscape) {
+    margin-bottom: 16px;
+  }
+  &.bold-checkbox {
+    padding-left: 0;
+  }
+}

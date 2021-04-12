@@ -1,0 +1,125 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+.order-page-wrapper {
+  width: 100%;
+  padding: 112px 0 37px 0;
+  @media screen and (max-width: $tablet-landscape) {
+    padding: 60px 0 0 0;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+.order-detail-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 35px;
+  @media screen and (max-width: $phone-landscape) {
+    flex-wrap: wrap;
+    order: 2;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+}
+.page-title{
+  font-size: 26px;
+  font-weight: 600;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  span {
+    font-size: 18px;
+    color: rgba(#000000,  0.5);
+    font-weight: 400;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    font-size: 20px;
+    margin: 0 24px;
+    order: 1;
+  }
+}
+.order-detail-box {
+  width: calc(100% - 360px);
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px #e2e2e2;
+  padding: 35px;
+  border-radius: 5px;
+  h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #5067eb;
+    margin-bottom: 12px;
+    &.failed {
+      color: #ff5c5c;
+    }
+  }
+  p {
+    font-size: 13px;
+    margin: 0;
+    padding: 0 0 10px 0;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    margin-top: 12px;
+    span {
+      color: #5067eb;
+    }
+  }
+  .btn {
+    margin-top: 20px;
+    height: 45px;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    width: 100%;
+    order: 1;
+  }
+}
+.order-summary {
+  width: 340px;
+  box-shadow: 1px 5px 15px 1px rgba(135, 135, 135, 0.07);
+  border: solid 1px #e2e2e2;
+  padding: 20px;
+  border-radius: 5px;
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #000;
+  }
+  .count-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    span {
+      font-size: 14px;
+      &:last-child {
+        font-weight: 500;
+      }
+    }
+    &.total {
+      padding-top: 20px;
+      border-top: 1px solid #e2e2e2;
+      margin-top: 20px;
+      span {
+        font-weight: 500;
+        &:last-child {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+.order-price-summary-flow {
+  @media screen and (max-width: $phone-landscape) {
+    width: 100%;
+    order: 2;
+  }
+}
+.final-payment-table{
+  @media screen and (max-width: $phone-landscape) {
+    order: 3;
+  }
+}

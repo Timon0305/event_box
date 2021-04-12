@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="order-page-wrapper">
+    <app-breadcrumbs></app-breadcrumbs>
+    <h1 class="page-title">Payment Method</h1>
+    <div class="order-detail-row" *ngIf="(priceAndDiscount$|async) as priceAndDiscount">
+      <div class="order-detail-box">
+        <app-saved-card-list [cardList]="(profileData$| async)?.payment?.cards"
+          [amountToPay]="priceAndDiscount.amountToPay" (makePayment)="makePayment($event)">
+        </app-saved-card-list>
+        <app-add-credit-card-details [fromPayment]="true" [amountToPay]="priceAndDiscount.amountToPay"
+        (makePayment)="makePayment($event)">
+        </app-add-credit-card-details>
+      </div>
+      <app-order-price-summary [fromPayment]="true" [priceAndDiscount]="priceAndDiscount" class="order-price-summary-wrapper"></app-order-price-summary>
+    </div>
+  </div>
+</div>

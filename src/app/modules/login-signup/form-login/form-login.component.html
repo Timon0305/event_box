@@ -1,0 +1,38 @@
+<form class="signin-form" autocomplete="off" [formGroup]="loginForm" (submit)="login()">
+  <div class="form-group">
+    <label for="email">Email Address*</label>
+    <input type="email" class="form-control" formControlName="email" autocomplete="off"
+      [ngClass]="{'is-invalid': f.email?.errors && f.email?.touched}" id="email" aria-describedby="emailHelp"
+      placeholder="Enter email address">
+    <!-- please put "is-invalid" class for error -->
+    <div class="invalid-feedback" *ngIf="f.email?.errors?.required && f.email?.touched"> {{ requiredEmail }} </div>
+    <div class="invalid-feedback" *ngIf="f.email?.errors?.email && f.email?.touched">{{ invalidEmail }}</div>
+    <div class="invalid-feedback"
+      *ngIf="f.email?.errors?.invalidEmail && !f.email?.errors?.email && !f.email?.errors?.required && f.email?.touched">
+      {{ invalidEmail }}</div>
+  </div>
+  <div class="form-group input-with-sign">
+    <label for="Password">Password*</label>
+    <input [type]="passwordShow ? 'text' : 'password'" autocomplete="new-password" class="form-control" formControlName="password" id="password"
+      placeholder="Enter your password">
+    <em class="material-icons off" *ngIf="!passwordShow" (click)="showPassword()">visibility_off</em>
+    <em class="material-icons on" *ngIf="passwordShow" (click)="showPassword()">visibility_on</em>
+  </div>
+  <div class="form-row" *ngIf="!adminLogin">
+    <div class="form-group col-md-6 col-6">
+      <input type="checkbox" class="form-check-input" id="staySignin" (change)="toggleStaySignIn($event)">
+      <label class="form-check-label" for="staySignin">Stay signed in</label>
+    </div>
+    <div class="form-group col-md-6 col-6 text-right">
+      <a title="Forgot Password?" (click)="openModal(forgotPassword)" class="link-forgot">Forgot Password?</a>
+    </div>
+  </div>
+  <button type="submit" [disabled]="!loginForm.valid" class="btn btn-block primary">Sign in</button>
+  <div class="login-help-text" *ngIf="adminLogin">
+    <a (click)="openModal(forgotPassword)"><span><img
+        src="/assets/images/locked-icon.svg" alt="forgot password" /></span> Forgot your password?</a>
+  </div>
+</form>
+<ng-template #forgotPassword let-modal>
+  <app-forgot-password [isAdminLogin]="adminLogin"></app-forgot-password>
+</ng-template>

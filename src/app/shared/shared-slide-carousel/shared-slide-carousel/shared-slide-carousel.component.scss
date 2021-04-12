@@ -1,0 +1,83 @@
+@import '../../../../assets/scss/product-list';
+@import '../../../../assets/scss/comment';
+
+.planner-comments {
+  padding: 20px;
+  height: auto;
+  min-height: 100%;
+  &.user-location-container{
+    padding-bottom: 10px;
+    .user-location{
+      font-weight: 600;
+      color: #000000;
+      margin-bottom: 20px;
+    }
+    p{
+      margin-bottom: 10px;
+    }
+  }
+  .top-section {
+    margin-bottom: 0;
+  }
+
+  .content {
+    width: 100%;
+
+    .rating-container {
+      padding: 0;
+      margin-bottom: 14px;
+
+      .star{
+        height: 17px;
+        width: 18px;
+        background-size: cover;
+        margin-right: 3px;
+        @media screen and (min-width: $phone-landscape){
+          height: 20px;
+          width: 22px;
+        }
+      }
+    }
+  }
+
+  .comment-detail {
+    font-size: 14px;
+    line-height: 1.71;
+    color: #262626;
+    margin-bottom: 10px;
+  }
+
+  .comment-author {
+    font-size: 14px;
+    font-weight: 500;
+    color: #262626;
+  }
+}
+
+.title-with-button {
+  margin: 40px 0;
+  @media screen and (max-width: $phone-landscape) {
+    margin: 24px 0;
+  }
+  h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 0;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    @media screen and (min-width: $phone-landscape){
+      font-size: 24px;
+    }
+  }
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

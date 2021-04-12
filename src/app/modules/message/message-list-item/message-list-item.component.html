@@ -1,0 +1,52 @@
+<div class="list-row "
+  [ngClass]="{'unread': (message.unreadCount > 0 && !isAdmin), 'active': activeChatId === message._id}"
+  (click)="openChat()">
+  <ng-container *ngIf="isAdmin; else nonAdminListHead">
+    <div class="image-overlap-box">
+      <span class="user-avatar">
+        <img appNoImage src="{{s3BaseUrl}}{{ message?.planners?.image}}" class="img-cover" alt="user" />
+      </span>
+      <span class="user-avatar">
+        <img appNoImage src="{{s3BaseUrl}}{{ message?.vendors?.logo}}" class="img-cover" alt="user" />
+      </span>
+    </div>
+  </ng-container>
+  <ng-template #nonAdminListHead>
+    <span class="user-avatar" *ngIf="!isVendor">
+      <img appNoImage src="{{s3BaseUrl}}{{ message?.vendors?.logo}}" class="img-cover" alt="user" />
+    </span>
+    <span class="user-avatar" *ngIf="isVendor">
+      <img appNoImage src="{{s3BaseUrl}}{{ message?.planners?.image}}" class="img-cover" alt="user" />
+    </span>
+  </ng-template>
+  <div class="message-title" [ngClass]="{'admin-message-title': isAdmin}"  >
+    <ng-container *ngIf="isAdmin; else nonAdminMessageTitle">
+      <div class="admin-message-title-row">
+        <h3 class="text-truncate">{{message?.planners | formatPlannerName}}</h3>
+        <h3 class="text-truncate">{{message?.vendors?.name}}</h3>
+      </div>
+    </ng-container>
+    <ng-template #nonAdminMessageTitle>
+      <h3 class="text-truncate" *ngIf="!isVendor else plannerName">{{message?.vendors?.name}}</h3>
+      <ng-template #plannerName>
+        <h3 class="text-truncate">{{message?.planners | formatPlannerName}}</h3>
+      </ng-template>
+    </ng-template>
+
+    <ng-container *ngIf="message?.recentMessage?.type === messageType.MEDIA else nonMediaRecentMessage">
+      <p class="text-truncate">
+        <img src="../../../../assets/images/attachment.svg" alt="attachment" />
+        {{message?.recentMessage?.image?.name}}
+      </p>
+    </ng-container>
+    <ng-template #nonMediaRecentMessage>
+      <p class="text-truncate">
+        {{message?.recentMessage?.message}}
+      </p>
+    </ng-template>
+  </div>
+  <div class="message-time">
+    <p>{{message?.recentMessage?.createdAt | messageDateTime}}</p>
+    <span *ngIf="message.unreadCount">{{message.unreadCount}}</span>
+  </div>
+</div>

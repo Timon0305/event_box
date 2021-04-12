@@ -1,0 +1,2 @@
+<app-accept-reject-quotes-table [setAcceptRejectQuotesListData]="(acceptRejectQuotes$|async)?.data"
+  (fetchList)="fetchList($event)" [paramsLength]="paramsLength"></app-accept-reject-quotes-table>

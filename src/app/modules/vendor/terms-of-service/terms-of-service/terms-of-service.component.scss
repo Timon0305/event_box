@@ -1,0 +1,76 @@
+.static-content{
+  padding: 155px 0 90px;;
+  ul{
+    padding: 0 0 30px 40px;
+    margin: 0;
+    li{
+      margin-bottom: 5px;
+      list-style-type: lower-alpha;
+      @media(max-width: 480px) {
+        font-size: 14px;
+      }
+      span {
+        font-weight: 600;
+      }
+    }
+    &.arrow-list{
+      margin-bottom: 30px;
+      li{
+        margin-left: 1.8rem;
+        span.arrow{
+          margin-left: -1.8rem;
+          margin-right: 8px;
+          display: inline-block;
+          width: 15px;
+          height: 12px;
+          background: url(/assets/images/contact-right-arrow.svg) no-repeat center;
+          background-size: 100%;
+        }
+      }
+    }
+    &.nested-ul {
+      li {
+        list-style-type: lower-roman;
+      }
+    }
+  }
+  h1 {
+    text-align: center;
+    @media(max-width: 480px) {
+      text-align: left;
+      margin: 20px 0 0;
+      font-size: 18px;
+    }
+  }
+}
+
+.t-c-pages {
+  width: 1005;
+  .t-c-page-head {
+    p {
+      font-size: 14px;
+      margin-bottom: 0;
+      font-weight: 600;
+    }
+  }
+  p {
+    font-size: 16px;
+    span {
+      font-weight: 600;
+    }
+    @media(max-width: 480px) {
+     font-size: 14px;
+    }
+  }
+}
+
+.fixed-footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  background: #fafafa;
+  border-top: 1px solid #e2e2e2;
+}

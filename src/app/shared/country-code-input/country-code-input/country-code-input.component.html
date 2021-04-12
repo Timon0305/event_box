@@ -1,0 +1,13 @@
+<ng-container>
+  <ng-select [ngClass]="{'is-invalid': (countryCode?.touched && countryCode?.errors)}"
+    [items]="(countryCodesArr$|async)" [formControl]="countryCode" bindLabel="dial_code" bindValue="dial_code"
+    placeholder="Select Country Code" [searchable]="true">
+    <ng-template ng-option-tmp let-item="item" let-index="index">
+      {{item?.name}} ({{item?.dial_code}})
+    </ng-template>
+  </ng-select>
+  <ng-container *ngIf="countryCode?.touched">
+    <div class="invalid-feedback d-block" *ngIf="countryCode?.errors?.required">Country code is required
+    </div>
+  </ng-container>
+</ng-container>

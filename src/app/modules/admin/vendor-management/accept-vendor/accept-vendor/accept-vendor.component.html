@@ -1,0 +1,152 @@
+<app-breadcrumbs [dynamicBreadcrumb]="breadcrumb" *ngIf="!fromEdit"></app-breadcrumbs>
+<nav aria-label="breadcrumb" *ngIf="fromEdit">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" [routerLink]="['/admin/vendor-management/view/', vendorId]">
+      <a>Profile - {{vendorName}}</a>
+    </li>
+    <li class="breadcrumb-item active">
+      Edit Membership
+    </li>
+  </ol>
+</nav>
+<div class="package-container fixed-footer-padding">
+  <div class="page-title" *ngIf="!fromEdit; else editHeading">Membership Package</div>
+  <ng-template #editHeading>
+    <h5 class="second-title">Edit Membership Package</h5>
+  </ng-template>
+
+  <form [formGroup]="acceptVendorForm" (submit)="acceptVendor()" class="event-form">
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="packagePercent">Event Box %</label>
+        <input type="text" class="form-control" formControlName="commissionPercent"
+          [ngClass]="{'is-invalid': (f?.controls?.commissionPercent?.touched && f?.controls?.commissionPercent?.errors)}"
+          aria-describedby="packagePercentHelp" placeholder="Enter Event Box %"
+          [suffix]="prefixSuffix.PERCENT.SUFFIX_SIGN" mask="0*.00" [dropSpecialCharacters]="false"
+          [maxlength]="constNUMBER.six">
+        <ng-container *ngIf="f?.controls?.commissionPercent?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.commissionPercent?.errors?.required">Event Box % is
+            required.</div>
+          <div class="invalid-feedback"
+            *ngIf="f?.controls?.commissionPercent?.errors?.max || f?.controls?.commissionPercent?.errors?.pattern">Event
+            Box % format is not valid.</div>
+        </ng-container>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="packagePercent">Frequency</label>
+        <ng-select [items]="constPlanFrequency" [multiple]="false"
+          placeholder="Select Frequency" bindLabel="name" bindValue="id" id="planFrequency"
+          formControlName="planFrequency"
+          [ngClass]="{'is-invalid': (f?.controls?.planFrequency?.touched && f?.controls?.planFrequency?.errors)}">
+        </ng-select>
+        <ng-container *ngIf="f?.controls?.planFrequency?.touched">
+          <div class="invalid-feedback d-block" *ngIf="f?.controls?.planFrequency?.errors?.required">
+            Frequency is required.
+          </div>
+        </ng-container>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+
+      <div class="form-group col-md-6">
+        <label for="packageYearlyFee">Fee</label>
+        <input type="text" class="form-control"  formControlName="yearlySubscriptionFee"
+          [prefix]="prefixSuffix.AMOUNT.PREFIX_SIGN" mask="0*.00" [dropSpecialCharacters]="false"
+          [maxlength]="prefixSuffix.AMOUNT.MAX_LENGTH"
+          [ngClass]="{'is-invalid': (f?.controls?.yearlySubscriptionFee?.touched && f?.controls?.yearlySubscriptionFee?.errors)}"
+          aria-describedby="packageYearlyFeeHelp" placeholder="Enter yearly fee">
+
+        <ng-container *ngIf="f?.controls?.yearlySubscriptionFee?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.yearlySubscriptionFee?.errors?.required">Yearly Fee is
+            required.</div>
+          <div class="invalid-feedback"
+            *ngIf="f?.controls?.yearlySubscriptionFee?.errors?.max || f?.controls?.yearlySubscriptionFee?.errors?.pattern">
+            Yearly Fee format
+            is not valid.</div>
+        </ng-container>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="StartDate">Plan Start Date</label>
+        <div class="input-group date-time-picker">
+          <input class="form-control" type="text" #startDate="dpDayPicker"
+            [dpDayPicker]="dayPickerConfig['startDate']" [theme]="'dp-material'" formControlName="startDate"
+            [mode]="'day'" (onChange)="date = $event" [ngClass]="{'is-invalid': (f?.controls?.startDate?.touched && f?.controls?.startDate?.errors)}"/>
+          <div class="input-group-append" (click)="openSeletedDatePicker('startDate')">
+            <img src="assets/images/calendar.svg" alt="Calender" />
+          </div>
+        </div>
+        <ng-container *ngIf="acceptVendorForm?.controls?.startDate?.touched">
+          <div class="invalid-feedback d-block" *ngIf="acceptVendorForm?.controls?.startDate?.errors?.required">
+            Plan Start Date is required.</div>
+            <div class="invalid-feedback d-block" *ngIf="acceptVendorForm?.controls?.startDate?.errors?.invalidFormat || acceptVendorForm?.controls?.startDate?.errors?.format">
+              Inavlid date</div>
+        </ng-container>
+      </div>
+
+    </div><!-- end form row -->
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="packageSetupFee">One Time Setup Fee</label>
+        <input type="text" [readonly]="fromEdit && isTermsAccepted" class="form-control" formControlName="setupFee" [prefix]="prefixSuffix.AMOUNT.PREFIX_SIGN"
+          mask="0*.00" [dropSpecialCharacters]="false" [maxlength]="prefixSuffix.AMOUNT.MAX_LENGTH"
+          [ngClass]="{'is-invalid': (f?.controls?.setupFee?.touched && f?.controls?.setupFee?.errors), 'disabled': (fromEdit && isTermsAccepted) }"
+          aria-describedby="packageSetupFeeHelp" placeholder="Enter one time setup fee">
+
+        <ng-container *ngIf="f?.controls?.setupFee?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.setupFee?.errors?.required">One Time Setup Fee is required.
+          </div>
+          <div class="invalid-feedback"
+            *ngIf="f?.controls?.setupFee?.errors?.max || f?.controls?.setupFee?.errors?.pattern">One Time Setup Fee
+            format is not valid.</div>
+        </ng-container>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="packageSetupFee">One Time Planner Referral Fee</label>
+        <input type="text"  class="form-control" formControlName="plannerCommission" [prefix]="prefixSuffix.AMOUNT.PREFIX_SIGN"
+          mask="0*.00" [dropSpecialCharacters]="false" [maxlength]="prefixSuffix.AMOUNT.MAX_LENGTH"
+          [ngClass]="{'is-invalid': (f?.controls?.plannerCommission?.touched && f?.controls?.plannerCommission?.errors)}"
+          aria-describedby="packageSetupFeeHelp" placeholder="Enter one time referral fee">
+
+        <ng-container *ngIf="f?.controls?.plannerCommission?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.plannerCommission?.errors?.required">One Time Planner Referral Fee is required.
+          </div>
+          <div class="invalid-feedback"
+            *ngIf="f?.controls?.plannerCommission?.errors?.max || f?.controls?.plannerCommission?.errors?.pattern">One Time Planner Referral Fee
+            format is not valid.</div>
+        </ng-container>
+      </div>
+    </div><!-- end form row -->
+
+    <div class="form-row">
+      <div class="form-group col-12">
+        <label for="packageTerms">Terms & Conditions for Vendor*</label>
+        <!-- <textarea class="form-control" formControlName="terms_conditions" [ngClass]="{'is-invalid': (f?.controls?.terms_conditions?.touched && f?.controls?.terms_conditions?.errors),
+          'disabled': fromEdit}" placeholder="Enter terms & conditions for vendor"></textarea> -->
+<div [innerHtml] = "TERMS_AND_COND"></div>
+        <ng-container *ngIf="f?.controls?.terms_conditions?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.terms_conditions?.errors?.required">Terms & Conditions are
+            required.</div>
+        </ng-container>
+      </div>
+    </div><!-- end form row -->
+
+  </form>
+
+</div>
+
+<div class="fixed-footer">
+  <div class="container-fluid">
+    <div class="button-container">
+      <button type="button" *ngIf="!fromEdit" class="btn link mw-220" [routerLink]="['/admin/pending-vendors']"
+        [queryParams]="{order: -1, sort: 'createdAt'}">Cancel</button>
+      <button type="button" *ngIf="fromEdit" class="btn link mw-220"
+        [routerLink]="['/admin/vendor-management/view', vendorId]">Cancel</button>
+      <button type="button" class="btn primary mw-220" [disabled]="!f.valid" (click)="acceptVendor()">Save
+        Details</button>
+    </div>
+  </div>
+</div>

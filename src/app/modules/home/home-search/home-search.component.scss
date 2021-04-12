@@ -1,0 +1,75 @@
+@import "~assets/scss/variables";
+.carousal-section{
+  height: 344px;
+  margin-top: 60px;
+  padding-top: 35px;
+  background-color: #000;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  .container{
+    height: 100%;
+  }
+  .center-content{
+    display: flex;
+    position: relative;
+    z-index: 9;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    h2{
+      font-size: 20px;
+      font-weight: 700;
+      max-width: 550px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+    p{
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 36px;
+      text-align: center;
+    }
+  }
+  .carousal-item{
+    opacity: 0.3;
+    filter: alpha(opacity=50);
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 8;
+    top: 0;
+    left: 0;
+  }
+  @media screen and (min-width: $tablet-landscape){
+    margin-top: 111px;
+    height: 514px;
+    padding-top: 20px;
+  }
+  @media screen and (min-width: $tablet-portrait){
+    .center-content {
+      h2  {
+        font-size: 30px;
+      }
+      p {
+        font-size: 17px;
+      }
+    }
+  }
+  @media screen and (max-width: $phone-landscape) {
+    height: auto;
+    padding: 120px 0 50px 0;
+    margin-top: 15px;
+    .center-content {
+      p {
+        margin-bottom: 15px;
+      }
+      h2 {
+        margin: 0 auto 15px;
+      }
+    }
+  }
+}

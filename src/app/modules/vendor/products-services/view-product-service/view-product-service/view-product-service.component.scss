@@ -1,0 +1,253 @@
+@import '../../../../../../assets/scss/product-list';
+@import '../../../../../../assets/scss/comment';
+
+.product-detail-container {
+  .title-with-button {
+    margin: 40px 0;
+    @media screen and (max-width: $phone-landscape) {
+      margin: 24px 0;
+    }
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #000000;
+      margin-bottom: 0;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    a {
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .planner-comments {
+    padding: 20px;
+
+    .top-section {
+      margin-bottom: 0;
+    }
+
+    .content {
+      width: 100%;
+
+      .rating-container {
+        padding: 0;
+        margin-bottom: 14px;
+
+        .star{
+          height: 17px;
+          width: 18px;
+          background-size: cover;
+          margin-right: 3px;
+          @media screen and (min-width: $phone-landscape){
+            height: 20px;
+            width: 22px;
+          }
+        }
+      }
+    }
+
+    .comment-detail {
+      font-size: 14px;
+      line-height: 1.71;
+      color: #262626;
+      margin-bottom: 10px;
+    }
+
+    .comment-author {
+      font-size: 14px;
+      font-weight: 500;
+      color: #262626;
+    }
+  }
+}
+
+.product-detail {
+  padding-left: 10px;
+  .page-title {
+    color: rgba(#000000, 0.7);
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    @media screen and (max-width: $phone-landscape){
+      font-size: 18px !important;
+    }
+  }
+  .product-category{
+    color: rgba(#000000, 0.5);
+    font-size: 16px;
+    line-height: 1.31;
+    margin-bottom: 10px;
+    span{
+      color: rgba(#000000, 0.8);
+    }
+    &.extra-margin{
+      margin-bottom: 20px;
+    }
+  }
+  .product-owner {
+    font-weight: 500;
+    line-height: 1.5;
+    color: #8c8c8c;
+    margin-bottom: 15px;
+  }
+
+  .rating-container {
+    margin-bottom: 18px;
+    padding: 0;
+
+    .rating-count {
+      color: #000000;
+    }
+  }
+
+  .price-container {
+    margin-bottom: 20px;
+    align-items: baseline;
+    padding-left: 0;
+
+    .text {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.17;
+      color: #8c8c8c;
+    }
+
+    .amount {
+      font-size: 30px;
+      font-weight: 700;
+      margin-left: 8px;
+      width: calc(100% - 170px) !important;
+      @media screen and (max-width: $phone-landscape){
+        font-size: 28px;
+      }
+    }
+  }
+
+  .request-btn {
+    height: 46px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 9px 45px 8px;
+  }
+
+  .divider {
+    margin: 24px 0;
+  }
+
+  .product-sub-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    .italic{
+      font-weight: 300;
+      font-style: italic;
+    }
+  }
+
+  .des {
+    color: rgba(#000000, 0.8);
+    line-height: 1.57;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  .vendor-profile {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 20px;
+
+    .profile-image {
+      margin-right: 12px;
+
+      img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+      }
+    }
+
+    .profile-des {
+      .profile-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .profile-sub-title {
+        color: rgba(#000000, 0.8);
+        font-size: 12px;
+      }
+    }
+  }
+
+  .feedback-form {
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-control {
+      min-height: 120px;
+    }
+
+    .btn {
+      height: 40px;
+      font-size: 14px;
+      padding: 9px 45px 8px;
+      margin-bottom: 30px;
+    }
+    @media screen and (max-width: $phone-landscape) {
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.vendor-product-detail{
+  .vendor-product-top-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0 30px;
+    @media screen and (max-width: $phone-landscape) {
+      margin-bottom: 24px;
+    }
+  }
+  .top-bar-btns{
+    text-align: right;
+    min-width: 200px;
+    .btn{
+      height: 40px;
+      font-size: 13px;
+      min-width: 87px;
+      padding: 9px 19px 8px;
+      & + .btn{
+        margin-left: 12px;
+      }
+    }
+  }
+}
+.review-container{
+  .title-with-button {
+    margin: 40px 0;
+    @media screen and (max-width: $phone-landscape) {
+      margin: 24px 0;
+    }
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #000000;
+      margin-bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<div class="table-body" *ngFor="let item of ratingNreviewData?.docs">
+    <div class="tbody-data" data-label="Product" *ngIf="referrer">
+        <div class="product-col">
+            <em><img src="{{item?.products?.defaultImageUrl}}" appNoImage alt="Product Image"
+                    class="product-image" /></em>
+            <span>{{item?.products?.name | titlecase}}</span>
+        </div>
+    </div>
+    <div class="tbody-data" data-label="Rating">
+        <app-shared-view-rating-star [rating]="item?.rating"></app-shared-view-rating-star>
+    </div>
+    <div class="tbody-data" data-label="Comments"><span>{{item?.review}}</span></div>
+    <div class="tbody-data" data-label="Planner Name">
+        <span>{{ (referrer) ? (item?.planners | formatPlannerName) : (item?.user | formatPlannerName)}}</span></div>
+    <div class="tbody-data" data-label="Date/Time of Review"><span>{{item?.createdAt | date: 'mediumDate'}}
+            {{item?.createdAt | date:'hh:mm a'}}</span></div>
+    <div class="tbody-data" data-label="Action" *ngIf="isAdmin">
+        <div class="table-button-wrapper" (click)="removeItem(item)">
+            <button class="btn link" type="button">Delete</button>
+        </div>
+    </div>
+</div>

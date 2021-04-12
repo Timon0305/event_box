@@ -1,0 +1,59 @@
+/*=============================================
+*   screen width
+=============================================*/
+
+$phone-landscape: 576px;
+$tablet-portrait: 768px;
+$tablet-landscape: 992px;
+$tablet-pro: 1024px;
+$desktop: 1200px;
+$desktop-hd: 1400px;
+
+$font-weight: 400;
+$font-size-base: 14px;
+$line-height-base: 1;
+
+//-----------Custom variables will goes here
+$white:                                         #FFFFFF;
+$black:                                         #000000;
+$grey:                                          #333333 !default;
+$green:                                         #0a715f !default;
+$red:                                           #fe2842 !default;
+
+$theme-color:                                   #5067eb !default;
+$theme-text:                                    #111210 !default;
+$theme-secondary-text:                          #000000 !default;
+$secondary-para-text:                           #828282 !default;
+$theme-main-background:                         #f5f6fa !default;
+
+$link-color:                                    #5067eb !default;
+$main-border-color:                             #e1e1e1 !default;
+
+// Button
+$primary-button-background:                      #5067eb !default;
+$primary-button-text:                            #FFFFFF !default;
+$btn-link-background:                            #FFFFFF !default;
+$btn-link-text:                                  #000 !default;
+$btn-link-border:                                #5067eb !default;
+
+
+$input-background:                              #FFFFFF;
+$input-border-color:                            #e1e1e1;
+$input-border-active-color:                     #e1e7f6;
+$input-placeholder:                             #969696;
+$input-text:                                    #000000;
+$input-label-color:                             #969696;
+$error-color:                                   #fe2842;
+$input-focus-border-color:                      #c4cfed;
+
+// Modal
+$modal-header-background:                       #f7faff;
+
+
+// Checkbox and radio
+$checkbox-background:                           transparent;
+$checkbox-hover-background:                     transparent;
+$checkbox-label-color:                          #2c2b2b;
+
+$radio-background:                              #5067eb;
+$table-text-color:                              #606060;

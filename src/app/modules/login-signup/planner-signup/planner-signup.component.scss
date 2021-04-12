@@ -1,0 +1,108 @@
+@import "~assets/scss/variables";
+
+.modal-header {
+  .close{
+    &.big-close{
+      position: absolute;
+      right: 1.5rem;
+      top: 2rem;
+      @media screen and (max-width: $phone-landscape) {
+        display: none;
+      }
+    }
+  }
+  &.with-sub-header {
+    @media screen and (max-width: $phone-landscape) {
+      padding: 15px;
+      .modal-title {
+        font-size: 18px;
+      }
+      .modal-sub-title {
+        font-size: 13px;
+        margin-top: 5px;
+      }
+    }
+  }
+}
+.signin-form{
+  .form-control{
+    height: 50px;
+  }
+}
+.link-forgot{
+  font-size: 15px;
+  color: $black;
+  cursor: pointer;
+  &:hover{
+    color: $theme-color;
+  }
+  &:not([href]):not([tabindex]){
+    cursor: pointer;
+    color: $black;
+    &:hover{
+      color: $theme-color;
+    }
+  }
+}
+.btn {
+  .primary{
+    margin-top: 3px;
+  }
+  @media screen and (max-width: $phone-landscape) {
+    height: 40px;
+    font-size: 13px;
+  }
+}
+.agree-checkbox{
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  label{
+    padding-left: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  span{
+    color: #2c2b2b;
+  }
+  a{
+    text-decoration: underline;
+    &:hover{
+      color: $theme-color;
+    }
+    &:not([href]):not([tabindex]){
+      cursor: pointer;
+      color: $black;
+      text-decoration: underline;
+      &:hover{
+        color: $theme-color;
+      }
+      @media screen and (max-width: $phone-landscape) {
+        color: #5067eb;
+        text-decoration: none;
+      }
+    }
+  }
+  @media screen and (max-width: $phone-landscape) {
+    font-size: 12px;
+  }
+}
+
+.modal-body {
+  @media screen and (max-width: $phone-landscape) {
+    padding: 20px 15px;
+  }
+}
+.modal-footer {
+  @media screen and (max-width: $phone-landscape) {
+    .links {
+      font-size: 12px;
+    }
+    .text {
+      font-size: 12px;
+    }
+    .divider {
+      margin: 20px 0 10px 0;
+    }
+  }
+}

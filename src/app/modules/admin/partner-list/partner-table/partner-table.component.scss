@@ -1,0 +1,41 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.admin-partner-table {
+  min-height: 310px;
+
+  .product-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+  }
+
+  .btn {
+    width: 100px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+
+    &+.btn {
+      margin-top: 10px;
+    }
+  }
+
+  span {
+    display: block;
+    width: 100%;
+  }
+
+  .table-head,
+  .table-body {
+    justify-content: space-between;
+  }
+
+  .table-body {
+    color: rgba(#000, 0.8);
+  }
+}
+
+.capitalize {
+  text-transform: capitalize;
+}

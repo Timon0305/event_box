@@ -1,0 +1,17 @@
+<img src="{{imageSrc ? imageSrc : '/assets/images/delete-user.svg'}}" *ngIf="!imageLoaded"
+  alt="Inactive user" (load)="imageLoad()" class="d-none">
+
+<div class="modal-body delete-modal" *ngIf="imageLoaded">
+  <img src="{{imageSrc ? imageSrc : '/assets/images/delete-user.svg'}}" alt="Inactive user">
+  <h4 class="confirm-title">{{title}}</h4>
+  <p>{{text}}</p>
+
+  <div class="btn-space with-border">
+    <button type="button" class="btn" (click)="activeModal.close(false)"
+      [ngClass]="leftButton === 'Cancel'? 'primary' : 'link'">
+      {{leftButton}}
+    </button>
+    <button type="submit" class="btn" [ngClass]="rightButton === 'No' ? 'primary' : 'link'"
+      (click)="activeModal.close(true)">{{rightButton}}</button>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<nav aria-label="breadcrumb" *ngIf="isAdmin">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/admin/partner-management/list']">Partner Management</a></li>
+    <ng-container *ngIf="(partnerName$| async) as partnerName; else getName">
+      <li class="breadcrumb-item" aria-current="page" (click)="loc.back()"><a>Profile - {{partnerName}}</a>
+      </li>
+    </ng-container>
+    <ng-template #getName>
+      <ng-container *ngIf="(partnerDetails$| async)">
+        <li class="breadcrumb-item" aria-current="page" (click)="loc.back()"><a>Profile - {{partnerName$|async}}</a>
+        </li>
+      </ng-container>
+    </ng-template>
+    <li class="breadcrumb-item active" aria-current="page">Vendors List
+    </li>
+  </ol>
+</nav>
+
+
+<h2 class="page-title top-first-title" [ngClass]="{'partner-section-heading-space': isPartner}">Vendors List</h2>
+
+<ng-container *ngIf="(vendorList$|async)"></ng-container>
+<!-- promocode section -->
+<div class="partner-vendor-list-container">
+  <div class="space-between-two" *ngIf="loader || isFilter || vendorList?.docs?.length">
+    <app-shared-search (search)="search($event)"></app-shared-search>
+    <app-sort-by-filter [sortByData]="vendorListSort" (sortFilterChange)="sortFilterChange($event)" class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+  <app-partner-vendor-table [loader]="loader" (checkListLen)="checkListLen($event)" [vendorList]="vendorList"
+    (pageChangeEvent)="pageChange($event)" (fetchList)="getVendorListData($event)" (unlinkVendors)="unlinkVendors($event)"></app-partner-vendor-table>
+
+</div><!-- end user-table-container -->

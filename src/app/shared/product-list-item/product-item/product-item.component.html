@@ -1,0 +1,22 @@
+<div class="item-container" (click)="navigateDetailPage(product._id)">
+  <div class="image-section">
+    <div class="like-container" *ngIf="!isVendor">
+      <img src="assets/images/fav.svg" alt="non-favourite" *ngIf="!isFavourite" (click)="markAsFav($event)" />
+      <img src="assets/images/fav-active.svg" alt="Favourite" *ngIf="isFavourite" (click)="markAsFav($event)" />
+    </div>
+    <img src="{{product.defaultImageUrl}}" alt="Product" class="product-image" appNoImage />
+  </div>
+  <p class="product-name" *ngIf="isLocationExist && !fromOtherProducts">
+    {{ (referrer === pages.HOME)? ((product?.willTravel) ? travelType[1].text: travelType[0].text)   : product?.travelType | uppercase}}
+  </p>
+  <p class="product-title text-truncate" title="{{product?.name}}">{{product?.name}}</p>
+  <p class="product-category">{{product?.company?.name | uppercase}}</p>
+  <app-shared-view-rating-star class="product-item-rating" [rating]="product?.avgRating"
+    [ratingCount]="product?.ratingCount"></app-shared-view-rating-star>
+  <p class="product-miles" *ngIf="isLocationExist && !fromOtherProducts">
+    {{ (getMiles >=0 && getMiles!== '') ? (getMiles | number : '1.0-1') + ' miles' : '&nbsp;' }}</p>
+  <div class="price-container">
+    <span class="text">Price Starting at:</span>
+    <span class="amount small"   [value]="product.price" appPriceContainer>{{product.price | currency:'USD'}}</span>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.ach-report-container{
+  .title-with-button{
+    padding-top: 15px;
+    margin-bottom: 30px;
+  }
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+  }
+  .select-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .ng-select{
+      margin-left: 16px;
+      min-width: 200px;
+    }
+  }
+}
+
+.ach-table{
+  min-height: 270px;
+  .table-head,
+  .table-body{
+    justify-content: space-between;
+  }
+  .action-items{
+    display: inline-block;
+    &:hover{
+      svg{
+        g{
+          path{
+            &:nth-child(2){
+              fill: #5067eb;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.ach-modal-table{
+  min-height: 200px;
+  .table-head,
+  .table-body{
+    justify-content: space-between;
+  }
+  .table-button-wrapper{
+    .link{
+      height: auto;
+      font-size: 13px;
+      padding: 0;
+      background: transparent;
+      color: rgba($color: #000000, $alpha: 0.8);
+      border: 0;
+      border-radius: 0;
+      &:hover,
+      &:focus,
+      &:active{
+        color: #5067eb;
+        text-decoration: underline;
+        background: transparent;
+        font-weight: 600;
+      }
+    }
+  }
+}

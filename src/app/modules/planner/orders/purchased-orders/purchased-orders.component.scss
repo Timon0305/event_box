@@ -1,0 +1,91 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+
+
+.tab-content-head{
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  .select-list-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: calc(100% - 400px);
+    .ng-select{
+      min-width: 200px;
+    }
+    .btn {
+      margin-left: 16px;
+    }
+  }
+  .sort-filter {
+    margin-left: 10px;
+  }
+  &.tab-head-with-report-filter {
+    justify-content: flex-start;
+    .order-report-filter-section {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      p {
+        margin: 0 10px 0 10px;
+        font-size: 15px;
+      }
+    }
+    @media screen and (max-width: $tablet-pro) {
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .order-report-filter-section {
+        margin-top: 20px;
+        flex-wrap: wrap;
+        width: 100%;
+        p {
+          margin: 0 15px 0 0;
+        }
+      }
+    }
+    @media screen and (max-width: $phone-landscape) {
+      .order-report-filter-section {
+        p {
+          margin: 0 0 15px 0;
+        }
+      }
+    }
+  }
+}
+.purchased-order-table{
+  min-height: 270px;
+  .btn{
+    min-width: 130px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+    & + .btn{
+      margin-top: 10px;
+    }
+    @media screen and (max-width: $desktop) {
+      min-width: 100%;
+
+    }
+  }
+  .table-head,
+  .table-body{
+    justify-content: space-between;
+  }
+  .toggle-dropdown-icon{
+    margin-left: 3px;
+  }
+}
+@media screen and (max-width: $phone-landscape) {
+  .tab-content-head {
+    margin-bottom: 24px;
+    .sort-filter {
+      margin-left: 0;
+      &.sm-filter-dropdown {
+        width: calc(50% - 8px);
+        min-width: 1px;
+      }
+    }
+  }
+}

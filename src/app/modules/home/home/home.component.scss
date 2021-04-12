@@ -1,0 +1,95 @@
+@import '~assets/scss/product-list';
+@import '~assets/scss/comment';
+@import "~assets/scss/variables";
+
+.section-title{
+  font-size: 18px;
+  font-weight: 600;
+  padding-top: 30px;
+  margin-bottom: 16px;
+  @media screen and (min-width: $tablet-portrait){
+    padding-top: 40px;
+    font-size: 24px;
+  }
+}
+.section-text{
+  font-size: 13px;
+  line-height: 1.86;
+  color: #262626;
+  margin-bottom: 36px;
+  @media screen and (min-width: $tablet-portrait){
+    font-size: 14px;
+  }
+}
+.section-info{
+  margin-bottom: 40px;
+  img{
+    height: 64px;
+    width: 64px;
+    margin-bottom: 20px;
+  }
+  h5{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 17px;
+  }
+  p{
+    line-height: 1.86;
+    color: #262626;
+    max-width: 343px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 13px;
+    &.with-right-sign{
+      position: relative;
+      &::before{
+        content: '';
+        width: 15px;
+        height: 12px;
+        display: inline-block;
+        background: url(../../../../assets/images/right-sign.svg) no-repeat center;
+        margin-right: 7px;
+        position: relative;
+        top: 1px;
+      }
+    }
+  }
+  @media screen and (min-width: $tablet-portrait){
+    h5{
+      font-size: 20px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+}
+.title-with-button{
+  display: flex;
+  width: 100%;
+  margin: 40px auto 28px;
+  justify-content: space-between;
+  align-items: center;
+  h3{
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    @media screen and (min-width: $tablet-portrait){
+      font-size: 24px;
+    }
+  }
+  a{
+    font-size: 12px;
+    flex: none;
+    &:hover{
+      text-decoration: none;
+    }
+    @media screen and (min-width: $tablet-portrait){
+      font-size: 14px;
+    }
+  }
+}
+.divider{
+  height: 1px;
+  width: 100%;
+  background: #e2e2e2;
+}

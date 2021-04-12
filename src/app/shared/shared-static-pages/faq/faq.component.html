@@ -1,0 +1,155 @@
+<app-header-submenu [isHomePage]="true" [isPublicPages]="true" ></app-header-submenu>
+
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="static-content">
+          <h1 class="static-heading">FAQs</h1>
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>What is Event Box? What is the benefit for using this platform?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq1 = !collapsedFaq1"
+              [attr.aria-expanded]="collapsedFaq1"></a>
+            </div>
+            <div class="content" [ngbCollapse]="collapsedFaq1">We are an online marketplace that connects pre-vetted vendors with planners to streamline any event. Event Box was founded by event industry veterans a leader in the Event Industry with a team of industry veterans.</div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>What is the history of Event Box?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq2 = !collapsedFaq2"
+              [attr.aria-expanded]="!collapsedFaq2"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq2">Founded in 2019, Event Box has been years in the making. Liron David and his team were always asked by clients, friends and work acquaintances for vendor suggestions and recommendations for creative products for multiple locations. The team has taken their passion for finding the coolest innovative products and services and connecting all planners to be able to source the newest event trends.</div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>What event types does Event Box serve?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq3 = !collapsedFaq3"
+              [attr.aria-expanded]="!collapsedFaq3"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq3">Event Box works across an array of events, from weddings to corporate meetings, even product launches.</div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>What markets does Event Box serve?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq4 = !collapsedFaq4"
+              [attr.aria-expanded]="!collapsedFaq4"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq4">
+              <p>Currently Event Box services the Metropolitan NY area, however we are rapidly expanding to other US Cities.
+              <p>Sign up for our <a href="javascript:void(0)" title="Newsletter" class="bold" (click)="scrollSubscribeNewsletter()">newsletter</a> and follow our Social Media for updates! </p>
+            </div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>Who is considered a “Planner”? </h4>
+              <a class="drop-arrow" (click)="collapsedFaq5 = !collapsedFaq5"
+              [attr.aria-expanded]="!collapsedFaq5"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq5">
+              <p>Anyone that is looking to book products and services from vendors for any type of event.</p>
+              <p>Some planner types include:  Event Planners of all kinds - Agency, Company Internal, Third Party, Social Party Planner, Event Venues, DMC Planners.</p>
+            </div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>I’m planning an event in NY but I am based in another country, can I use Event Box?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq6 = !collapsedFaq6"
+              [attr.aria-expanded]="!collapsedFaq6"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq6">Yes! Please note all pricing is in USD.</div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>If I am a planner and I need to send a certificate of insurance or provide floor plans or other important documents, what do I need to do?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq7 = !collapsedFaq7"
+              [attr.aria-expanded]="!collapsedFaq7"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq7">You can attach the items in the message section when communicating with the vendor(s).</div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>What is the cancellation policy after a quote is paid for by the planner?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq8 = !collapsedFaq8"
+              [attr.aria-expanded]="!collapsedFaq8"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq8">A planner has 24 hours after paying for an order to cancel it.  If there are any issues contact <a href="mailto:info@myeventbox.com" title="Contact">info@myeventbox.com</a>.</div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>If I am the planner, who can I contact if I have a question about an item before I submit a quote request?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq9 = !collapsedFaq9"
+              [attr.aria-expanded]="!collapsedFaq9"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq9">You can message the vendor on the product/service micro page.</div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>How do I become a vendor on Event Box?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq10 = !collapsedFaq10"
+              [attr.aria-expanded]="!collapsedFaq10"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq10">
+              <p>If you are a new vendor you would need to click on the vendor sign up link.</p>
+              <p>The Event Box team will review your company information and will either accept or reject your business.</p>
+            </div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>As a vendor, how do I provide quotes to planners? </h4>
+              <a class="drop-arrow" (click)="collapsedFaq11 = !collapsedFaq11"
+              [attr.aria-expanded]="!collapsedFaq11"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq11">
+              <p>A planner initiates a quote request therefore you will be alerted by email and if logged in you will receive a notification.</p>
+              <p>You then have the opportunity to fill out a quote form and send it back to the planner through the Event Box platform or you can reject the request for a quote.</p>
+            </div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>What are the fees involved?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq12 = !collapsedFaq12"
+              [attr.aria-expanded]="!collapsedFaq12"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq12">
+              <p>If you are a planner, the service is free of charge!</p>
+              <p>If you are a vendor, Event Box charges a transaction fee.</p>
+            </div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>How do I get in contact with a member of the Event Box team? </h4>
+              <a class="drop-arrow" (click)="collapsedFaq13 = !collapsedFaq13"
+              [attr.aria-expanded]="!collapsedFaq13"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq13">See our Contact Us page. Or email us at <a href="mailto:info@myeventbox.com" title="Email us">info@myeventbox.com</a></div>
+          </div><!-- faq-list -->
+
+          <div class="faq-list">
+            <div class="content-heading">
+              <h4>Do you have a mailing list?</h4>
+              <a class="drop-arrow" (click)="collapsedFaq14 = !collapsedFaq14"
+              [attr.aria-expanded]="!collapsedFaq14"></a>
+            </div>
+            <div class="content" [ngbCollapse]="!collapsedFaq14">Yes! Sign up for it <a  title="Sign up" class="bold" href="javascript:void(0)" (click)="scrollSubscribeNewsletter()">here</a>.</div>
+          </div><!-- faq-list -->
+
+        </div><!-- static-content -->
+      </div><!-- col-12 -->
+    </div><!-- row -->
+  </div><!-- container -->
+  <app-footer></app-footer>
+

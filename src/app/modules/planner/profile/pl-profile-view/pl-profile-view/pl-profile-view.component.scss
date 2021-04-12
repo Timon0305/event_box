@@ -1,0 +1,17 @@
+@import "~assets/scss/variables";
+.top-first-title{
+  padding-top: 35px;
+  margin-bottom: 40px;
+  @media screen and (max-width: $phone-landscape) {
+    padding-top: 24px;
+    margin-bottom: 24px;
+    font-size: 20px;
+  }
+}
+.divider {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  @media screen and (max-width: $phone-landscape) {
+    margin-bottom: 15px;
+  }
+}

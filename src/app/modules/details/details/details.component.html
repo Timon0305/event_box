@@ -1,0 +1,136 @@
+<ng-container *ngIf="productServiceDetail?.data as data;">
+  <div class="container fixed-header-padding product-detail-container fixed-subheader">
+    <ng-container *ngIf="navigationFrom !== 'quoteDetails'; else quotesBreadcrumb">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" [routerLink]="['/']">
+            <a>Home</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="route.snapshot.queryParams.fromSearch" (click)="location.back()">
+            <a>{{ route.snapshot.queryParams.categoryName? route.snapshot.queryParams.categoryName : 'Search Results'}}</a>
+          </li>
+          <li class="breadcrumb-item"
+            *ngIf="route.snapshot.queryParams.fromSearch && route.snapshot.queryParams.subCategoryName"
+            (click)="location.back()">
+            <a>{{ route.snapshot.queryParams.subCategoryName}}</a>
+          </li>
+          <li class="breadcrumb-item active">
+            {{data?.name}}
+          </li>
+        </ol>
+      </nav>
+    </ng-container>
+    <ng-template #quotesBreadcrumb>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" (click)="location.back()">
+            <a>Quote Request Details</a>
+          </li>
+          <li class="breadcrumb-item active">
+            {{data?.name}}
+          </li>
+        </ol>
+      </nav>
+    </ng-template>
+    <div class="row">
+      <div class="col-12 col-lg-6">
+        <span>
+          <app-shared-image-gallery [imageArray]="data.imagesUrl || []" [defaultImage]="data.defaultImageUrl || ''">
+          </app-shared-image-gallery>
+          <div class="above-mobile" *ngIf="!mobileOnlyReview && (ratingNreviewObservable$ | async) as productRating;">
+            <app-shared-slide-carousel *ngIf="productRating?.docs.length" [referrer]="pages.DETAIL"
+              [setLocations]="productRating?.docs"></app-shared-slide-carousel>
+          </div>
+        </span>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="product-detail">
+          <div class="page-title">{{ data?.name }}</div>
+          <div class="product-owner">By <span
+              (click)="navigateToSearch({company: data?.company?._id, companyName:data?.company?.name})"
+              class="text-underline cursor-pointer">{{ data?.company.name }}</span></div>
+          <app-shared-view-rating-star [rating]="data?.avgRating" [ratingCount]="data?.ratingCount">
+          </app-shared-view-rating-star>
+          <div class="price-container">
+            <span class="text">Price Starting at:</span>
+            <span class="amount">{{data?.price | currency:'USD'}}</span>
+          </div>
+          <button class="btn primary request-btn" [disabled]="isVendor || isAdmin"
+            (click)="initiateQuoteRequestProcess(data)">
+            Add to Quote Request Folder
+          </button>
+
+          <div class="divider"></div>
+
+          <h5 class="product-sub-title">Product Description</h5>
+          <p class="des">{{data?.description}}</p>
+          <h5 class="product-sub-title">Additional Details <span class="italic">(Guidelines)</span></h5>
+          <p class="des">{{data?.additionalDetails}}</p>
+          <div class="divider"></div>
+
+          <h5 class="product-sub-title" *ngIf="data?.videos[0]">Videos</h5>
+          <app-shared-video-list *ngIf="data?.videos[0]" [videos]="data.videos || []"></app-shared-video-list>
+          <div class="divider" *ngIf="data?.videos[0]"></div>
+
+          <h5 class="product-sub-title">Vendor Details</h5>
+          <div class="vendor-profile">
+            <div class="profile-image">
+              <img src="{{ data.company.logoUrl}}" alt="vendor logo" appNoImage />
+            </div>
+
+            <div class="profile-des cursor-pointer"
+              (click)="navigateToSearch({company: data?.company?._id, companyName:data?.company?.name})">
+              <div class="profile-title">{{ data?.company.name  }}</div>
+              <!--Locations Container-->
+              <ng-container *ngIf="data?.locations.length">
+                <div class="profile-sub-title">
+                  {{data?.locations[0]?.location?.address}}, {{data?.locations[0]?.location?.city}},
+                  {{data?.locations[0]?.location?.state}}, {{data?.locations[0]?.location?.zipcode}}
+                </div>
+                <!--More container-->
+                <div class="select-box-without-border" (click)="$event.stopPropagation()"
+                  *ngIf="data?.locations.length > 1">
+                  <ng-select placeholder="{{data.locations.length - 1}} More" [searchable]="false">
+                    <ng-container *ngFor="let location of data?.locations; let locationIndex = index;">
+                      <ng-option [disabled]="true" *ngIf="locationIndex !==0">{{location?.location?.address}},
+                        {{location?.location?.city}}, {{location?.location?.state}}, {{location?.location?.zipcode}}
+                      </ng-option>
+                    </ng-container>
+                  </ng-select>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <!--Feedback form-->
+          <app-message-vendor *ngIf="!isVendor && !isAdmin"></app-message-vendor>
+
+          <div class="mobile-only" *ngIf="mobileOnlyReview && (ratingNreviewObservable$ | async) as productRating;">
+            <app-shared-slide-carousel *ngIf="productRating?.docs.length" [referrer]="pages.DETAIL"
+              [setLocations]="productRating?.docs"></app-shared-slide-carousel>
+          </div>
+
+        </div><!-- end product-detail -->
+      </div>
+    </div>
+
+    <div class="divider mt-md-5"></div>
+
+    <div class="title-with-button" *ngIf="productsCount > 0">
+      <h3>Other Items Provided by {{ data?.company.name  }}</h3>
+      <a href="javascript:void(0)"
+        (click)="navigateToSearch({company: data?.company?._id, companyName:data?.company?.name})" class="link"
+        title="View all">View all
+        <img src="assets/images/arrow-right.svg" alt="Arrow Righr" />
+      </a>
+    </div>
+    <div class="row mb-5" *ngIf="productsCount > 0">
+      <ng-container *ngFor="let productEl of products.hits.hits;">
+        <app-product-item class="col-6 col-md-4 col-lg-3 col-xl-2 product-item-col" [product]="productEl?._source"
+          [productId]="productEl?._id" [fromOtherProducts]="true">
+        </app-product-item>
+      </ng-container>
+    </div>
+
+  </div>
+  <hero-loader moduleName="src/app/modules/footer/footer.module#FooterModule"></hero-loader>
+</ng-container>

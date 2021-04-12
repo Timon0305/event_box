@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h4 class="modal-title">Associate Vendors</h4>
+    <button (click)="close()" type="button" class="close big-close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body pt-1">
+    <p *ngFor="let associateVendor of associateVendors;">
+        {{ associateVendor.name }}
+    </p>
+</div>

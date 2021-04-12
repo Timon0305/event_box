@@ -1,0 +1,12 @@
+<div class="product-review-container" >
+    <div class="product-image">
+      <img src="{{product?.defaultImageUrl}}" alt="Product Image" appNoImage />
+    </div>
+    <div class="product-detail">
+      <div class="product-title">{{product?.name | titlecase}}</div>
+      <app-shared-view-rating-star [rating]="product?.avgRating" [ratingCount]="product?.ratingCount">
+      </app-shared-view-rating-star>
+      <p>Category: <span>{{product?.category?.name}}</span></p>
+      <p>Sub Category: <span>{{product?.subCategory?.name}}</span></p>
+    </div>
+  </div>

@@ -1,0 +1,82 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" [routerLink]="['../../']"><a>ACH Report</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{params?.businessName}} - {{params?.date | formatDate}}
+      ({{(params?.payoutAmount | currency:'USD':'symbol':'1.2-2')}})</li>
+  </ol>
+</nav>
+
+<div class="ach-report-container">
+  <div class="title-with-button">
+    <div class="page-title">{{params?.businessName}} - {{params?.date | formatDate}}
+      ({{(params?.payoutAmount | currency:'USD':'symbol':'1.2-2')}})</div>
+  </div>
+</div>
+
+<ng-container *ngIf="ordersList$|async"></ng-container>
+<!-- table start form here -->
+<div class="table-listing ach-detail-table" *ngIf="ordersList?.docs.length">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data">Product/Service Purchased</div>
+      <div class="thead-data">Event Name</div>
+      <div class="thead-data">Date of Order</div>
+      <div class="thead-data">Event Date and Time</div>
+      <div class="thead-data">Planner Name</div>
+      <div class="thead-data">Order ID</div>
+      <div class="thead-data">Total Gross</div>
+      <div class="thead-data" *ngIf="isAdmin">Total Paid</div>
+      <div class="thead-data" *ngIf="!isAdmin">Amount Received</div>
+      <div class="thead-data">Action</div>
+    </div>
+  </div>
+
+  <div class="table-body-wrapper">
+    <div class="table-body" *ngFor="let item of ordersList?.docs;let i = index; trackBy: trackByFn">
+      <div class="tbody-data" data-label="Product/Service Purchased">
+        <div class="product-col" *ngIf="item?.order">
+          <em><img appNoImage [src]="item?.order?.products?.defaultImageUrl" alt="Product Image"
+              class="product-image" /></em>
+          <span>{{item?.order?.products?.name}}</span>
+        </div>
+        <span *ngIf="!item?.order">-</span>
+      </div>
+      <div class="tbody-data" data-label="Event Name">
+        <span>{{item?.order?.events?.name || '-'}}</span>
+      </div>
+      <div class="tbody-data" data-label="Date of Order">
+        <span>{{item?.order?.createdAt | eventDate}}</span></div>
+      <div class="tbody-data" data-label="Event Date and Time">
+        <span>{{item?.order?.events?.startDate | timezoneDateFormat: item?.order?.events?.eventTimezone}}
+          {{timeZoneMap[item?.order?.events?.eventTimezone]}}
+        </span>
+      </div>
+      <div class="tbody-data" data-label="Planner Name">
+        <span>{{item?.planner?.firstName}} {{item?.planner?.lastName}}</span>
+      </div>
+      <div class="tbody-data" data-label="Order ID">
+        <span>{{item?.order?.orderId || '-'}}</span>
+      </div>
+      <div class="tbody-data" data-label="Total Gross">
+        <span *ngIf="item?.order?.totalPrice">{{item?.order?.totalPrice | currency:'USD':'symbol':'1.2-2'}}</span>
+        <span *ngIf="!item?.order?.totalPrice">-</span>
+      </div>
+      <div class="tbody-data" data-label="Total Paid">
+        <span>{{item?.amount | currency:'USD':'symbol':'1.2-2'}}</span>
+      </div>
+      <div class="tbody-data" >
+        <button class="btn link" *ngIf="item?.order" type="button" (click)="viewOrderDetail(item?.order?._id)">View Order</button>
+        <span *ngIf="!item?.order">-</span>
+      </div>
+    </div>
+  </div>
+  <app-pagination [metaData]="ordersList" (pageChange)="pageChange($event)"></app-pagination>
+
+</div><!-- end table -->
+
+<div class="table-listing ach-detail-table" *ngIf="!ordersList?.docs.length && !loading">
+  <div class="no-result">
+    <img src="assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>

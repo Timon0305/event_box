@@ -1,0 +1,14 @@
+@import "~assets/scss/variables";
+.modal-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  @media screen and (max-width: $phone-landscape) {
+    padding-bottom: 15px;
+    .btn-space {
+      .btn {
+        min-width: calc(50% - 8px);
+      }
+    }
+  }
+}
+

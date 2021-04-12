@@ -1,0 +1,46 @@
+<button type="button" class="close big-close" aria-label="Close" (click)="activeModal.close()">
+  <span aria-hidden="true">&times;</span>
+</button>
+<div class="modal-header with-info" ngbAutoFocus>
+  <p class="modal-title">
+    {{payoutObject?.date | formatDate}}
+    ({{(payoutObject?.payoutAmount || 0) | currency:'USD':'symbol':'1.2-2' }})
+  </p>
+</div>
+<div class="modal-body" #modalBody>
+  <app-infinite-scroll (scrolled)="scrolled()" [options]="options" [isReverse]="false" *ngIf="dateReport?.length">
+    <div class="table-listing ach-modal-table">
+      <div class="table-head-wrapper">
+        <div class="table-head">
+          <div class="thead-data">Merchant/Partner</div>
+          <div class="thead-data">Payout</div>
+          <div class="thead-data">Action</div>
+        </div>
+      </div>
+
+      <div class="table-body-wrapper">
+        <div class="table-body" *ngFor="let item of dateReport;let i = index; trackBy: trackByFn">
+          <div class="tbody-data" data-label="Merchant">
+            <span *ngIf="item?.company?.name">{{item?.company?.name}}</span>
+            <span *ngIf="item?.user?.partnerDetails?.businessName">{{item?.user?.partnerDetails?.businessName}}</span>
+          </div>
+          <div class="tbody-data" data-label="Payout">
+            <span>{{(item?.payoutAmount || 0) | currency:'USD':'symbol':'1.2-2'}}</span>
+          </div>
+          <div class="tbody-data" data-label="Action">
+            <div class="table-button-wrapper">
+              <button class="btn link" type="button" (click)="navigateToDetail(item)">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end table -->
+  </app-infinite-scroll>
+  <div class="table-listing ach-detail-table"  *ngIf="!dateReport?.length && !loading">
+    <div class="no-result">
+      <img src="assets/images/no-data.svg" alt="No results" />
+      <p class="mt-5">Sorry! No results found :(</p>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="dateReport$| async"></ng-container>

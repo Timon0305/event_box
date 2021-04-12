@@ -1,0 +1,58 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.rating-review-container{
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+    padding-top: 30px;
+    margin: 0 0 40px;
+    @media screen and (max-width: $phone-landscape) {
+      font-size: 20px;
+      padding-top: 24px;
+      margin: 0 0 24px 0;
+    }
+  }
+  .space-between-two{
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-container{
+    width: 50%;
+    max-width: 270px;
+  }
+  .sort-selectbox{
+    width: 160px;
+  }
+}
+.rating-review-table {
+  min-height: 310px;
+  .btn {
+    width: 200px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+
+    &+.btn {
+      margin-top: 10px;
+    }
+  }
+  span{
+    display: block;
+    width: 100%;
+  }
+  .table-body {
+    color: rgba(#000, 0.8);
+  }
+}
+@media screen and (max-width: $phone-landscape) {
+  .sort-filter {
+    &.sm-filter-dropdown {
+      width: calc(50% - 8px);
+      flex-wrap: wrap;
+      min-width: 1px;
+    }
+  }
+}

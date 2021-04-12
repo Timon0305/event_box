@@ -1,0 +1,79 @@
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/table";
+
+.quote-request-table{
+  min-height: 310px;
+  .product-image{
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+  }
+  .btn{
+    width: 140px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+    & + .btn{
+      margin-top: 10px;
+    }
+  }
+  .table-head,
+  .table-body{
+    justify-content: space-between;
+  }
+}
+.fixed-footer {
+  .button-container {
+    padding: 0 25px;
+    .btn{
+      width: auto;
+    }
+  }
+}
+.tab-content-head{
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  .select-list-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: calc(100% - 400px);
+    .ng-select{
+      width: 20%;
+      max-width: 170px;
+      &:nth-child(1){
+        min-width: 130px;
+      }
+      &:nth-child(2),
+      &:nth-child(3){
+        min-width: 160px;
+      }
+      & + .ng-select{
+        margin-left: 16px;
+      }
+    }
+  }
+}
+@media screen and (max-width: $phone-landscape) {
+  .tab-content-head {
+    margin-bottom: 24px;
+    .select-list-container {
+      &.sm-filter-dropdown {
+        width: calc(50% - 8px);
+      }
+    }
+  }
+  .fixed-footer {
+    .button-container {
+      padding: 0;
+      .btn {
+        width: 100%;
+        padding: 0 10px;
+        & + .btn {
+          margin: 10px 0 0 0;
+        }
+      }
+    }
+  }
+}

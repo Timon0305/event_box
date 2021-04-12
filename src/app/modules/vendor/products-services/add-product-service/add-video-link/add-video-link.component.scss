@@ -1,0 +1,18 @@
+.add-button-container {
+  text-align: right;
+  margin-top: -24px;
+  @media screen and (max-width: 576px) {
+    margin-top: -16px;
+  }
+}
+.remove-button-container{
+  text-align: right;
+  margin-top: -8px;
+  margin-bottom: 30px;
+}
+.video-info{
+  display: inline-block;
+  margin-left: 8px;
+  margin-top: -2px;
+  cursor: pointer;
+}

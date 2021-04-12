@@ -1,0 +1,17 @@
+<div class="product-image-section">
+  <div class="product-thumb" *ngIf="imageArray.length">
+    <img *ngFor="let image of imageArray;" src={{image}} (click)="viewImage(image)" alt="Product Thumbnail"
+      class="thumb" [ngClass]="{'active':image === defaultImage}" onError="this.src='assets/images/no-image-table.png'" />
+  </div>
+
+  <div class="product-thumb" *ngIf="!imageArray?.length">
+    <img src="assets/images/no-image-table.png" (click)="viewImage(defaultImage)" alt="Product Thumbnail" class="thumb"
+      [ngClass]="{'active':image === defaultImage}" onError="this.src='assets/images/no-image-table.png'" />
+  </div>
+
+
+
+  <div class="product-image">
+    <img src="{{defaultImage}}" alt="Product Image" class="image" onError="this.src='assets/images/no-image.png'" />
+  </div>
+</div>

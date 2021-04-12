@@ -1,0 +1,82 @@
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="footer-social-section">
+          <a class="navbar-brand mr-auto" routerLink="['/']">
+            <img src="../../../../assets/images/logo-footer.png" alt="Logo">
+          </a>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="{{socialLinks.facebook}}" target="_blank" title="Facebook" class="nav-link"><span
+                  class="icon-facebook"></span></a>
+            </li>
+            <li class="nav-item">
+              <a href="{{socialLinks.linkedIn}}" target="_blank"   title="Linkedin" class="nav-link"><span class="icon-linkedin"></span></a>
+            </li>
+            <li class="nav-item">
+              <a href="{{socialLinks.instagram}}" target="_blank" title="Instagram" class="nav-link"><span
+                  class="icon-instagram"></span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="company-link">
+          <h5>Company</h5>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="javascript:void(0)" [routerLink]="['/content/about']" routerLinkActive="active" title="About"
+                class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" [routerLink]="['/content/terms-of-service']" title="Terms and Conditions" class="nav-link">Terms and Conditions</a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" title="Privacy" class="nav-link" [routerLink]="['/content/privacy-policy']" routerLinkActive="active">Privacy</a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" [routerLink]="['/content/faq']" routerLinkActive="active" title="FAQs"
+                class="nav-link">FAQs</a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" [routerLink]="['/content/contact-us']" routerLinkActive="active"
+                title="Contact Us" class="nav-link">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="company-link">
+          <h5>Sign Up</h5>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a (click)="vendorSignUp()" title="Vendor Sign Up" class="nav-link">Vendor Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a (click)="plannerSignUp()" title="Planner Sign Up" class="nav-link">Planner Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="subscribe-section">
+          <h5>Subscribe Newsletter</h5>
+          <p>Stay up to date for access to the newest event products and trends</p>
+          <form action="submit">
+            <div class="form-group info-section ">
+              <label for="email" class="sr-only">Email Address</label>
+              <span class=" info-text" [ngClass]="{'d-none': hideTooltip == true}">Please enter email address here <span class="nav-close-btn" (click)="hideTooltip = !hideTooltip;">&#x2715;</span></span>
+              <input #newsletterInput [ngClass]="{'is-invalid': email?.errors?.email && email?.touched}" type="email" class="form-control"
+                id="email" [formControl]="email" aria-describedby="emailHelp" placeholder="Enter email address">
+              <div class="invalid-feedback" *ngIf="email?.errors?.email && email?.touched">Invalid email address</div>
+            </div>
+            <button type="button" class="btn primary" (click)="subscribeNewsLetter()" [disabled]="!email?.valid || loader">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="divider mb-0"></div>
+    <p class="copyright">&copy; {{currentYear}} Event Box, All rights reserved.</p>
+  </div>
+</footer>

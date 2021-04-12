@@ -1,0 +1,34 @@
+<ng-container *ngIf="filteredMembersAnalitics$|async"></ng-container>
+<div class="card-wrapper">
+  <div class="dashboard-head">
+    <h3>Members</h3>
+    <div class="filter-section">
+      <div class="date-range-box">
+        <app-shared-date-range [showClearAll]="true" (dateFilterEvent)="quoteDateFilter($event)">
+        </app-shared-date-range>
+      </div>
+      <app-shared-date-filter (filterDateEvent)="quoteDateFilter($event)"></app-shared-date-filter>
+    </div>
+  </div>
+  <div class="box btn-col-3-with-space" [routerLink]="['/admin/vendor-management']" >
+    <div class="box-content">
+      <div class="title">{{members?.vendorsCount}}</div>
+      <div class="name">Total Vendors</div>
+    </div>
+    <img src="assets/images/icon-vendor.svg" class="bid-icon" alt="Total Vendors">
+  </div>
+  <div class="box btn-col-3-with-space" [routerLink]="['/admin/planner-management']">
+    <div class="box-content">
+      <div class="title">{{members?.plannersCount}}</div>
+      <div class="name">Total Planners</div>
+    </div>
+    <img src="assets/images/icon-vendor.svg" alt="Total Planners">
+  </div>
+  <div class="box btn-col-3-with-space" [routerLink]="['/admin/pending-vendors']">
+    <div class="box-content">
+      <div class="title">{{members?.pendingMembers}}</div>
+      <div class="name">Vendor Sign Ups Requests</div>
+    </div>
+    <img src="assets/images/icon-quote.svg" alt="Vendor Sign Ups Requests">
+  </div>
+</div>

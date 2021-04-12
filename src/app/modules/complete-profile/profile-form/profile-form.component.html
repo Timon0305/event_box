@@ -1,0 +1,10 @@
+<div *ngIf="editProfile" class="edit-profile">
+  <h2 class="page-title">Edit Profile</h2>
+</div>
+<app-vendor-profile-form (emitAfterProfileFormInit)="emitAfterProfileFormInit($event)"></app-vendor-profile-form>
+<div *ngIf="editProfile" class="edit-profile-form">
+  <div class="btn-space">
+    <button type="button" class="btn link" [routerLink]="['/vendor/profile']">Cancel</button>
+    <button type="button" class="btn primary" [disabled]="!f?.valid" (click)="saveAndUpdate()">Update</button>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+.divider{
+  &.form-divider {
+    margin-top: 20px;
+  }
+}
+.user-form {
+  .second-title{
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    margin: 40px 0;
+    text-transform: uppercase;
+  }
+}

@@ -1,0 +1,20 @@
+.static-content{
+    padding: 205px 0 60px;
+    h1 {
+      text-align: center;
+      @media(max-width: 480px) {
+        text-align: left;
+        margin: 20px 0 0;
+        font-size: 18px;
+      }
+    }
+  }
+  
+  .t-c-pages {
+    p {
+      font-size: 16px;
+      @media(max-width: 480px) {
+       font-size: 14px;
+      }
+    }
+  }

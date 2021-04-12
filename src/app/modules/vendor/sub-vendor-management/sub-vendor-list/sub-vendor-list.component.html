@@ -1,0 +1,70 @@
+<div class="user-table-container">
+    <div class="title-with-button">
+      <h2 class="page-title">User Management</h2>
+      <button class="btn primary mw-200" type="button" (click)="inviteSubVendor()" >Add User</button>
+    </div>
+    <div class="search-container">
+      <form class="user-search search-form">
+        <div class="form-group">
+          <input [formControl]="searchField" class="form-control" placeholder="Search" type="text"/>
+          <input class="user-search-icon" type="submit" value="Search" />
+        </div>
+      </form>
+    </div>
+
+    <div class="table-listing user-table" *ngIf="data?.totalDocs > 0">
+      <div class="table-head-wrapper">
+        <div class="table-head">
+          <div class="thead-data">
+            <div class="shorting-btn">
+              First Name
+            </div>
+          </div>
+          <div class="thead-data">
+            <div class="shorting-btn">
+              Last Name
+            </div>
+          </div>
+          <div class="thead-data">
+            <div class="shorting-btn">
+              Email Address
+            </div>
+          </div>
+          <div class="thead-data">
+            <div class="shorting-btn">
+              Last Login
+            </div>
+          </div>
+          <div class="thead-data col-last">
+            <span>Actions</span>
+          </div>
+        </div>
+      </div>
+      <div class="table-body-wrapper">
+        <div *ngFor="let vendor of data.docs" class="table-body"><!-- repeat this div -->
+          <div class="tbody-data" data-label="First Name"><span>{{vendor.firstName}}</span></div>
+          <div class="tbody-data" data-label="Last Name"><span>{{vendor.lastName}}</span></div>
+          <div class="tbody-data" data-label="Email Address"><span>{{vendor.email}}</span></div>
+          <div class="tbody-data" data-label="Last Login"><span>{{vendor?.lastLogin ? formatDate(vendor?.lastLogin): 'N/A'}}</span></div>
+          <div class="tbody-data">
+            <button *ngIf="!vendor.isCompanyAdmin && myId !== vendor?._id" class="btn link link-small" type="button" (click)="changeVendorStatus(vendor)">{{vendor.status ? 'Deactivate' : 'Activate'}} Account</button>
+          </div>
+        </div>
+
+      </div>
+      <app-pagination [metaData]="data" (pageChange)="pageChange($event)"></app-pagination>
+    </div><!-- end table -->
+    <div class="table-listing user-table" *ngIf="data?.totalDocs === 0 && keyword === ''">
+      <div class="no-result">
+        <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No search results found :(</p>
+      </div>
+    </div>
+    <div class="table-listing user-table" *ngIf="data?.totalDocs === 0 && keyword !== ''">
+      <div class="no-result">
+        <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No search results found :(</p>
+      </div>
+    </div>
+
+  </div><!-- end user-table-container -->

@@ -1,0 +1,84 @@
+<div class="top-first-title">
+  <h2 class="page-title">Planner Management</h2>  
+  <button class="btn primary medium" type="button" (click)="export()">Export</button>
+</div>
+<div class="planner-counts"> 
+<p>Active Planners : <span>{{activePlanners | number}}</span></p>
+<p>Inactive Planners : <span>{{inactivePlanners | number}}</span></p>
+</div>
+
+<!-- promocode section -->
+<div class="promocode-table-container" *ngIf="(plannerObservable$ | async)?.data as plannerDocs">  
+  <div class="space-between-two" *ngIf="plannerDocs?.totalDocs > 0 || (paramsLength > 0)" >
+    <app-shared-search (search)="searchPlanners($event)" class="search-container"></app-shared-search>
+    <app-sort-by-filter [sortByData]="sortingData" (sortFilterChange)=sortPlanner($event) class="sort-filter"></app-sort-by-filter>
+  </div>
+
+  <!-- table start form here -->
+  <div class="table-listing admin-planner-table">
+    <div class="table-head-wrapper" *ngIf="plannerDocs?.docs.length > 0">
+      <div class="table-head">
+            <div class="thead-data">Planner Name</div>
+            <div class="thead-data">Company</div>
+            <div class="thead-data">Email Address</div>
+            <div class="thead-data">Mobile No.</div>
+            <div class="thead-data">Total # of Purchase</div>
+            <div class="thead-data">Total Purchase</div>
+            <div class="thead-data">Last Login</div>
+            <div class="thead-data">Action</div>
+          </div>
+    </div>
+    <div class="table-body-wrapper" *ngIf="plannerDocs?.totalDocs > 0">
+
+      <div class="table-body" *ngFor="let planner of plannerDocs.docs; let i = index;">
+            <div class="tbody-data">
+              <div class="form-group mb-0 mt-4" *ngIf="planner.status" >
+                <input type="checkbox" (change)="toggleCheck($event, planner._id)" class="form-check-input"
+                  id="plannerList{{i}}" [checked]="checkList && checkList.indexOf(planner._id) >=0">
+                <label class="form-check-label" for="plannerList{{i}}">&nbsp;</label>
+              </div>
+              <div class="product-col">
+                  <img src="{{planner.imageUrl}}"  onError="this.src='assets/images/no-image-table.png'"  alt="User Image" class="product-image" />
+                  <span (click)="viewPlanner(planner._id)" class="cursor-pointer">{{planner.firstName | titlecase}} {{planner.lastName | titlecase}}</span>
+              </div>
+            </div>
+            <div class="tbody-data"><span>{{planner.companyName || '-'}}</span></div>
+            <div class="tbody-data"><span>{{planner.email}}</span></div>
+            <div class="tbody-data"><span>{{ planner.companyPhone ? (planner.companyPhone |  formatPhone) : blankData}}</span></div>
+            <div class="tbody-data"><span>{{planner.totalNumberPurchase}}</span></div>
+            <div class="tbody-data"><span>{{planner.totalPurchaseAmount | currency:'USD':'symbol':'1.2-2'}}</span></div>
+            <div class="tbody-data"><span>{{planner.lastLogin | date: 'mediumDate'}}
+              <br>
+              {{planner.lastLogin | date:'hh:mm a'}}
+            </span></div>
+            <div class="tbody-data" >
+              <div class="table-button-wrapper">
+                  <button *ngIf="planner.role !== 'admin'" class="btn primary" type="button" (click)="activeInactivePlanner($event, planner._id, planner.status)">{{planner.status?'Inactivate':'Activate'}}</button>
+              </div>
+            </div>
+          </div>
+    </div>
+    <app-pagination [metaData]="plannerDocs" (pageChange)="pageChange($event)"></app-pagination>
+
+    <div class="table-listing product-table" *ngIf="plannerDocs?.totalDocs === 0 && !(params > 1)">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="table-listing product-table" *ngIf="plannerDocs?.totalDocs === 0 && params > 1">
+      <div class="no-result">
+        <img src="/assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="fixed-footer" *ngIf="checkList?.length" >
+      <div class="container-fluid">
+        <div class="button-container">
+          <button class="btn primary" type="button" (click)="initiateAssociationChange()">Associate Partner</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- end table -->
+
+</div><!-- end user-table-container -->

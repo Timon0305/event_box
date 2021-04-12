@@ -1,0 +1,116 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.total-products-purchased{
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+    padding-top: 15px;
+    margin: 0 0 40px;
+  }
+  .tab-filter-with-from-group{
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    .sort-filter {
+      margin-left: 10px;
+    }
+    &.tab-head-with-report-filter {
+      justify-content: flex-start;
+      .order-report-filter-section {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        p {
+          margin: 0 10px 0 10px;
+          font-size: 15px;
+        }
+      }
+      @media screen and (max-width: $tablet-pro) {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        .order-report-filter-section {
+          margin-top: 20px;
+          flex-wrap: wrap;
+          width: 100%;
+          p {
+            margin: 0 15px 0 0;
+          }
+        }
+      }
+      @media screen and (max-width: $phone-landscape) {
+        .order-report-filter-section {
+          p {
+            margin: 0 0 15px 0;
+          }
+        }
+      }
+    }
+  }
+  .search-container{
+    width: auto;
+    max-width: 230px;
+  }
+  .sort-selectbox{
+    width: 160px;
+    margin-left: 10px;
+  }
+  .tab-head-filter {
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    margin-left: auto;
+    .form-group {
+      width: 150px;
+      margin: 0 10px 0 0;
+    }
+    .btn {
+      padding: 0 15px;
+      height: 45px;
+    }
+    .filter-text {
+      margin-right: 10px;
+    }
+  }
+}
+
+.products-purchased-table {
+  min-height: 310px;
+  .product-col{
+    span{
+      padding-left: 12px;
+    }
+    .product-image{
+      width: 56px;
+      height: 56px;
+      border-radius: 4px;
+    }
+  }
+  .rating-container{
+    padding: 0;
+  }
+  .btn {
+    width: 95px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+
+    &+.btn {
+      margin-top: 10px;
+    }
+  }
+  .table-head,
+  .table-body {
+    justify-content: space-between;
+  }
+  .table-body {
+    color: rgba(#000, 0.8);
+  }
+}
+@media screen and (max-width: $phone-landscape) {
+  .tab-content-head {
+    .sort-filter {
+      margin-left: 0;
+    }
+  }
+}

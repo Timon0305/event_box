@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">View Quote</h4>
+  <button type="button" class="close big-close" aria-label="Close" (click)="activeModal.close()">
+      <span aria-hidden="true" >&times;</span>
+  </button>
+</div>
+<div class="modal-body pt-1">
+  <div *ngIf="order?.replies?.length" class="table-listing planner-counter-offer-table">
+    <div class="table-head-wrapper">
+      <div class="table-head">
+        <div class="thead-data">Quoted Price</div>
+        <div class="thead-data">Message</div>
+        <div class="thead-data">Date of Quote</div>
+        <div class="thead-data">Status</div>
+
+      </div>
+    </div>
+    <div class="table-body-wrapper">
+      <div class="table-body"
+        *ngFor="let reply of order?.replies|reverseArray;">
+        <!-- repeat this div -->
+        <div class="tbody-data" data-label="Quoted Price">
+          <span>{{(reply?.totalAmount) | currency:'USD'}}</span></div>
+        <div class="tbody-data" data-label="Message"><span>{{reply?.vendorNotes }} </span></div>
+        <div class="tbody-data" data-label="Date of Quote">
+          <span>{{reply?.createdAt  | date: 'mediumDate'}} | {{reply?.createdAt  | date: 'shortTime'}}
+          </span></div>
+          <div  class="tbody-data" data-label="Status"><span>{{quoteStatus[reply?.status]?.status}}</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>

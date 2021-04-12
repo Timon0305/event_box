@@ -1,0 +1,12 @@
+<div class="quote-acceptance-container">
+
+  <h2 class="page-title">Quote Request Folder</h2>
+
+  <div class="tab-content">
+    <!-- table start form here -->
+    <app-quote-request-table (checkListArr)="toggleClassVariables($event)" [setQuoteRequestFolderData]="(quoteRequestFolderData$|async)?.data"
+      (fetchList)="fetchList($event)" [paramsLength]="paramsLength"></app-quote-request-table>
+    <!--table end-->
+  </div><!-- end tab-content -->
+
+</div>

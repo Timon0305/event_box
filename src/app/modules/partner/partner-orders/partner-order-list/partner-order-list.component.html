@@ -1,0 +1,50 @@
+<nav aria-label="breadcrumb" *ngIf="isAdmin">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/admin/partner-management/list']">Partner Management</a></li>
+    <ng-container *ngIf="(partnerName$| async) as partnerName; else getName">
+      <li class="breadcrumb-item" aria-current="page">
+          <a [routerLink]="['/admin/partner-management/view', activatedRoute.snapshot.params.partnerId]">Profile - {{partnerName}}</a>
+      </li>
+    </ng-container>
+    <ng-template #getName>
+      <ng-container *ngIf="(partnerDetails$| async)">
+        <li class="breadcrumb-item" aria-current="page">
+          <a [routerLink]="['/admin/partner-management/view', activatedRoute.snapshot.params.partnerId]">Profile -
+            {{partnerName$|async}}</a>
+        </li>
+      </ng-container>
+    </ng-template>
+    <li class="breadcrumb-item active" aria-current="page">
+      Orders - {{partnerName$|async}}
+    </li>
+  </ol>
+</nav>
+<ng-container *ngIf="partnerOrderList$| async"></ng-container>
+<div class="event-list-container">
+  <div class="title-with-button">
+    <div class="page-title top-first-title" *ngIf="isAdmin">Orders - {{partnerName$|async}}</div>
+    <div class="page-title top-first-title partner-section-heading-space" *ngIf="!isAdmin">Orders Report</div>
+    <div class="action-item-content" *ngIf="isAdmin">
+      <div class="download-csv-button">
+        <button class="btn primary small" type="button" (click)="downloadCsv()">Download CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-head">
+    <ul class="nav">
+      <li class="nav-item" [ngClass]="{'active': !activeTab}" (click)="changeTab(null)">
+        <a href="javascript:void(0)" class="nav-link" title="Upcoming Events">Vendor Orders</a>
+      </li>
+      <li class="nav-item" [ngClass]="{'active': activeTab === partnerOrderTypes.plannerOrders}"
+        (click)="changeTab(partnerOrderTypes.plannerOrders)">
+        <a href="javascript:void(0)" class="nav-link" title="Past Events">Planner Orders</a>
+      </li>
+    </ul>
+  </div>
+  <app-partner-order-table *ngIf="!activeTab" [partnerOrderList]="partnerOrderList" [loader]="loader"
+    [isFilter]="isFilter"></app-partner-order-table>
+  <app-partner-order-table [partnerOrderList]="partnerOrderList" [loader]="loader" [isFilter]="isFilter"
+    *ngIf="activeTab === partnerOrderTypes.plannerOrders"></app-partner-order-table>
+
+</div>

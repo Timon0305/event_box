@@ -1,0 +1,8 @@
+<div class="row pt-2 pb-4">
+  <div class="col-12 radio-button-group">
+    <div class="form-group" *ngFor="let data of radioData">
+      <input type="radio" value="{{data.value}}" name="type" id="{{data.value}}" [formControl]="typeControl">
+      <label for="{{data.value}}">{{data.text}}</label>
+    </div>
+  </div>
+</div>

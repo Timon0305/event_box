@@ -1,0 +1,117 @@
+@import "~assets/scss/variables";
+  .list-row {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    padding: 18px 15px;
+    position: relative;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: calc(100% - 66px);
+      height: 1px;
+      background: #dce1ef;
+    }
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex: none;
+    }
+
+    .message-title {
+      width: calc(100% - 115px);
+      padding: 0 10px;
+      opacity: 0.6;
+      &.admin-message-title {
+        width: calc(100% - 142px);
+      }
+      h3 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 3px 0;
+      }
+
+      p {
+        font-size: 13px;
+        opacity: 0.8;
+        color: #212223;
+        margin: 0;
+        img {
+          max-width: 18px;
+        }
+      }
+    }
+
+    &.unread {
+      .message-title {
+        opacity: 1;
+      }
+    }
+
+    &.active {
+      background: #fafafa;
+      border-color: #5067eb;
+
+      .message-title {
+        opacity: 1;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: -1px;
+        width: calc(100% - 66px);
+        height: 1px;
+        background: #fafafa;
+      }
+
+      &:after {
+        background: #fafafa;
+      }
+    }
+
+    .message-time {
+      width: 75px;
+      flex: none;
+      text-align: right;
+      padding-top: 5px;
+
+      p {
+        margin: 0;
+        font-size: 10px;
+        color: #909191;
+      }
+
+      span {
+        height: 16px;
+        min-width: 16px;
+        width: auto;
+        border-radius: 8px;
+        padding: 0 3px;
+        background: #ff6516;
+        font-size: 10px;
+        color: #fff;
+        font-weight: 600;
+        display: inline-block;
+        text-align: center;
+        line-height: 16px;
+      }
+    }
+    @media screen and (max-width: $phone-landscape) {
+      &:after {
+        width: 100%;
+      }
+      &.active {
+        &::before {
+          top: 0;
+        }
+      }
+    }
+  }

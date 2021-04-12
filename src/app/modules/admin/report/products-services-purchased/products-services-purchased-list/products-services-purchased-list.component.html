@@ -1,0 +1,106 @@
+<!-- promocode section -->
+<app-breadcrumbs *ngIf="!plannerId" [dynamicBreadcrumb]="breadcrumb"></app-breadcrumbs>
+<nav aria-label="breadcrumb" *ngIf="plannerId">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" [routerLink]="['/admin/planner-management']">
+      <a>Planner Management</a>
+    </li>
+    <li class="breadcrumb-item" [routerLink]="['/admin/planner-management/view', plannerId]">
+      <a>Profile - {{plannerName}}</a>
+    </li>
+    <li class="breadcrumb-item active">
+      Total Products Purchased - {{plannerName}}
+    </li>
+  </ol>
+</nav>
+<div class="total-products-purchased">
+  <h2 class="page-title">Total Products/Services Purchased</h2>
+  <div class="tab-filter-with-from-group justify-content-between tab-head-with-report-filter">
+    <ng-container *ngIf="(totalDocs || (paramsLength > 0))">
+      <div class="search-container">
+        <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+      </div>
+      <app-sort-by-filter [sortByData]="sortingData" (sortFilterChange)=sort($event) class="sort-filter">
+      </app-sort-by-filter>
+      <ng-container>
+        <div class="order-report-filter-section">
+          <p>Products Purchased</p>
+          <app-shared-date-range></app-shared-date-range>
+          <button class="btn primary medium" type="button" [disabled]="!dateRangeComponent?.isDateValid"
+            (click)="fetchReport()">Export</button>
+        </div>
+      </ng-container>
+
+    </ng-container>
+  </div>
+
+
+  <!-- table start form here -->
+  <ng-container *ngIf="(purchasedOrder$| async)?.data as purchasedOrder">
+    <div class="table-listing products-purchased-table" *ngIf="purchasedOrder?.docs?.length">
+      <div class="table-head-wrapper">
+        <div class="table-head">
+          <div class="thead-data">Order Id</div>
+          <div class="thead-data">Product/Service Purchased</div>
+          <div class="thead-data">Category</div>
+          <div class="thead-data">Sub Category</div>
+          <div class="thead-data">Vendor Name</div>
+          <div class="thead-data">Planner Name</div>
+
+          <div class="thead-data">Date of Order</div>
+          <div class="thead-data">Qty</div>
+          <div class="thead-data">Amount</div>
+          <div class="thead-data">Action</div>
+        </div>
+      </div>
+      <div class="table-body-wrapper">
+        <div class="table-body" *ngFor="let item of purchasedOrder?.docs">
+          <!-- repeat this div -->
+          <div class="tbody-data" data-label="Order Id">
+            <span> {{item?.orderId}}</span>
+          </div>
+          <div class="tbody-data" data-label="Product/Service Purchased">
+            <span> {{item?.products?.name}}</span>
+          </div>
+          <div class="tbody-data" data-label="Category">
+            <span> {{item?.category?.name}}</span>
+          </div>
+          <div class="tbody-data" data-label="Sub Category"> {{item?.subCategory?.name}} </div>
+          <div class="tbody-data" data-label="Vendor Name">{{item?.vendors?.name}}</div>
+          <div class="tbody-data" data-label="Planner Name">{{item?.planners?.firstName}} {{item?.planners?.lastName}}
+          </div>
+
+          <div class="tbody-data" data-label="Date of Order">{{item?.createdAt|date: 'MMM dd, yyyy | hh:mm a'}}</div>
+          <div class="tbody-data" data-label="Qty">
+            <span>{{item?.quantity}}</span>
+          </div>
+          <div class="tbody-data" data-label="Amount">
+            <span>{{item?.discount?.finalAmount | currency:'USD':'symbol':'1.0-2'}}</span>
+          </div>
+          <div class="tbody-data">
+            <div class="table-button-wrapper">
+              <button class="btn link" type="button" *ngIf="!plannerId" [queryParams]="{ navigationId: 1 }"
+                [routerLink]="['/admin/reports/orders', item._id]">View Order</button>
+              <button class="btn link" type="button" *ngIf="plannerId" [routerLink]="['./', item._id]">View
+                Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-pagination [metaData]="purchasedOrder" (pageChange)="pageChange($event)"></app-pagination>
+    </div>
+    <div class="table-listing products-purchased-table" *ngIf="purchasedOrder?.totalDocs === 0 && !(paramsLength > 0)">
+      <div class="no-result">
+        <img src="assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+    <div class="table-listing products-purchased-table" *ngIf="purchasedOrder?.totalDocs === 0 && paramsLength > 0">
+      <div class="no-result">
+        <img src="assets/images/no-data.svg" alt="No results" />
+        <p class="mt-5">Sorry! No results found :(</p>
+      </div>
+    </div>
+  </ng-container>
+
+</div><!-- end table -->

@@ -1,0 +1,149 @@
+<div class="tab-content-head tab-head-with-report-filter"
+  *ngIf="awaitingVendorQuotesListData?.totalDocs || paramsLength>2">
+  <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+  <div class="select-list-container sm-filter-dropdown">
+    <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+  <ng-container>
+    <div class="order-report-filter-section">
+      <p>Quotes Report</p>
+      <app-shared-date-range></app-shared-date-range>
+      <button class="btn primary medium" type="button" [disabled]="!dateRangeComponent?.isDateValid"
+        (click)="fetchReport()">Export</button>
+    </div>
+  </ng-container>
+</div>
+
+<div class="table-listing planner-awaited-quote-table" [ngClass]="{'admin-awaited-quote-table': isAdmin}"
+  *ngIf="awaitingVendorQuotesListData?.totalDocs > 0">
+  <div class="table-head-wrapper"  [ngClass]="{'planner-awaited-quote-8': !eventDetailPage}">
+    <div class="table-head" *ngIf="!isAdmin ; else adminTableHeader">
+      <div class="thead-data">Product/Service Name</div>
+      <div class="thead-data">Vendor Name</div>
+      <div class="thead-data">Vendor Phone</div>
+      <div class="thead-data" *ngIf="!eventDetailPage">Event Label</div>
+      <div class="thead-data">Quote Requested</div>
+      <div class="thead-data">Qty</div>
+      <div class="thead-data">Price Starting at</div>
+      <div class="thead-data">Action</div>
+    </div>
+    <ng-template #adminTableHeader>
+      <div class="table-head">
+        <div class="thead-data">Product/Service Name</div>
+        <div class="thead-data" *ngIf="!eventDetailPage">Event Label</div>
+        <div class="thead-data">Quote Requested</div>
+        <div class="thead-data">Qty</div>
+        <div class="thead-data">Planner Name</div>
+        <div class="thead-data">Planner Phone</div>
+        <div class="thead-data">Vendor Name</div>
+        <div class="thead-data">Price Starting at</div>
+        <div class="thead-data">Action</div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="table-body-wrapper">
+    <div class="table-body" [ngClass]="{'planner-awaited-quote-8': !eventDetailPage}" *ngFor="let item of awaitingVendorQuotesListData?.docs;let i = index; trackBy: trackByFn">
+      <!-- repeat this div -->
+      <ng-container *ngIf="!isAdmin ; else adminColumnsValue">
+        <div class="tbody-data" data-label="Name">
+          <div class="product-col">
+            <em><img src="{{item?.products?.defaultImageUrl}}"
+                onError="this.src='../../../../../../assets/images/no-image-table.png'" alt="Product Image"
+                class="product-image" /></em>
+            <span> {{item?.products?.name}}</span>
+          </div>
+        </div>
+        <div class="tbody-data" data-label="Vendor Name"><span>{{item?.vendors?.name}}</span></div>
+        <div class="tbody-data" data-label="Vendor Phone"><span>{{item?.vendors?.phone | formatPhone }}</span>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Event Label" *ngIf="!eventDetailPage"><span><a
+              [routerLink]="['/planner/event/event-detail', item.events._id]" [queryParams]="{navigationId: 3}">
+              {{item?.events?.label}}</a></span></div>
+
+        <div class="tbody-data data-col-10" data-label="Quote Requested">
+          <span>{{item?.quoteRequestedDate | date: 'mediumDate'}} |
+            {{item?.quoteRequestedDate | date: 'hh:mm a'}}</span>
+        </div>
+
+        <div class="tbody-data data-col-10" data-label="Qty">
+          <span>{{item?.latestReply?.quantity ? item?.latestReply?.quantity : item?.quantity}}</span></div>
+        <div class="tbody-data data-col-10" data-label="Price Starting at">
+          <span>{{(item?.products?.price * item?.quantity) | currency:'USD'}}</span></div>
+        <div class="tbody-data">
+          <div class="table-button-wrapper">
+            <button class="btn link" type="button" (click)="sendMessage(item._id)">Message Vendor</button>
+            <button class="btn link" type="button" [routerLink]="['/planner/quote-request-details', item._id]">View
+              Details</button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #adminColumnsValue>
+        <div class="tbody-data" data-label="Name">
+          <div class="product-col">
+            <em><img src="{{item?.products?.defaultImageUrl}}"
+                onError="this.src='../../../../../../assets/images/no-image-table.png'" alt="Product Image"
+                class="product-image" /></em>
+            <span> {{item?.products?.name}}</span>
+          </div>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Event Label" *ngIf="!eventDetailPage"><span><a
+              [routerLink]="['/planner/event/event-detail', item.events._id]" [queryParams]="{navigationId: 3}">
+              {{item?.events?.label}}</a></span>
+        </div>
+        <div class="tbody-data data-col-10" data-label="Quote Requested">
+          <span>{{item?.quoteRequestedDate | date: 'mediumDate'}} |
+            {{item?.quoteRequestedDate | date: 'hh:mm a'}}</span>
+        </div>
+
+        <div class="tbody-data data-col-10" data-label="Qty">
+          <span>{{item?.latestReply?.quantity ? item?.latestReply?.quantity : item?.quantity}}</span>
+        </div>
+        <div class="tbody-data" data-label="Planner Name"><span>{{item?.planners?.firstName}}
+            {{item?.planners?.lastName}}</span>
+        </div>
+        <div class="tbody-data" data-label="Planner Phone"><span>{{item?.planners?.phone|formatPhone}}</span>
+        </div>
+        <div class="tbody-data" data-label="Vendor Name"><span>{{item?.vendors?.name}}</span></div>
+        <div class="tbody-data data-col-10" data-label="Price Starting at">
+          <span>{{(item?.products?.price * item?.quantity) | currency:'USD'}}</span></div>
+
+        <ng-container *ngIf="plannerId; else adminNonPlannerOpt">
+          <div class="table-button-wrapper">
+            <button class="btn link" type="button" *ngIf="!eventViewId" [routerLink]="['../../', item._id]">View
+              Details</button>
+            <button class="btn link" type="button" *ngIf="eventViewId" [routerLink]="['../../quotes', item._id]">View
+              Details</button>
+          </div>
+        </ng-container>
+        <ng-template #adminNonPlannerOpt>
+          <div class="tbody-data">
+            <div class="table-button-wrapper">
+              <button class="btn link" type="button" *ngIf="!eventDetailPage"
+                [routerLink]="['/admin/reports/quotes', item._id]">View
+                Details</button>
+              <button class="btn link" type="button" *ngIf="eventDetailPage" [queryParams]="{ navigationId: 2}"
+                [routerLink]="['/admin/reports/quotes', item._id]">View
+                Details</button>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+    </div>
+  </div>
+  <app-pagination [metaData]="awaitingVendorQuotesListData" (pageChange)="pageChange($event)"></app-pagination>
+</div><!-- end table -->
+<div class="table-listing awaited-quote-table" *ngIf="awaitingVendorQuotesListData?.totalDocs === 0 && !(paramsLength)">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>
+<div class="table-listing awaited-quote-table"
+  *ngIf="awaitingVendorQuotesListData?.totalDocs === 0 && paramsLength > 0">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No search results found :(</p>
+  </div>
+</div>

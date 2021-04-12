@@ -1,0 +1,79 @@
+<div class="table-listing product-table" *ngIf="productServiceData?.totalDocs > 0">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data" *ngIf="tabType === productType">Product Name</div>
+      <div class="thead-data" *ngIf="tabType === serviceType">Service Name</div>
+      <div class="thead-data" *ngIf="!tabType">Product/Service Name</div>
+
+
+      <div class="thead-data">Category</div>
+      <div class="thead-data">Sub Category</div>
+      <div class="thead-data" *ngIf="!isVendor">Vendor</div>
+      <div class="thead-data">Home Location</div>
+      <div class="thead-data">Distance</div>
+      <div class="thead-data">Starting Price</div>
+      <div class="thead-data">Date Added</div>
+      <div class="thead-data" *ngIf="isVendor">Action</div>
+    </div>
+  </div>
+  <div class="table-body-wrapper">
+    <div class="table-body" (click)="navigateToProductDetail(item._id)"
+      *ngFor="let item of productServiceData?.docs;let i = index; trackBy: trackByFn">
+      <!-- repeat this div -->
+      <div class="tbody-data" data-label="Name">
+        <div class="product-col" >
+          <em routerLink="{{productServiceRoute}}/{{item._id}}"><img src="{{s3BaseUrl}}{{item?.defaultImage}}" onError="this.src='assets/images/no-image-table.png'"
+              alt="Product Image" class="product-image" /></em>
+          <span>{{item?.name}}</span>
+        </div>
+      </div>
+      <div class="tbody-data" data-label="Category"><span>{{item?.category?.name}}</span></div>
+      <div class="tbody-data" data-label="Sub Category"><span>{{item?.subCategory?.name}}</span></div>
+      <div class="tbody-data" data-label="Vendor" *ngIf="!isVendor"><span>{{item?.company?.name}}</span></div>
+
+      <div class="tbody-data" data-label="Home Location">
+        <span *ngIf="isVendor">
+          {{mapLocationData(item?.locations)}}
+        </span>
+        <span *ngIf="!isVendor">
+          {{mapLocationDataAdmin(item?.homeLocations)}}
+          
+        </span>
+      </div>
+      <div class="tbody-data" data-label="Distance" *ngIf="item?.willTravel"><span>All</span></div>
+      <div class="tbody-data" data-label="Distance" *ngIf="!item?.willTravel">
+        <span *ngFor="let location of item?.locations; trackBy: trackByFn">
+          Within {{location?.miles}} Miles
+        </span>
+      </div>
+      <div class="tbody-data" data-label="Starting Price"><span>{{item.price | currency:'USD'}}</span>
+      </div>
+      <div class="tbody-data" data-label="Date Added"><span>{{item.createdAt | date:'mediumDate'}}</span>
+      </div>
+
+      <div class="tbody-data" *ngIf="isVendor">
+        <div class="table-button-wrapper">
+          <button class="btn primary" type="button" routerLink="{{productServiceRoute}}/{{item._id}}">View</button>
+          <button class="btn link" type="button" routerLink="{{productServicesEditRoute}}/{{item._id}}">Edit</button>
+          <button class="btn link" type="button" *ngIf="item?.isArchive"
+            (click)="toggleArchive(item.isArchive, item._id, item.type)">Activate</button>
+          <button class="btn link" type="button" *ngIf="!item?.isArchive"
+            (click)="toggleArchive(item.isArchive, item._id, item.type)">Archive</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-pagination [metaData]="productServiceData" (pageChange)="pageChange($event)"></app-pagination>
+</div>
+<div class="table-listing product-table" *ngIf="productServiceData?.totalDocs === 0 && !(paramsLength > 1)">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>
+<div class="table-listing product-table" *ngIf="productServiceData?.totalDocs === 0 && paramsLength > 1">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>

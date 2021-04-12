@@ -1,0 +1,57 @@
+.admin-add-promocode-container{
+    .page-title{
+      padding-top: 15px;
+      margin: 0 0 40px 0;
+    }
+    .form-group{
+      margin-bottom: 40px;
+      @media screen and (max-width: 576px) {
+        margin-bottom: 16px;
+      }
+    }
+    &.fixed-footer-padding {
+      padding-bottom: 110px;
+    }
+  }
+  .add-promocode-form{
+    .form-group{
+      margin-bottom: 40px;
+      @media screen and (max-width: 576px) {
+        margin-bottom: 16px;
+      }
+    }
+    .file-upload-section{
+      .custom-upload{
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 45px;
+        width: 140px;
+        z-index: 9;
+        cursor: pointer;
+        opacity: 0;
+      }
+      .calendar{
+        font-size: 13px;
+        font-weight: 600;
+        color: #4880ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 140px;
+        cursor: pointer;
+      }
+    }
+  }
+
+.multi-select-input {
+  .ng-select {
+    &.ng-select-multiple {
+      height: auto;
+      .ng-select-container {
+        height: auto;
+        min-height: 45px;
+      }
+    }
+  }
+}

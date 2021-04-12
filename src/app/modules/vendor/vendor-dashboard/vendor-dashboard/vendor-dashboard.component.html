@@ -1,0 +1,85 @@
+<h2 class="page-title top-first-title">My Dashboard</h2>
+
+<div class="dashborad-buttons">
+  <div class="button-container">
+    <button class="btn link btn-block" [routerLink]="['/vendor/quotes/list']" [queryParams]="sortingParams?.ACCEPT_REJECT_AND_AWAITING_VENDOR_QUOTES" type="button">Price Quotes Needed</button>
+    <span class="badge badge-warning" *ngIf="headerCount?.quotes?.AWAITING_VENDOR_QUOTES > 0">{{headerCount?.quotes?.AWAITING_VENDOR_QUOTES}}</span>
+  </div>
+  <div class="button-container">
+    <button class="btn link btn-block" [routerLink]="['/vendor/orders']" [queryParams]="sortingParams?.NEW_ORDERS"  type="button">New Orders</button>
+    <span class="badge badge-warning" *ngIf="dashboardCount?.orders?.newOrders > 0">{{dashboardCount?.orders?.newOrders}}</span>
+  </div>
+  <div class="button-container">
+    <button class="btn link btn-block"  [routerLink]="['/vendor/orders']"
+    [queryParams]="sortingParams?.DAY_OUT" type="button">30 Days Out</button>
+    <span class="badge badge-warning" *ngIf="dashboardCount?.orders?.thirtyDayOut > 0">{{dashboardCount?.orders?.thirtyDayOut}}</span>
+  </div>
+  <div class="button-container">
+    <button class="btn link btn-block"  [routerLink]="['/vendor/quotes/list']" [queryParams]="sortingParams?.AWAITING_QUOTES_ACCEPTANCE" type="button">Awaiting Quote Acceptance</button>
+  </div>
+  <div class="button-container">
+    <button class="btn link btn-block" [routerLink]="['/vendor/orders']"
+          [queryParams]="sortingParams?.FULFILLED" type="button">Fulfilled Orders</button>
+  </div>
+</div>
+
+<div class="row dashboard-box">
+  <div class="col-6">
+    <div class="card">
+      <div class="card-title">Total Price Quotes</div>
+      <div class="card-body blue">
+        <div class="heading">Price Quotes Needed </div>
+        <div class="oval">{{headerCount?.quotes?.AWAITING_VENDOR_QUOTES ? headerCount?.quotes?.AWAITING_VENDOR_QUOTES : 0}}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn text" [routerLink]="['/vendor/quotes/list']"  [queryParams]="sortingParams?.ACCEPT_REJECT_AND_AWAITING_VENDOR_QUOTES" >View Folder</button>
+      </div>
+    </div>
+  </div><!-- end col-6 -->
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-title">Total New Orders</div>
+      <div class="card-body yellow">
+        <div class="heading">Total New Paid Orders</div>
+        <div class="oval">{{dashboardCount?.orders?.paid}}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn text" [routerLink]="['/vendor/orders']" routerLinkActive="active"
+        [queryParams]="sortingParams?.NEW_ORDERS">View Folder</button>
+      </div>
+    </div>
+  </div><!-- end col-6 -->
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-title">30 Days Out</div>
+      <div class="card-body orange">
+        <div class="heading">Total Orders (in next 30 days)</div>
+        <div class="oval">{{dashboardCount?.orders?.thirtyDayOut}}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn text" [routerLink]="['/vendor/orders']" routerLinkActive="active"
+        [queryParams]="{ type: 'DAY_OUR_ORDERS' }"  [routerLinkActiveOptions]="{exact:
+        true}">View Folder</button>
+      </div>
+    </div>
+  </div><!-- end col-6 -->
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-title">My Revenue</div>
+      <div class="card-body sky-blue">
+        <div class="heading large"><span class="d-none d-sm-inline">Total</span> Gross Revenue: {{dashboardCount?.orders?.grossRevenue  | currency:'USD'}}</div>
+        <div class="heading large"><span class="d-none d-sm-inline">Total</span> Net Revenue: {{dashboardCount?.orders?.netRevenue | currency:'USD'}}</div>
+        <div class="sub-heading">% increase/decrease from previous month: {{dashboardCount?.orders?.previousMonth | detectNumberSign}}%</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn text" [routerLink]="['/vendor/payment-details']">View Folder</button>
+      </div>
+    </div>
+  </div><!-- end col-6 -->
+
+<!-- Planner dashboard start from here -->
+
+</div>

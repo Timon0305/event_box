@@ -1,0 +1,91 @@
+@import "../../../../../../assets/scss/variables";
+.select-container{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  .ng-select{
+    width: 20%;
+    max-width: 170px;
+    &:nth-child(1){
+      min-width: 130px;
+    }
+    &:nth-child(2){
+      margin-left: 16px;
+      min-width: 160px;
+    }
+    &:nth-child(3){
+      min-width: 160px;
+    }
+    &:nth-child(4){
+      min-width: 127px;
+    }
+    & + .ng-select{
+      margin-left: 16px;
+    }
+  }
+  .select-container-ng-select {
+    display: inline-flex;
+    margin-left: 16px;
+  }
+  .sm-modal-close-btn {
+    display: none;
+    position: absolute;
+    top: 15px;
+    right: 23px;
+    font-size: 20px;
+  }
+  .apply-filter-btn {
+    display: none;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+    position: relative;
+    bottom: 0;
+    border-top: 1px solid #e2e2e2;
+    padding: 15px;
+    .btn {
+      width: calc(50% - 8px);
+      &.primary-outline {
+        color: #5067eb;
+      }
+    }
+  }
+  @media screen and (max-width: $tablet-pro) {
+    .sm-modal-close-btn {
+      display: inline-block;
+    }
+    .select-container-ng-select {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      background: #ffffffe6;
+      left: 0;
+      top: 0;
+      z-index: 9999;
+      padding: 25px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin: 0;
+      .ng-select {
+        width: 270px;
+        margin: 0;
+        max-width: 100%;
+        margin-bottom: 6px;
+      }
+      .sort-filter {
+        width: 100%;
+        margin: 0;
+        max-width: 100%;
+      }
+      &.show {
+        display: flex;
+      }
+      .apply-filter-btn {
+        display: flex;
+      }
+    }
+  }
+}

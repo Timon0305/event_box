@@ -1,0 +1,126 @@
+.navigation-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .navigation-item{
+      height: 36px;
+      .navigation{
+        height: 36px;
+        width: 36px;
+        display: inline-block;
+        background: url(~assets/images/navigaton.svg) no-repeat center;
+        &.right{
+          margin-left: 16px;
+          transform: rotate(180deg);
+        }
+      }
+      &:hover{
+        .navigation{
+          transform: rotate(180deg);
+          background: url(~assets/images/navigaton-active.svg) no-repeat center;
+          &.right{
+            transform: rotate(0);
+          }
+        }
+      }
+    }
+    @media screen and (max-width: $phone-landscape){
+      .navigation-item{
+        width: 27px;
+        height: 27px;
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+        .navigation {
+          width: 27px;
+          height: 27px;
+          background-size: contain;
+          margin: 0;
+          &.right {
+            margin: 0;
+            background-size: contain;
+          }
+        }
+      }
+    }
+  }
+.planner-comments{
+  border-radius: 6px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.08);
+  border: solid 1px #f1f1f1;
+  background-color: #ffffff;
+  padding: 15px;
+  height: 100%;
+  @media screen and (min-width: $phone-landscape){
+    padding: 24px;
+  }
+  .top-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    .content{
+      width: calc(100% - 75px);
+      .rating-container{
+        padding: 0;
+        margin-bottom: 10px;
+        .star{
+          height: 17px;
+          width: 18px;
+          background-size: cover;
+          margin-right: 3px;
+        }
+        @media screen and (min-width: $phone-landscape){
+          margin-bottom: 16px;
+          .star{
+            height: 20px;
+            width: 22px;
+            margin-right: 7px;
+          }
+        }
+      }
+      .comment-title{
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.63;
+        @media screen and (min-width: $phone-landscape){
+          font-size: 16px;
+        }
+      }
+    }
+    img{
+      min-width: 68px;
+      width: 68px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 4px;
+      @media screen and (min-width: $phone-landscape){
+        min-width: 68px;
+        width: 68px;
+        height: 56px;
+      }
+    }
+  }
+  .comment-detail{
+    color: rgba(#000, 0.6);
+    font-size: 12px;
+    line-height: 1.69;
+    margin-bottom: 15px;
+    word-break: break-word;
+    @media screen and (min-width: $phone-landscape){
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+  }
+  .comment-author{
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 0;
+    @media screen and (min-width: $phone-landscape){
+      font-size: 16px;
+    }
+  }
+}
+.plan-item-col {
+  margin-bottom: 40px;
+}

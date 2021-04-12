@@ -1,0 +1,15 @@
+<div class="vendor-detail-container ">
+
+  <app-profile-form (afterProfileFormInit)="afterProfileFormInit($event)"></app-profile-form>
+
+  <h5 class="second-title">Company Location</h5>
+  <app-location-form (afterInit)="afterInit($event)"></app-location-form>
+  <button class="btn text mb-80 mb-sm-30 blue-text" type="button" *ngIf="locationForm?.value?.location?.length < maxLocations "
+    (click)="createNewLocationControl()">+ Add Additional Company
+    Location</button>
+
+</div><!-- end vendor-detail-container -->
+<app-vendor-profile-footer (updateProfileEvent)="updateProfile()"  [valid]="(profileForm?.valid && locationForm?.valid) || false">
+</app-vendor-profile-footer>
+
+

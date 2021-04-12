@@ -1,0 +1,25 @@
+<div class="modal-header" ngbAutoFocus>
+    <h4 class="modal-title">Add User</h4>
+</div>
+<div class="modal-body">
+    <form class="signin-form" [formGroup]="inviteSubVendorForm" (submit)="inviteSubVendor()">
+        <input style="display: none;" />
+        <div class="form-group">
+            <label for="email">Email Address*</label>
+            <input type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter address"
+                formControlName="email"
+                [ngClass]="{'is-invalid': (f?.controls?.email?.touched && f?.controls?.email?.errors)}" >
+            <ng-container *ngIf="f?.controls?.email?.touched">
+                <div class="invalid-feedback" *ngIf="f?.controls?.email?.errors?.required">Email is required.
+                </div>
+                <div class="invalid-feedback" *ngIf="f?.controls?.email?.errors?.email">Email format is not valid.
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="btn-space with-border">
+            <button type="button" class="btn link" (click)="close()">Cancel</button>
+            <button type="submit" [disabled]="!f.valid" class="btn primary">Add</button>
+        </div>
+    </form>
+</div>

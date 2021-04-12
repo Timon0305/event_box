@@ -1,0 +1,24 @@
+<div class="container fixed-header-padding fixed-footer-padding">
+  <h4 class="main-title">Complete Profile</h4>
+  <p class="subtitle">Enter the following details</p>
+  <div class="divider"></div>
+  <div class="vendor-steps">
+    <div class="vendor-steps-container" [ngClass]="{inactive: bankActive}">
+      <div class="vendor-image">
+        <img src="../../../../assets/images/user.svg" alt="Vendor manager" />
+      </div>
+      <div class="title">Vendor Details</div>
+    </div>
+    <div class="divider"></div>
+    <div class="vendor-steps-container" [ngClass]="{inactive: !bankActive}">
+      <div class="vendor-image">
+        <img src="../../../../assets/images/bank-inactive.svg" alt="Bank detail" />
+      </div>
+      <div class="title">Bank Details</div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+
+</div>
+
+

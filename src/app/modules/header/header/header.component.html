@@ -1,0 +1,394 @@
+<header class="fixed-top" *ngIf="showHeader" [ngClass]="{ 'after-login-home': (isUserLoggedIn() && showHeaderMenu) }">
+  <div class="container" *ngIf="!userData?.token || showInitialHeader">
+    <nav class="navbar navbar-expand-lg">
+      <a class="navbar-brand" (click)="router.navigate(['/'])">
+        <img src="/assets/images/logo.png" alt="Logo">
+      </a>
+      <app-header-search *ngIf="showHeaderSearch" class="header-search-after-login"></app-header-search>
+      <!-- before login Header -->
+      <div class="navbar-nav-scroll" *ngIf="!onlyLogoHeader">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+          <ng-container *ngIf="!userData?.token">
+            <li class="nav-item d-none d-md-inline-block">
+              <a class="nav-link" (click)="plannerSignUp()" title="Planner Sign Up">Planner Sign Up</a>
+            </li>
+            <li class="nav-item d-none d-md-inline-block">
+              <div class="nav-link divider">|</div>
+            </li>
+            <li class="nav-item d-none d-md-inline-block">
+              <a class="nav-link" (click)="vendorSignUp()" title="Vendor Sign Up">Vendor Sign Up</a>
+            </li>
+            <li class="nav-item d-md-none nav-dropdown-item">
+              <div ngbDropdown #myDrop="ngbDropdown" class="d-inline-block" placement="bottom-right">
+                <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle title="Sign Up">Sign Up</a>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="position-absolute">
+                  <a class="nav-link" (click)="plannerSignUp()" title="Planner Sign Up">Planner Sign Up</a>
+                  <a class="nav-link" (click)="vendorSignUp()" title="Vendor Sign Up">Vendor Sign Up</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item">
+              <button class="btn btn-outline-primary" (click)="signIn()">Sign In</button>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="userData?.token && showInitialHeader">
+            <li class="nav-item">
+              <button class="btn btn-outline-primary" (click)="signOut()">Sign Out</button>
+            </li>
+          </ng-container>
+
+
+        </ul>
+      </div><!-- end before login Header -->
+    </nav>
+  </div>
+
+  <!-- after login Header -->
+  <div class="container-fluid" *ngIf="userData?.token && !showInitialHeader">
+    <nav class="navbar navbar-expand-lg">
+      <a class="navbar-brand after-login-logo" (click)="router.navigate(['/'])">
+        <img src="/assets/images/logo.png" alt="Logo">
+      </a>
+      <div class="collapse navbar-collapse after-login-nav">
+        <div class="header-search-left">
+          <app-header-search *ngIf="showHeaderSearch" class="header-search-after-login"></app-header-search>
+        </div>
+        <!-- Partner Header-->
+        <ul *ngIf="userData?.role === constants.Role.PARTNER" class="navbar-nav bd-navbar-nav flex-row">
+          <li class="nav-item">
+            <a class="nav-link" title="Notifications" >
+              <span class="icon-bell">
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <div ngbDropdown #myDrop="ngbDropdown" class="d-inline-block" placement="bottom-right">
+              <a class="nav-link" id="dropdownPartnerHeader" ngbDropdownToggle>
+                <img src="/assets/images/user-pending.svg" alt="User image" class="company-logo" />
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownPartnerHeader">
+                <div class="user-detail pointer" (click)="navigate('/partner')">
+                  <img
+                    src="/assets/images/user-pending.svg" class="company-logo" alt="Company Image" />
+                  <div class="user-text">
+                    <div class="user-name">{{userData?.firstName}}
+                      {{userData?.lastName}}</div>
+                    <div class="user-email">{{userData?.email}}</div>
+                  </div>
+                </div>
+                <button ngbDropdownItem class="logout" (click)="signOut()"><span class="icon-logout"></span> Sign
+                  Out</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+
+        <!-- Admin Header -->
+        <ul *ngIf="userData?.role === constants.Role.ADMIN" class="navbar-nav bd-navbar-nav flex-row">
+          <li class="nav-item">
+            <a class="nav-link" title="Messages" (click)="navigate(appRoutes.admin.messages)">
+              <span class="icon-message">
+                {{headerCount?.messages || ''}}
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" title="Notifications" (click)="navigate(appRoutes.admin.notifications)">
+              <span class="icon-bell">
+                <span class="badge badge-pill badge-warning" *ngIf="headerCount?.notifications > 0">
+                  {{headerCount?.notifications || ''}}</span>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" title="Pending Vendor Sign Ups"
+              (click)="navigate(appRoutes.admin.adminPendingVendorManagement)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <g fill="none" fill-rule="evenodd">
+                  <path fill="#FFF" fill-opacity="0" d="M0 0h24v24H0z" />
+                  <g fill-rule="nonzero">
+                    <path fill="#545454"
+                      d="M12 0c3.86 0 7 3.14 7 7 0 .464-.057.94-.179 1.499l.027-.128c.1.347.152.733.152 1.129 0 1.393-.616 2.451-1.441 2.499C16.651 15.01 14.463 17 12 17s-4.651-1.99-5.559-5.001C5.616 11.951 5 10.893 5 9.5c0-.449.067-.887.194-1.267l-.042.134A6.67 6.67 0 0 1 5 7c0-3.86 3.14-7 7-7zm-1.304 4.758C10.298 5.451 9.436 6 7.707 6h-.076c-.139.321-.202 1.33-.141 2.328A.506.506 0 0 1 7.01 9a.477.477 0 0 1-.085-.005c-.005 0-.421-.063-.872-.09-.035.188-.053.39-.053.595 0 .968.375 1.5.5 1.5a.535.535 0 0 1 .468-.05c.148.06.274.176.313.331C7.981 14.104 9.877 16 12 16s4.019-1.896 4.719-4.719a.502.502 0 0 1 .749-.304c.172.022.532-.51.532-1.477 0-.198-.017-.392-.049-.575l-.91.074L17 9a.497.497 0 0 1-.456-.298c-.019-.042-.387-.878-.506-1.718-2.096-.136-4.264-1.162-5.342-2.226z" />
+                    <path stroke="#545454"
+                      d="M16.498 16.501zm0 0l-2.999 7-.997-1.994.18-.246c.477-.655.818-1.328.818-1.761 0-.612-.517-1-1.5-1s-1.5.388-1.5 1c0 .433.34 1.105.818 1.76l.18.247-.998 1.992-.425-.99-2.574-6.007.001-.002H7.5l-5.176 2.588a2.002 2.002 0 0 0-1.047 1.304L.5 23.498l.002.004L.5 23.5h23s.002 0 0 .001v-.003.001l-.777-3.106a1.998 1.998 0 0 0-1.047-1.305L16.5 16.5l-.001.001zm-8.996 0h.001z" />
+                  </g>
+                </g>
+              </svg>
+              <span class="badge badge-pill badge-warning">{{headerCount?.newVendors || ''}}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <div ngbDropdown #myDrop="ngbDropdown" class="d-inline-block" placement="bottom-right">
+              <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>
+                <img onError="this.src='/assets/images/user-pending.svg'" src="{{s3BaseUrl}}{{userData?.company?.logo}}"
+                  alt="User image" class="company-logo" />
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <div class="user-detail pointer" (click)="moveToProfile(myDrop)">
+                  <img onError="this.src='/assets/images/user-pending.svg'"
+                    src="{{s3BaseUrl}}{{userData?.company?.logo}}" class="company-logo" alt="Company Image" />
+                  <div class="user-text">
+                    <div class="user-name">{{userData?.firstName}}
+                      {{userData?.lastName}}</div>
+                    <div class="user-email">{{userData?.email}}</div>
+                  </div>
+                </div>
+                <button ngbDropdownItem class="logout" (click)="signOut()"><span class="icon-logout"></span> Sign
+                  Out</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ul *ngIf="userData?.role === constants.Role.VENDOR" class="navbar-nav bd-navbar-nav flex-row"
+          [ngClass]="{'show': headerAction}">
+          <span class="nav-close-btn" (click)="onAddIcon()">&#x2715;</span>
+          <a class="nav-link header-nav-link-sm" (click)="navigate(appRoutes.vendor.notifications)" title="Notifications">
+            <span class="icon-bell">
+              <span
+                class="badge badge-pill badge-warning">{{headerCount?.notifications? headerCount?.notifications: ''}}</span>
+            </span>
+          </a>
+          <li class="nav-item">
+            <a class="nav-link" (click)="navigate('/vendor/products-services/add')" title="Add Product/Services"><span
+                class="icon-add vendor"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="navigate(appRoutes.vendor.messages)" title="Messages"><span
+                class="icon-message">
+                <span class="badge badge-pill badge-warning">{{headerCount?.messages? headerCount?.messages: ''}}</span>
+
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="navigate(appRoutes.vendor.notifications)" title="Notifications">
+              <span class="icon-bell">
+                <span
+                  class="badge badge-pill badge-warning">{{headerCount?.notifications? headerCount?.notifications: ''}}</span>
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" title="30 Days Out" (click)="redirectToDayOut(myDrop)">
+              <span class="day-30-icon position-relative">
+                <svg width="22px" height="26px" viewBox="0 0 22 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Header" transform="translate(-1171.000000, -44.000000)">
+                            <g id="Topbar">
+                                <g id="Right_Links" transform="translate(976.000000, 38.000000)">
+                                    <g id="Icon_Bid-Copy-6" transform="translate(174.000000, 4.000000)">
+                                        <g id="Group-3" transform="translate(21.000000, 4.000000)">
+                                            <rect id="Rectangle" stroke="#545454" stroke-width="1.2" fill="#FFFFFF" x="0.6" y="2.6" width="20.8" height="20.8" rx="2"></rect>
+                                            <rect id="Rectangle" x="1" y="8" width="20" height="15"></rect>
+                                            <text id="30" font-family="Rubik-Regular, Rubik" font-size="11" font-weight="normal" fill="#545454">
+                                                <tspan x="4.2295" y="19">30</tspan>
+                                            </text>
+                                            <path d="M0.6,7.4 L21.4,7.4 L21.4,4 C21.4,3.22680135 20.7731986,2.6 20,2.6 L2,2.6 C1.22680135,2.6 0.6,3.22680135 0.6,4 L0.6,7.4 Z" id="Rectangle-Copy" stroke="#545454" stroke-width="1.2" fill="#545454"></path>
+                                            <g id="Group-4" transform="translate(4.000000, 0.000000)" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="1" y1="0" x2="1" y2="4" id="Line-Copy-2" stroke="#FFFFFF" stroke-width="4"></line>
+                                                <line x1="13" y1="0" x2="13" y2="4" id="Line-Copy-3" stroke="#FFFFFF" stroke-width="4"></line>
+                                                <line x1="13" y1="0" x2="13" y2="4" id="Line-Copy" stroke="#545454" stroke-width="1.2"></line>
+                                                <line x1="1" y1="0" x2="1" y2="4" id="Line" stroke="#545454" stroke-width="1.2"></line>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+              </span>
+              <span class="badge badge-pill badge-warning"
+                *ngIf="(headerCount?.orders?.thirtyDayOut) > 0">{{headerCount?.orders?.thirtyDayOut}}</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" title="New Orders" (click)="redirectToNewOrders(myDrop)"><span class="icon-cart"></span>
+              <span class="badge badge-pill badge-warning"
+                *ngIf="(headerCount?.orders?.newOrders) > 0">{{headerCount?.orders?.newOrders}}</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="moveToQuotes(myDrop)" title="Price Quotes Needed"><span
+                class="icon-bid"></span> <span class="badge badge-pill badge-warning"
+                *ngIf="headerCount?.quotes?.AWAITING_VENDOR_QUOTES > 0">{{headerCount?.quotes?.AWAITING_VENDOR_QUOTES}}</span></a>
+          </li>
+          <li class="nav-item">
+            <div ngbDropdown #myDrop="ngbDropdown" class="d-inline-block" placement="bottom-right">
+              <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>
+                <img onError="this.src='../../../../assets/images/user-pending.svg'"
+                  src="{{s3BaseUrl}}{{userData?.company?.logo}}" alt="User image" class="company-logo" />
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <span class="dropdown-close-btn" (click)="onCloseDropDown(myDrop)">&#x2715;</span>
+                <div class="user-detail pointer" (click)="moveToProfile(myDrop)">
+                  <img onError="this.src='../../../../assets/images/user-pending.svg'"
+                    src="{{s3BaseUrl}}{{userData?.company?.logo}}" class="company-logo" alt="Company Image" />
+                  <div class="user-text">
+                    <div class="user-name">{{userData?.firstName}}
+                      {{userData?.lastName}}</div>
+                    <div class="user-email">{{userData?.email}}</div>
+                  </div>
+                </div>
+                <button (click)="navigateToDashboard('/vendor/dashboard', myDrop)" ngbDropdownItem><span
+                    class="icon-dashboard"></span> Dashboard</button>
+                <button ngbDropdownItem class="cursor-pointer" (click)="moveToQuotes(myDrop)"><span
+                    class="icon-bid"></span> Price Quotes Needed <span class="badge badge-pill badge-warning"
+                    *ngIf="headerCount?.quotes?.AWAITING_VENDOR_QUOTES > 0">{{headerCount?.quotes?.AWAITING_VENDOR_QUOTES}}</span></button>
+                <button ngbDropdownItem (click)="redirectToNewOrders(myDrop)"><span class="icon-cart"></span> New Orders
+                  <span class="badge badge-pill badge-warning"
+                    *ngIf="(headerCount?.orders?.newOrders) > 0">{{headerCount?.orders?.newOrders}}</span></button>
+                <button ngbDropdownItem (click)="redirectToDayOut(myDrop)">
+                  <span class="day-30-icon position-relative">
+                    <svg width="18px" height="22px" viewBox="0 0 22 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                      <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <g id="Header" transform="translate(-1171.000000, -44.000000)">
+                              <g id="Topbar">
+                                  <g id="Right_Links" transform="translate(976.000000, 38.000000)">
+                                      <g id="Icon_Bid-Copy-6" transform="translate(174.000000, 4.000000)">
+                                          <g id="Group-3" transform="translate(21.000000, 4.000000)">
+                                              <rect id="Rectangle" stroke="#545454" stroke-width="1.2" fill="#FFFFFF" x="0.6" y="2.6" width="20.8" height="20.8" rx="2"></rect>
+                                              <rect id="Rectangle" x="1" y="8" width="20" height="15"></rect>
+                                              <text id="30" font-family="Rubik-Regular, Rubik" font-size="11" font-weight="normal" fill="#545454">
+                                                  <tspan x="4.2295" y="19">30</tspan>
+                                              </text>
+                                              <path d="M0.6,7.4 L21.4,7.4 L21.4,4 C21.4,3.22680135 20.7731986,2.6 20,2.6 L2,2.6 C1.22680135,2.6 0.6,3.22680135 0.6,4 L0.6,7.4 Z" id="Rectangle-Copy" stroke="#545454" stroke-width="1.2" fill="#545454"></path>
+                                              <g id="Group-4" transform="translate(4.000000, 0.000000)" stroke-linecap="round" stroke-linejoin="round">
+                                                  <line x1="1" y1="0" x2="1" y2="4" id="Line-Copy-2" stroke="#FFFFFF" stroke-width="4"></line>
+                                                  <line x1="13" y1="0" x2="13" y2="4" id="Line-Copy-3" stroke="#FFFFFF" stroke-width="4"></line>
+                                                  <line x1="13" y1="0" x2="13" y2="4" id="Line-Copy" stroke="#545454" stroke-width="1.2"></line>
+                                                  <line x1="1" y1="0" x2="1" y2="4" id="Line" stroke="#545454" stroke-width="1.2"></line>
+                                              </g>
+                                          </g>
+                                      </g>
+                                  </g>
+                              </g>
+                          </g>
+                      </g>
+                    </svg>
+                  </span>
+                   30 Days Out<span class="badge badge-pill badge-warning"
+                    *ngIf="(headerCount?.orders?.thirtyDayOut) > 0">{{headerCount?.orders?.thirtyDayOut}}</span></button>
+
+                <button ngbDropdownItem class="logout" (click)="signOut()"><span class="icon-logout"></span> Sign
+                  Out</button>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-header-icon" (click)="onAddIcon()"><span class="icon-add"></span></a>
+          </li>
+        </ul>
+
+        <ul *ngIf="userData?.role === constants.Role.PLANNER" class="navbar-nav bd-navbar-nav flex-row"
+          [ngClass]="{'show': headerAction}">
+          <span class="nav-close-btn" (click)="onAddIcon()">&#x2715;</span>
+          <a class="nav-link header-nav-link-sm" (click)="navigate(appRoutes.planner.notifications)" title="Notifications">
+            <span class="icon-bell">
+              <span
+                class="badge badge-pill badge-warning">{{headerCount?.notifications? headerCount?.notifications: ''}}</span>
+
+            </span>
+          </a>
+          <li class="nav-item">
+            <a class="nav-link" title="Add New Event"><span (click)="addEvent()" class="icon-add"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="navigate(appRoutes.planner.messages)" title="Messages">
+              <span class="icon-message">
+                <span class="badge badge-pill badge-warning">{{headerCount?.messages?headerCount?.messages: '' }}</span>
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="navigate('/planner/favourites')" title="Favorites"><span
+                class="icon-heart"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="navigate(appRoutes.planner.notifications)" title="Notifications">
+              <span class="icon-bell">
+                <span
+                  class="badge badge-pill badge-warning">{{headerCount?.notifications? headerCount?.notifications: ''}}</span>
+
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="navigate('/planner/quote-request-folder')" title="Quote Request Folder">
+              <span class="icon-quote-folder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="22" viewBox="0 0 21 22">
+                  <g fill="none" fill-rule="evenodd">
+                      <path fill="#FFF" stroke="#545454" stroke-width="1.2" d="M5.704.6L.6 5.847v13.796c0 .97.787 1.757 1.757 1.757H15.19c.97 0 1.758-.787 1.758-1.757V2.357c0-.97-.787-1.757-1.758-1.757H5.704z"/>
+                      <path fill="#545454" d="M0 6.614L6.521 6.614 6.521 0 5.43 0 0 5.603z"/>
+                      <path fill="#FFF" stroke="#545454" stroke-width="1.2" d="M6.2 18.213h2.324l11.37-11.457c.173-.175.172-.459-.003-.633l-.002-.002-1.534-1.504c-.175-.172-.454-.171-.628 0L6.2 15.998v2.216z"/>
+                      <path stroke="#545454" stroke-width=".917" d="M15.576 6.47L18.001 8.809"/>
+                  </g>
+                </svg>
+              </span>
+               <span *ngIf="headerCount?.quotes?.INITIATED > 0"
+                class="badge badge-pill badge-warning">{{headerCount?.quotes?.INITIATED}}</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+              (click)="navigate('/planner/quotes/accept-reject-quotes/list', {order: 1, sort: 'quoteExpirationDate'})"
+              title="Accept Reject Quotes"><span class="icon-accept-reject">
+                <span class="badge badge-pill badge-warning"
+                  *ngIf="headerCount?.quotes?.ACCEPT_REJECT_QUOTES > 0">{{headerCount?.quotes?.ACCEPT_REJECT_QUOTES}}</span>
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="navigate(appRoutes.planner.shoppingCart)" title="Shopping Cart"><span
+                class="icon-cart planner">
+                <span class="badge badge-pill badge-warning"
+                  *ngIf="headerCount?.quotes?.ACCEPTED_QUOTES > 0">{{headerCount?.quotes?.ACCEPTED_QUOTES}}</span>
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <div ngbDropdown #myDrop="ngbDropdown" class="d-inline-block" placement="bottom-right">
+              <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>
+                <img onError="this.src='../../../../assets/images/user-pending.svg'" src="{{userData?.imageUrl}}"
+                  alt="User image" class="company-logo" />
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <span class="dropdown-close-btn" (click)="onCloseDropDown(myDrop)">&#x2715;</span>
+                <div class="user-detail pointer" (click)="moveToProfile(myDrop)">
+                  <img onError="this.src='../../../../assets/images/user-pending.svg'" src="{{userData?.imageUrl}}"
+                    class="company-logo" alt="Company Image" />
+                  <div class="user-text">
+                    <div class="user-name">{{userData?.firstName}}
+                      {{userData?.lastName}}</div>
+                    <div class="user-email">{{userData?.email}}</div>
+                  </div>
+                </div>
+                <button ngbDropdownItem (click)="navigateToDashboard('/planner/dashboard')"> <span
+                    class="icon-dashboard"></span> Dashboard</button>
+                <button ngbDropdownItem (click)="navigate('/planner/quote-request-folder')">
+                  <span class="bid-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 21 22">
+                      <g fill="none" fill-rule="evenodd">
+                          <path fill="#FFF" stroke="#545454" stroke-width="1.2" d="M5.704.6L.6 5.847v13.796c0 .97.787 1.757 1.757 1.757H15.19c.97 0 1.758-.787 1.758-1.757V2.357c0-.97-.787-1.757-1.758-1.757H5.704z"/>
+                          <path fill="#545454" d="M0 6.614L6.521 6.614 6.521 0 5.43 0 0 5.603z"/>
+                          <path fill="#FFF" stroke="#545454" stroke-width="1.2" d="M6.2 18.213h2.324l11.37-11.457c.173-.175.172-.459-.003-.633l-.002-.002-1.534-1.504c-.175-.172-.454-.171-.628 0L6.2 15.998v2.216z"/>
+                          <path stroke="#545454" stroke-width=".917" d="M15.576 6.47L18.001 8.809"/>
+                      </g>
+                    </svg>
+                  </span> Quote Request Folder<span *ngIf="headerCount?.quotes?.INITIATED > 0"
+                    class="badge badge-pill badge-warning">{{headerCount?.quotes?.INITIATED}}</span></button>
+                <button ngbDropdownItem
+                  (click)="navigate('/planner/quotes/accept-reject-quotes/list', {order: 1, sort: 'quoteExpirationDate'})"><span
+                    class="icon-accept-reject"></span> Accept / Reject Quotes <span
+                    class="badge badge-pill badge-warning"
+                    *ngIf="headerCount?.quotes?.ACCEPT_REJECT_QUOTES > 0">{{headerCount?.quotes?.ACCEPT_REJECT_QUOTES}}</span></button>
+                <button ngbDropdownItem (click)="navigate(appRoutes.planner.shoppingCart)"><span
+                    class="icon-cart"></span> Shopping Cart
+                  <span class="badge badge-pill badge-warning"
+                    *ngIf="headerCount?.quotes?.ACCEPTED_QUOTES > 0">{{headerCount?.quotes?.ACCEPTED_QUOTES}}</span></button>
+                <button ngbDropdownItem class="logout" (click)="signOut()"><span class="icon-logout"></span> Sign
+                  Out</button>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-header-icon" (click)="onAddIcon()"><span class="icon-add"></span></a>
+          </li>
+        </ul>
+      </div><!-- after login Header -->
+    </nav>
+  </div>
+</header>
+<app-header-submenu [isHomePage]="isHomePage" [isPublicPages]="showHeaderMenu" *ngIf="showHeaderMenu && showHeader">
+</app-header-submenu>

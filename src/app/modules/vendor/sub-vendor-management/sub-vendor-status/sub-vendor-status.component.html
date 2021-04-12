@@ -1,0 +1,10 @@
+<div class="modal-body delete-modal">
+    <img src="../../../../assets/images/delete-user.svg" alt="Inactive user">
+    <h4 class="confirm-title">{{vendor?.status === 1 ? 'Deactivate' : 'Activate'}} User</h4>
+    <p>Are you sure you want to {{vendor?.status === 1 ? 'Deactivate' : 'Activate'}} this account from the list?</p>
+
+    <div class="btn-space with-border">
+        <button type="button" class="btn link" (click)="changeVendorStatus()">Yes</button>
+        <button type="submit" class="btn link" (click)="close()">No</button>
+    </div>
+</div>

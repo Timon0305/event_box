@@ -1,0 +1,99 @@
+<div class="tab-content-head" *ngIf="showFilters">
+  <app-shared-search (search)="search($event)" class="search-container"></app-shared-search>
+  <!-- end search-container -->
+  <div class="select-list-container sm-filter-dropdown">
+    <app-sort-by-filter [sortByData]="sortByData" (sortFilterChange)=sortFilterChange($event) class="sort-filter">
+    </app-sort-by-filter>
+  </div>
+</div>
+
+<!--Quote Request Folder-->
+<!-- table start form here -->
+<div class="table-listing quote-request-table" *ngIf="quoteRequestFolderData?.totalDocs > 0">
+  <div class="table-head-wrapper">
+    <div class="table-head">
+      <div class="thead-data">
+        <div class="form-group">
+          <input type="checkbox" class="form-check-input" id="productListAll" [checked]="checkAll"
+            (change)="toggleSelectAll($event)">
+          <label class="form-check-label" for="productListAll">&nbsp;</label>
+        </div>
+      </div>
+      <div class="thead-data">Product/Service Name</div>
+      <div class="thead-data">Vendor Name</div>
+      <div class="thead-data">Event Label</div>
+      <div class="thead-data">Qty</div>
+      <div class="thead-data">Price Starting at</div>
+      <div class="thead-data">Notes</div>
+      <div class="thead-data">Action</div>
+    </div>
+  </div>
+  <div class="table-body-wrapper">
+    <div class="table-body" *ngFor="let item of quoteRequestFolderData?.docs;let i = index; trackBy: trackByFn">
+      <!-- repeat this div -->
+      <div class="tbody-data">
+        <div class="form-group mb-0 mt-4">
+          <input type="checkbox" (change)="toggleCheck($event, item._id)" class="form-check-input" id="productList{{i}}"
+            [checked]="checkList && checkList.indexOf(item._id) >=0">
+          <label class="form-check-label" for="productList{{i}}">&nbsp;</label>
+        </div>
+      </div>
+      <div class="tbody-data table-sm-100" data-label="Name">
+        <div class="product-col">
+          <em><img src="{{item?.products?.defaultImageUrl}}"
+              onError="this.src='../../../../../../assets/images/no-image-table.png'" alt="Product Image"
+              class="product-image" /></em>
+          <span><a [routerLink]="['/details', item.products._id]"> {{item?.products?.name}}</a></span>
+        </div>
+      </div>
+      <div class="tbody-data" data-label="Vendor Name"><span>{{item?.vendors?.name}}</span></div>
+
+      <div class="tbody-data" data-label="Event Label"><span><a
+            [routerLink]="['/planner/event/event-detail', item.events._id]"
+            [queryParams]="{navigationId: 4}">{{item?.events?.label}}</a></span></div>
+      <div class="tbody-data" data-label="Qty">
+        <div class="input-group">
+          <em class="minus-icon" (click)="changeQuantity(item, -1)" [ngClass]="{'disabled': item.quantity === 1 }"></em>
+          <input type="text" name="quant{{i}}" class="form-control input-number" value="{{item?.quantity}}">
+          <em class="plus-icon" (click)="changeQuantity(item, 1)"></em>
+        </div>
+      </div>
+      <div class="tbody-data" data-label="Price Starting at">
+        <span>{{(item?.products?.price * item?.quantity) | currency:'USD'}}</span></div>
+      <div class="tbody-data" data-label="Notes"><span class="text-underline cursor-pointer"
+          (click)="viewNotes(item, item.notes)">View
+          Notes</span></div>
+      <div class="tbody-data">
+        <div class="table-button-wrapper">
+          <button class="btn primary" type="button" (click)="updateSingleQuoteStatus(item._id)">Send
+            Request</button>
+          <button class="btn link" type="button" (click)="viewQuoteVariable(item)">View Quote Details</button>
+          <button class="btn link" type="button" (click)="delete(item._id)">Delete</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <app-pagination [metaData]="quoteRequestFolderData" (pageChange)="pageChange($event)"></app-pagination>
+</div>
+<div class="table-listing quote-request-table" *ngIf="quoteRequestFolderData?.totalDocs === 0 && !(paramsLength)">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No results found :(</p>
+  </div>
+</div>
+<div class="table-listing quote-request-table" *ngIf="quoteRequestFolderData?.totalDocs === 0 && paramsLength > 0">
+  <div class="no-result">
+    <img src="../../../../../../assets/images/no-data.svg" alt="No results" />
+    <p class="mt-5">Sorry! No search results found :(</p>
+  </div>
+</div>
+<div class="fixed-footer" *ngIf="checkList?.length">
+  <div class="container-fluid">
+    <div class="button-container">
+      <button class="btn link" type="button" (click)="deleteSelected()">Delete Selected Products/Services</button>
+      <button class="btn primary" type="button" (click)="sendRequestToSelected()">Send Quote(s) Request to Selected
+        Vendors</button>
+    </div>
+  </div>
+</div>

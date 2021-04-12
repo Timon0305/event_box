@@ -1,0 +1,10 @@
+<div class="modal-body success-modal email-sent">
+    <img src="../../../../assets/images/email-sent-success.svg" alt="Email Sent Success">
+    <h4 class="confirm-title">Verify Your Email!</h4>
+    <p>Check your email & click the link to activate your account.</p>
+    <a class="link text-blue text-underline font-medium" title="Resend Email" (click)="resendForgotMail()">Resend Email</a>
+    <button type="button" (click)="backToSignIn(content)" class="btn btn-block primary">Back to Sign in</button>
+</div>
+<ng-template #content let-modal>
+    <app-login></app-login>
+</ng-template>

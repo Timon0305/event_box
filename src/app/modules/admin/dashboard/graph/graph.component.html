@@ -1,0 +1,22 @@
+<p *ngIf="graphAnalyticsPointst$|async"></p>
+<div class="graph-container" style="display: block;" *ngIf="lineChartData?.length && lineChartLabels?.length">
+  <div class="graph-dashboard-head">
+    <div class="content-section">
+      <h3>Order vs Dollar Chart Comparison</h3>
+      <div>From {{dateValue.dateFrom | date:'mediumDate'}} to {{dateValue.dateTo | date:'mediumDate'}}</div>
+      <div>Total Gross:  <span>{{totalGross | currency:'USD':'symbol':'1.2-2'}}</span> <span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span> Total Orders: <span>{{totalOrders}}</span></div>
+    </div>
+    <div class="filter-section">
+      <app-shared-date-filter (filterDateEvent)="quoteDateFilter($event)"></app-shared-date-filter>
+    </div>
+  </div>
+  <div class="chart">
+    <canvas baseChart
+    [datasets]="lineChartData"
+    [labels]="lineChartLabels"
+    [options]="lineChartOptions"
+    [colors]="lineChartColors"
+    [chartType]="lineChartType"
+    ></canvas>
+  </div>
+</div>

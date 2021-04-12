@@ -1,0 +1,188 @@
+.btn{
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 5px;
+  height: 40px;
+  padding: 9px 28px 8px;
+  @media screen and (min-width: $tablet-landscape) {
+    height: 44px;
+  }
+  cursor: pointer;
+  &.disabled, &:disabled {
+    opacity: 0.5;
+    cursor: default;
+    user-select: none;
+  }
+  &.mw-200{
+    min-width: 200px;
+  }
+  &.small-140{
+    width: 140px;
+    height: 40px;
+  }
+  &.small-160{
+    min-width: 160px;
+  }
+  &.small{
+    font-size: 14px;
+    height: 40px;
+  }
+  &.medium{
+    font-size: 14px;
+    height: 40px;
+    @media screen and (min-width: $tablet-landscape) {
+      font-size: 16px;
+      height: 45px;
+    }
+  }
+  &.primary{
+    color: $white;
+    border-color: transparent;
+    background: $theme-color;
+    &:hover,
+    &:focus,
+    &:active{
+      border-color: transparent;
+      background: darken($theme-color, 5);
+    }
+    &:focus{
+      box-shadow: none;
+    }
+    &.disabled, &:disabled {
+      opacity: 0.5;
+      cursor: default;
+      user-select: none;
+      &:hover{
+        background: $theme-color;
+      }
+    }
+  }
+  &.primary-outline{
+    color: $green;
+    border: solid 1px $theme-color;
+    &:hover,
+    &:focus,
+    &:active{
+      border-color: $theme-color;
+    }
+    &:focus{
+      box-shadow: none;
+    }
+    &.disabled, &:disabled {
+      opacity: 0.5;
+      cursor: default;
+      user-select: none;
+    }
+  }
+  &.link{
+    color: $btn-link-text;
+    background: $btn-link-background;
+    border-color: $btn-link-border;
+
+    &:hover,
+    // &:focus,
+    &:active{
+        color: $white;
+        background: $theme-color;
+        border-color: $theme-color;
+    }
+    &:focus{
+      box-shadow: none;
+    }
+    &.disabled, &:disabled {
+      color: rgba($btn-link-text, 0.5) !important;
+      background: $btn-link-background !important;
+      border-color: rgba($btn-link-border, 0.5) !important;
+      &:hover{
+        color: rgba($btn-link-text, 0.5) !important;
+        background: $btn-link-background !important;
+        border-color: rgba($btn-link-border, 0.5) !important;
+      }
+    }
+    &.link-small{
+      min-width: 128px;
+      height: 40px;
+      font-size: 13px;
+      font-weight: 400;
+      padding: 9px 25px 8px;
+    }
+  }
+  &.text{
+    color: $btn-link-text;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    height: 25px;
+    font-size: 14px;
+    &:hover,
+    &:focus,
+    &:active{
+        color: darken($btn-link-text, 5);
+        background: transparent;
+    }
+    &:focus{
+      box-shadow: none;
+    }
+    &.disabled, &:disabled {
+      color: rgba($btn-link-text, 0.5);
+      background: $btn-link-background;
+      border-color: $btn-link-border;
+    }
+    &.blue-text{
+      color: #5067eb;
+      text-decoration: underline;
+      &:hover,
+      &:focus,
+      &:active{
+        color: darken(#5067eb, 0.5);
+        text-decoration: underline;
+      }
+      &:focus{
+        box-shadow: none;
+      }
+    }
+    &.orange-text{
+      color: #FF5C5C;
+      text-decoration: underline;
+      &:hover,
+      &:focus,
+      &:active{
+        color: darken(#FF5C5C, 0.5);
+        text-decoration: underline;
+      }
+      &:focus{
+        box-shadow: none;
+      }
+    }
+    &.no-underline{
+      text-decoration: none;
+      &:hover,
+      &:focus,
+      &:active{
+        text-decoration: none;
+      }
+    }
+  }
+}
+.download-csv-button{
+  .btn{
+    &.primary{
+      background-image: url(assets/images/excel-file.svg);
+      background-size: 11% 60%;
+      background-position-x: 10%;
+      background-position-y: 54%;
+      background-repeat: no-repeat;
+      padding-left: 40px;
+      border-color: #4880ff;
+      font-size: 12px;
+      color: #5067eb;
+      background-color: #eff4ff;
+      &:hover,
+      &:focus,
+      &:active{
+        border-color: darken($theme-color, 5);
+        background-color: darken(#eff4ff, 5);
+      }
+    }
+  }
+}

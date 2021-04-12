@@ -1,0 +1,201 @@
+<form [formGroup]="form">
+  <div class="form-group col-12">
+    <label for="vendorNotes">Vendor Notes*</label>
+    <textarea formControlName="vendorNotes"
+      [ngClass]="{'is-invalid': (form?.controls?.vendorNotes?.touched && form?.controls?.vendorNotes?.errors)}"
+      class="form-control vendor-note-textarea" id="vendorNotes" maxlength="{{quoteValidation?.vendorNotesLength}}"
+      placeholder="What specific information do you want to share with this planner about the quote?"></textarea>
+    <!-- please put "is-invalid" class for error -->
+    <div class="invalid-feedback"
+      *ngIf="form?.controls?.vendorNotes?.touched && form?.controls?.vendorNotes?.errors?.required">Vendor Notes are
+      required.</div>
+    <div class="form-help-text">You have {{quoteValidation.vendorNotesLength - form?.value?.vendorNotes?.length}}
+      characters remaining.</div>
+  </div>
+
+  <div class="info-section info-table-section">
+    <div class="info-heading">Contract Items</div>
+    <div class="table-listing quote-invoice-table mb-4 overflow-unset w-100">
+      <div class="table-head-wrapper">
+        <div class="table-head">
+          <div class="thead-data">Name/Description</div>
+          <div class="thead-data">Qty*</div>
+          <div class="thead-data">Price*</div>
+          <div class="thead-data">Total Price</div>
+        </div>
+      </div>
+      <div class="table-body-wrapper mb-0">
+        <div class="table-body mb-0">
+          <!-- repeat this div -->
+          <div class="tbody-data" data-label="Name/Description">
+            <span class="heading">{{quoteDetail?.products?.name}}</span>
+            <span class="des">{{quoteDetail?.products?.description}} </span>
+          </div>
+          <div class="tbody-data" data-label="Qty"><input
+              [ngClass]="{'is-invalid': (form?.controls?.quantity?.touched && form?.controls?.quantity?.errors)}"
+              type="number" formControlName="quantity" class="form-control" />
+            <div class="invalid-feedback"
+              *ngIf="form?.controls?.quantity?.touched && form?.controls?.quantity?.errors?.required">Quantity is
+              required.</div>
+            <div class="invalid-feedback" *ngIf="form?.controls?.quantity?.errors?.priceZero">
+              Quantity should be greater than zero
+            </div>
+          </div>
+          <div class="tbody-data" data-label="Price"><input type="text" prefix="$" mask="0*.00" [dropSpecialCharacters]="false"
+              [ngClass]="{'is-invalid': (form?.controls?.price?.touched && form?.controls?.price?.errors)}"
+              formControlName="price" class="form-control" />
+            <div class="invalid-feedback"
+              *ngIf="form?.controls?.price?.touched && form?.controls?.price?.errors?.required">Price is required.</div>
+            <div class="invalid-feedback" *ngIf="form?.controls?.price?.errors?.priceZero">
+              Price should be greater than zero
+            </div>
+          </div>
+
+          <div class="tbody-data total-price-col" data-label="Total Price">
+            {{form?.controls?.quantity?.value*form?.controls?.price?.value | currency:'USD'}}</div>
+
+          <div class="tbody-data additional-detail">
+            <div class="first-level">
+              <span class="heading">Additional Details <span>(Guidelines)</span></span>
+              <span class="des">{{quoteDetail?.products?.additionalDetails}}</span>
+            </div>
+            <div class="second-level"
+              *ngIf="!form?.get('additionalProducts')?.controls?.length && otherProductDetails?.hits?.hits?.length">
+
+              <ng-select formControlName="productId" placeholder="Select Additional Product">
+                <ng-option *ngFor="let data of otherProductDetails?.hits?.hits" [value]="data._id">
+                  {{data._source.name}} {{data._source._id}}
+                </ng-option>
+              </ng-select>
+
+              <button type="button" class="ml-3 btn primary" [disabled]="!form?.controls?.productId?.value"
+                (click)="addNewProduct()">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-body-wrapper mb-0" *ngIf="form?.get('additionalProducts')?.controls?.length"
+        formArrayName="additionalProducts">
+        <div class="w-100" *ngFor="let item of form?.get('additionalProducts')?.controls; let i = index">
+          <!-- repeat this div -->
+          <div [formGroupName]="i" class="table-body mb-0">
+            <div class="tbody-data" data-label="Name/Description">
+              <span class="heading">{{item?.controls?.name?.value}}</span>
+              <span class="des">{{item?.controls?.description?.value}} </span>
+            </div>
+            <div class="tbody-data" data-label="Qty"><input
+                [ngClass]="{'is-invalid': (item?.controls?.quantity?.touched && item?.controls?.quantity?.errors)}"
+                formControlName="quantity" class="form-control" />
+              <div class="invalid-feedback" *ngIf="item?.controls?.quantity?.errors?.priceZero">
+                Quantity should be greater than zero
+              </div>
+            </div>
+            <div class="tbody-data" data-label="Price"><input type="text" prefix="$" mask="0*.00" [dropSpecialCharacters]="false"
+                [ngClass]="{'is-invalid': (item?.controls?.price?.touched && item?.controls?.price?.errors)}"
+                formControlName="price" class="form-control" />
+              <div class="invalid-feedback" *ngIf="item?.controls?.price?.errors?.priceZero">
+                Price should be greater than zero
+              </div>
+            </div>
+            <div class="tbody-data total-price-col" data-label="Total Price">
+              {{(item?.controls?.price?.value * item?.controls?.quantity?.value) | currency:'USD'}}
+            </div>
+            <div class="tbody-data additional-detail">
+              <div class="first-level">
+                <span class="heading">Additional Details <span>(Guidelines)</span></span>
+                <span class="des">{{item?.controls?.additionalGuide?.value}}</span>
+              </div>
+              <div class="second-level">
+                <div class="link cursor-pointer" (click)="removeAdditionalProduct(i)" title="Delete"><span
+                    class="icon-delete"></span>
+                  Delete</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- end table -->
+    <div class="additional-column">
+      <div class="first-level">&nbsp;</div>
+      <div class="second-level">
+        <div class="col-12">
+          <div class="text">Labor</div>
+          <div class="form-group">
+            <label for="enterFirstAmount" class="sr-only">Amount</label>
+            <input [ngClass]="{'is-invalid': (form?.controls?.laborFee?.touched && form?.controls?.laborFee?.errors)}"
+            type="text" prefix="$" mask="0*.00" [dropSpecialCharacters]="false" class="form-control" id="enterFirstAmount" formControlName="laborFee"
+              placeholder="Enter Amount"> <!-- please put "is-invalid" class for error -->
+            <div class="invalid-feedback" *ngIf="form?.controls?.laborFee?.errors?.priceZero">
+              Labor fee should be greater than zero
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="text">Delivery</div>
+          <div class="form-group">
+            <label for="enterSecondAmount" class="sr-only">Amount</label>
+            <input type="text" prefix="$" mask="0*.00" [dropSpecialCharacters]="false"
+              [ngClass]="{'is-invalid': (form?.controls?.deliveryFee?.touched && form?.controls?.deliveryFee?.errors)}"
+              class="form-control" id="enterSecondAmount" formControlName="deliveryFee" placeholder="Enter Amount">
+            <!-- please put "is-invalid" class for error -->
+            <div class="invalid-feedback" *ngIf="form?.controls?.deliveryFee?.errors?.priceZero">
+              Delivery should be greater than zero.
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="text">Tax</div>
+          <div class="form-group">
+            <label for="enterThirdAmount" class="sr-only">Amount</label>
+            <input type="text" prefix="$" mask="0*.00" [dropSpecialCharacters]="false"
+              [ngClass]="{'is-invalid': (form?.controls?.tax?.touched && form?.controls?.tax?.errors)}"
+              class="form-control" id="enterThirdAmount" formControlName="tax" placeholder="Enter Amount">
+            <!-- please put "is-invalid" class for error -->
+            <div class="invalid-feedback" *ngIf="form?.controls?.tax?.errors?.priceZero">
+              Tax should be greater than zero.
+            </div>
+          </div>
+        </div>
+        <div formArrayName="additionalCharges">
+          <div class="w-100" *ngFor="let item of form?.get('additionalCharges')?.controls; let i = index">
+            <div [formGroupName]="i" class="col-12 position-relative">
+              <div class="form-group">
+                <label for="enterText" class="sr-only">Text</label>
+                <input
+                  [ngClass]="{'is-invalid': (item?.controls?.name?.touched && item?.controls?.name?.errors?.priceZero)}"
+                  type="text" formControlName="name" class="form-control" id="enterText" placeholder="Enter Text">
+                <!-- please put "is-invalid" class for error -->
+              </div>
+              <div class="form-group">
+                <label for="enterFourthAmount" class="sr-only">Amount</label>
+                <input type="text" prefix="$" mask="0*.00" [dropSpecialCharacters]="false"
+                  [ngClass]="{'is-invalid': (item?.controls?.price?.touched && item?.controls?.price?.errors?.priceZero)}"
+                  class="form-control" formControlName="price" id="enterFourthAmount" placeholder="Enter Amount">
+                <!-- please put "is-invalid" class for error -->
+                <div *ngIf="item?.controls?.price?.touched && item.controls?.price?.errors?.priceZero"
+                  class="invalid-feedback">Amount should be greater than zero.</div>
+              </div>
+              <a (click)="removeControl(i)" *ngIf="i>0" class="delete-action">
+                <img src="../../../../assets/images/cross-red.svg" alt="Delete" class="cross-icon">
+              </a>
+
+
+            </div>
+
+          </div>
+        </div>
+        <div class="button-container text-right pr-0" *ngIf="form?.get('additionalCharges')?.controls?.length<3">
+          <button type="button" class="btn primary" (click)="addNewChargesControl()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="total-container">
+        <div class="price">Grand Total</div>
+        <div class="total">{{total | currency:'USD'}}</div>
+      </div>
+    </div>
+  </div><!-- end info section -->
+
+</form>

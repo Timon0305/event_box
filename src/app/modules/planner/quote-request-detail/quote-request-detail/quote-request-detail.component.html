@@ -1,0 +1,217 @@
+<div class="quote-detail-container" *ngIf="(quoteData$ | async)?.data as data;">
+
+  <app-breadcrumbs [dynamicBreadcrumb]="dynamicBreadcrumbObj[data?.status]"></app-breadcrumbs>
+  <div class="title-with-button text-with-action-sm">
+    <h2 class="page-title" *ngIf="!isOrder">Quote Request Details</h2>
+    <h2 class="page-title" *ngIf="isOrder">Order Details </h2>
+    <p class="head-status-text canceled" *ngIf="(data.status === constant.PAYMENT_STATUS.CANCELLED)">
+      {{constant.PAYMENT_STATUS_TEXT[data.status]}}</p>
+    <button class="btn primary small" (click)="requestQuoteAgain(data)"
+      *ngIf="(data?.status === constant?.QUOTE_STATUS?.EXPIRED_QUOTES)" [disabled]="isExpiredEvent">Request Quote
+      Again</button>
+  </div>
+
+  <div class="quote-container">
+    <ng-container *ngIf="isOrder">
+      <div class="quote-order-detail-head">
+        <div class="order-detail-text">
+          <h4 class="mt-0">Order ID: <span>#{{data?.orderId}}</span></h4>
+          <h4>Order Date: <span>{{data?.createdAt | date: 'MMM dd, yyyy | hh:mm a'}}</span></h4>
+          <h4 *ngIf="(data.status === constant.PAYMENT_STATUS.CANCELLED)">Canceled Date:
+            <span>{{data?.cancelledAt | date: 'MMM dd, yyyy | hh:mm a'}}</span></h4>
+        </div>
+        <div class="order-detail-action-btn">
+          <button type="button" class="btn primary" (click)="viewQuote(data)">Print Order</button>
+        </div>
+      </div>
+      <p class="request-hint-text" *ngIf="(data.status === constant.PAYMENT_STATUS.CANCELLED)">As per your request, your
+        order has been canceled.
+      </p>
+    </ng-container>
+
+    <div class="detail-head">
+      <div class="image-with-content">
+        <a [routerLink]="['/details', data.products._id]" [queryParams]="{ navigationFrom: 'quoteDetails'}"
+          *ngIf="data.status === 'AWAITING_VENDOR_QUOTES'"><img src="{{data?.products?.defaultImageUrl}}" appNoImage
+            alt="Product Image" /></a>
+        <img *ngIf="data.status !== 'AWAITING_VENDOR_QUOTES'" src="{{data?.products?.defaultImageUrl}}" appNoImage
+          alt="Product Image" />
+
+        <div class="content">
+          <a [routerLink]="['/details', data.products._id]" [queryParams]="{ navigationFrom: 'quoteDetails'}"
+            *ngIf="data.status === 'AWAITING_VENDOR_QUOTES'">
+            <h5>{{data?.products?.name}}</h5>
+          </a>
+          <h5 *ngIf="data.status !== 'AWAITING_VENDOR_QUOTES'">{{data?.products?.name}}</h5>
+
+          <p class="mb-2 vendor-detail-row"><span class="vendor-icon"></span>{{data?.vendors?.name}}</p>
+          <p class="mb-2">{{data?.vendors?.phone | formatPhone}}</p>
+          <p>Qty: {{data?.latestReply?.quantity ? data?.latestReply?.quantity : data?.quantity}}
+            <ng-container
+              *ngIf="(data.status === constant.QUOTE_STATUS.ACCEPTED_QUOTES) || (data.status === constant.QUOTE_STATUS.EXPIRED_QUOTES && data.replies?.length)
+               || (data.status === constant.QUOTE_STATUS.ACCEPT_REJECT_QUOTES) || (data.status === constant.QUOTE_STATUS.REJECTED_BY_VENDOR && data.replies?.length)">
+              <span class="d-inline-block mx-2">|</span> <a href="javascript:void(0)" title="View Quote"
+                (click)="viewQuote(data)">View Quote</a></ng-container>
+
+            <ng-container *ngIf="(data.status !== constant.QUOTE_STATUS.EXPIRED_QUOTES && !isOrder)">
+
+              <span class="d-inline-block mx-2">|</span> <a href="javascript:void(0)" class="text-nowrap"
+                title="Message to Vendor" (click)="messageVendor(data._id)">Message Vendor</a>
+            </ng-container>
+            <ng-container *ngIf="(data.status === constant.QUOTE_STATUS.ACCEPTED_QUOTES)">
+              <span class="d-inline-block mx-2">|</span> <a href="javascript:void(0)" title="Delete Quote"
+                (click)="deleteQuote(data._id)">Delete</a>
+            </ng-container>
+            <ng-container *ngIf="(data.status === constant.PAYMENT_STATUS.PURCHASED)">
+              <span class="d-inline-block mx-2">|</span> <a href="javascript:void(0)" title="Cancel Quote"
+                (click)="cancelOrder(data._id)">Cancel</a>
+            </ng-container>
+            <ng-container *ngIf="isOrder">
+              <span class="d-inline-block mx-2">|</span> <a title="Open Quote" (click)="viewQuote(data)">View
+                Order</a>
+            </ng-container>
+          </p>
+        </div>
+      </div>
+      <div class="detail-right">
+        <ng-container *ngIf="!isOrder else order">
+          <ng-container
+            *ngIf="((data?.status === constant?.QUOTE_STATUS?.AWAITING_VENDOR_QUOTES) || !data.replies?.length) else showQuotePrice">
+            <p class="price-head">Price Starting
+              at:
+            </p>
+            <p class="price">
+              {{(data?.totalPrice) | currency:'USD'}}</p>
+          </ng-container>
+
+          <ng-template #showQuotePrice>
+            <p class="price-head">Price Quote:</p>
+            <p class="price">
+              {{(data?.totalPrice) | currency:'USD'}}</p>
+          </ng-template>
+
+        </ng-container>
+        <ng-template #order>
+          <p class="price-head">Total</p>
+          <p class="price">
+            {{(data?.discount?.finalAmount) | currency:'USD'}}</p>
+        </ng-template>
+
+        <button class="btn link link-small make-payment-btn mt-3" type="button"
+          *ngIf="(data.status === constant.QUOTE_STATUS.ACCEPTED_QUOTES)" [routerLink]="[shoppingCartRoute]">Make
+          Payment</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="detail-content">
+      <app-view-variable-info [quoteInfo]="data" class="w-100"></app-view-variable-info>
+    </div><!-- end detail-content -->
+    <div class="quote-detail-order-summary order-summary" *ngIf="isOrder">
+      <span class="title">Order Summary</span>
+      <div class="count-row-box">
+        <div class="count-row">
+          <span *ngIf="data.quantity === 1; else items">Total (1 item)</span>
+          <ng-template #items>
+            <span>
+              Total ({{data?.quantity}} items)</span>
+          </ng-template>
+          <span>{{data.totalPrice| currency:'USD'}}</span>
+        </div>
+        <div class="count-row" *ngIf="data.discount.discountAmount">
+          <span>Promo Code(s)</span>
+          <span>-{{data.discount.discountAmount| currency:'USD':'symbol':'1.0-2'}}</span>
+        </div>
+        <div class="count-row total">
+          <span>Grand Total</span>
+          <span>{{data.discount.finalAmount| currency:'USD':'symbol':'1.0-2'}}</span>
+        </div>
+      </div>
+      <p class="payment-type-text">Payment by credit card</p>
+    </div>
+    <ng-container *ngIf="data.refund && data?.refund?.id">
+      <div class="refund-status-wrapper">
+        <div class="refund-status-box">
+          <p class="status-box-head">Refund Status</p>
+          <div class="refund-id-box">
+            <p class="refund-status-text completed">{{refundStatus[data?.refund?.status]}}</p>
+            <p><span>Refund ID: </span>{{data?.refund?.id}}</p>
+          </div>
+          <div class="refund-card-detail">
+            <p>{{(data.refund.amount/100)|currency:'USD':'symbol':'1.0-2'}}
+              has been refunded back to your CREDIT CARD XXXX-XXXX-XXXX-{{data?.payment?.source?.last4}} on
+              {{data?.refund?.created *1000 | date : 'MMM dd'}}.</p>
+            <p>Please allow 5-7 business days for the refund. If you have any questions, please contact the Event Box
+              support team <a [routerLink]="[supportRoute]">here</a>. </p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div><!-- end quote-container -->
+  <div class="counter-offer-container">
+    <h1 *ngIf="data?.replies?.length" class="page-title">Quote Summary Report</h1>
+    <div *ngIf="data?.replies?.length" class="table-listing quote-summary-report-table">
+      <div class="table-head-wrapper">
+        <div class="table-head">
+          <div class="thead-data">Quoted Price</div>
+          <div class="thead-data">{{isAdmin ? 'Planner Message' : 'Message'}}</div>
+          <div class="thead-data">Date of Quote</div>
+          <div class="thead-data">{{isAdmin ? 'View Quote' : 'Vendor Notes'}}</div>
+          <div class="thead-data">Status</div>
+          <div class="thead-data">Action</div>
+        </div>
+      </div>
+      <div class="table-body-wrapper">
+        <div class="table-body" [ngClass]="{'disabled': reply.status === constant.QUOTE_UPDATE_STATUS.REJECTED_QUOTES}"
+          *ngFor="let reply of data?.replies|reverseArray; let i=index;">
+          <!-- repeat this div -->
+          <div class="tbody-data" data-label="Quoted Price">
+            <span>{{(reply?.totalAmount) | currency:'USD'}}</span></div>
+          <div class="tbody-data" data-label="Message"><span>{{reply?.plannerNotes ? reply?.plannerNotes  : '-' }}
+            </span></div>
+
+
+          <div class="tbody-data" data-label="Date of Quote">
+            <span>{{reply?.createdAt  | date: 'mediumDate'}} | {{reply?.createdAt  | date: 'shortTime'}}
+            </span></div>
+          <div class="tbody-data" data-label="view quote">
+            <a class="text mt-0" (click)="viewNotes(reply)">{{reply?.vendorNotes ? 'View Notes'  : '-' }} </a>
+          </div>
+
+          <div class="tbody-data" data-label="Status">
+            <span
+              *ngIf="(data.status === 'AWAITING_VENDOR_QUOTES' && reply.status=== 'REJECTED_QUOTES') else mappedStatus ">
+              Awaiting Counter Quote
+            </span>
+            <ng-template #mappedStatus>
+              <span>{{quoteStatus[reply?.status]?.status}}
+              </span>
+            </ng-template>
+          </div>
+
+          <div class="tbody-data">
+
+            <div class="table-button-wrapper" *ngIf="reply.status === constant?.QUOTE_STATUS?.PENDING_REPLIES">
+              <ng-container *ngIf="data.status !== constant?.QUOTE_STATUS?.EXPIRED_QUOTES">
+                <button class="btn link" type="button" (click)="acceptQuote(data)">Accept Quote</button>
+                <button class="btn link mb-3" type="button" (click)="rejectQuote(data)">Reject Quote</button>
+              </ng-container>
+
+              <a (click)="viewQuote(data, reply._id)" class="text">View Quote</a>
+            </div>
+            <div class="table-button-wrapper">
+              <a (click)="viewQuote(data, reply._id)" class="text"
+                *ngIf="reply.status !== constant?.QUOTE_STATUS?.PENDING_REPLIES">View Quote</a>
+              <button class="btn link mt-3" type="button" *ngIf="(reply.status === constant.QUOTE_STATUS.ACCEPTED_QUOTES)  &&
+                 data.status === constant.QUOTE_STATUS.ACCEPTED_QUOTES &&
+                  reply?._id === data?.latestReply?._id " [routerLink]="[shoppingCartRoute]">Make
+                Payment</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end quote-detail-container -->

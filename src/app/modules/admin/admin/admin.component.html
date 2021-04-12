@@ -1,0 +1,163 @@
+<div class="container-fluid fixed-header-padding" [ngClass]="{'fixed-footer-padding': fixedFooterPadding}">
+  <div class="main-container">
+
+    <div class="left-navigation" [ngClass]="{'fixed-footer-add': fixedFooterClass}">
+      <ul class="nav">
+        <li class="nav-item">
+          <a href="javascript:void(0)" [routerLink]="['/admin']" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}" (click)="onSidebar()" class="nav-link" title="My Dashboard">My
+            Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/admin/vendor-management']" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: false}" #vendorMgmt="routerLinkActive" class="d-none"></a>
+          <a href="javascript:void(0)" [routerLink]="['/admin/vendor-management']" class="nav-link"
+            [class.active]="vendorMgmt.isActive" (click)="onSidebar()" [queryParams]="{ order: -1, sort: 'lastLogin' }"
+            title="Vendor Management">Vendor Management</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/admin/pending-vendors']" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: false}" #pendingVendors="routerLinkActive" class="d-none"></a>
+          <a href="javascript:void(0)" (click)="onSidebar()" [class.active]="pendingVendors.isActive"
+            [queryParams]="{ order: -1, sort: 'createdAt' }" [routerLink]="['/admin/pending-vendors']" class="nav-link"
+            title="Pending Vendors Signups">
+            Pending Vendors Signups<span class="badge badge-warning" *ngIf="headerCount?.newVendors > 0">
+              {{headerCount?.newVendors}}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/admin/planner-management']" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: false}" #plannerMgmt="routerLinkActive" class="d-none"></a>
+
+          <a href="javascript:void(0)" (click)="onSidebar()" [routerLink]="['/admin/planner-management']"
+            class="nav-link" [class.active]="plannerMgmt.isActive" title="Planner Management"
+            [queryParams]="{ order: -1, sort: 'lastLogin' }">Planner
+            Management</a>
+        </li>
+        <li class="nav-item">
+          <div class="has-child">
+            <a class="nav-link dropdown-toggle" id="productDropdown"
+              [ngClass]="{'active': collapseUserManagement == false }" (click)="collapseUserManagement = !collapseUserManagement;
+              collapsePartnerMgmt = true; collapsePromoCodeManagement = true; collapseCategoryManagement = true"
+              title="User Management">User Management</a>
+            <ul class="nav" aria-labelledby="productDropdown" [ngbCollapse]="collapseUserManagement">
+              <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link" [routerLink]="['/admin/user-management']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" title="All Users"
+                  [queryParams]="{ order: -1, sort: 'createdAt' }">All Users</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link" [routerLink]="['/admin/user-management/save']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" title="Add New User">Add New
+                  User</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!--Partner management-->
+        <li class="nav-item">
+          <div class="has-child">
+            <a class="nav-link dropdown-toggle" id="partnerMgmtDropdown"
+              [ngClass]="{'active': collapsePartnerMgmt == false }" (click)="collapsePartnerMgmt = !collapsePartnerMgmt; collapseUserManagement = true;
+               collapsePromoCodeManagement = true; collapseCategoryManagement = true" title="User Management">Partner
+              Management
+            </a>
+            <ul class="nav" aria-labelledby="partnerMgmtDropdown" [ngbCollapse]="collapsePartnerMgmt">
+              <li class="nav-item">
+                <a [routerLink]="['/admin/partner-management']" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{exact: false}" #partnerMgmt="routerLinkActive" class="d-none">
+
+                </a>
+                <a href="javascript:void(0)" [class.active]="partnerMgmt.isActive"
+                  [routerLink]="['/admin/partner-management/list']" class="nav-link" title="All Partners">All
+                  Partners</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" routerLinkActive="active" [routerLink]="['/admin/partner']"
+                  class="nav-link" title="Add New Partner" (click)="partnerService.setPartnerDetails({})">Add New
+                  Partner</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+
+
+
+        <li class="nav-item">
+          <div class="has-child">
+            <a class="nav-link dropdown-toggle" id="productDropdown"
+              [ngClass]="{'active': collapseCategoryManagement == false }" (click)="collapseCategoryManagement = !collapseCategoryManagement;
+              collapsePartnerMgmt = true; collapsePromoCodeManagement = true; collapseUserManagement = true"
+              title="Events Industry and Type">Events Industry and Type</a>
+            <ul class="nav" aria-labelledby="productDropdown" [ngbCollapse]="collapseCategoryManagement">
+              <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link" [routerLink]="['/admin/category-management']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" title="Category List">Category
+                  List</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link"
+                  [routerLink]="['/admin/category-management/sub-categories']" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{exact: true}" title="Sub Category List">Sub Category List</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="has-child">
+            <a class="nav-link dropdown-toggle" id="productDropdown"
+              [ngClass]="{'active': collapsePromoCodeManagement == false }" (click)="collapsePromoCodeManagement = !collapsePromoCodeManagement;
+              collapsePartnerMgmt = true; collapseCategoryManagement = true; collapseUserManagement = true"
+              title="Promo Code Management">Promo
+              Code Management</a>
+            <ul class="nav" aria-labelledby="productDropdown" [ngbCollapse]="collapsePromoCodeManagement">
+              <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link" [routerLink]="['/admin/promo-code-management/save']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" title="Create Promo Code">Create
+                  Promo Code</a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link" [routerLink]="['/admin/promo-code-management']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" title="View All Promo Code">
+                  View All Promo Codes
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onSidebar()" [routerLink]="[adminRoutes.events]"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-link"
+            title="Events">Events</a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onSidebar()" [routerLink]="[adminRoutes.reports]"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-link"
+            title="Reports">Reports</a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onSidebar()" [routerLink]="[adminRoutes.messages]"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-link"
+            title="Messages">Messages</a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onSidebar()" [routerLink]="[adminRoutes.paymentDetails]"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-link"
+            title="Payment Details">Payment Details</a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:void(0)" (click)="onSidebar()" [routerLink]="[adminRoutes.paymentHistory]"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-link"
+            title="Payment History">Payment History</a>
+        </li>
+      </ul>
+    </div><!-- end left navigation -->
+    <div class="right-container">
+      <app-breadcrumbs></app-breadcrumbs>
+      <router-outlet (activate)='onActivate($event)'></router-outlet>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="vendor-list-container">
+    <h2 class="page-title top-first-title">Sub-Category List</h2>
+    <div class="space-between-two">
+        <app-shared-search (search)="searchCaregory($event)" class="search-container"></app-shared-search>
+        <button class="btn link-small primary" type="button"
+            [routerLink]="['/admin/category-management/sub-categories/add']">Add New Sub Category</button>
+    </div>
+    <div class="table-listing category-table" *ngIf="subCategoryObservable | async as subCategoryDocs">
+        <div class="table-head-wrapper" *ngIf="subCategoryDocs?.docs.length > 0">
+            <div class="table-head">
+                <div class="thead-data">
+                    <div class="shorting-btn">
+                        Sub-Category Title
+                    </div>
+                </div>
+
+                <div class="thead-data">
+                    <div class="shorting-btn">
+                        Events Industry and Type Title
+                    </div>
+                </div>
+                <div class="thead-data col-last">
+                    <span>Actions</span>
+                </div>
+            </div>
+        </div>
+        <div class="table-body-wrapper">
+            <div class="table-body" *ngFor="let category of subCategoryDocs.docs">
+                <!-- repeat this div -->
+                <div class="tbody-data">{{category.subcategory_name}}</div>
+                <div class="tbody-data">{{category.category_name}}</div>
+                <div class="tbody-data">
+                    <button class="btn link link-extra-small mb-2" type="button"
+                        (click)="edit(category._id, category.subcategory_id)">Edit</button>
+                    <button class="btn link link-extra-small mb-2" type="button"
+                        (click)="askChangeSubCategoryStatus(category._id, category.subcategory_id, category.subcategory_status)">{{category.subcategory_status ? 'Inactivate' : 'Activate'}}</button>
+                    <button class="btn link link-extra-small" type="button"
+                        (click)="askDelete(category._id, category.subcategory_id)">Delete</button>
+                </div>
+            </div>
+        </div>
+        <app-pagination [metaData]="subCategoryDocs" (pageChange)="pageChange($event)"></app-pagination>
+
+        <div class="table-listing product-table" *ngIf="subCategoryDocs?.totalDocs === 0 && !(params > 1)">
+            <div class="no-result">
+                <img src="/assets/images/no-data.svg" alt="No results" />
+                <p class="mt-5">Sorry! No results found :(</p>
+            </div>
+        </div>
+        <div class="table-listing product-table" *ngIf="subCategoryDocs?.totalDocs === 0 && params > 1">
+            <div class="no-result">
+                <img src="/assets/images/no-data.svg" alt="No results" />
+                <p class="mt-5">Sorry! No results found :(</p>
+            </div>
+        </div>
+    </div><!-- end table -->
+</div>

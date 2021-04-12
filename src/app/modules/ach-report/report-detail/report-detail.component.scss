@@ -1,0 +1,44 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.ach-report-container{
+  .title-with-button{
+    padding-top: 15px;
+    margin-bottom: 30px;
+  }
+  .page-title{
+    font-size: 26px;
+    font-weight: 600;
+  }
+}
+
+.ach-detail-table{
+  min-height: 270px;
+  .product-col{
+    width: 100%;
+    em{
+      height: 65px;
+      width: 65px;
+    }
+    span{
+      padding-left: 10px;
+    }
+  }
+  .btn{
+    min-width: 90px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 0 7px;
+  }
+  .table-head{
+    justify-content: space-between;
+    padding: 0 16px 0 6px;
+  }
+  .table-body{
+    justify-content: space-between;
+    padding: 19px 16px 19px 6px;
+  }
+  .toggle-dropdown-icon{
+    margin-left: 3px;
+  }
+}

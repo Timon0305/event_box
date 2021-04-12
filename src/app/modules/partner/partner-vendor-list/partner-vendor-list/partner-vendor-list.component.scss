@@ -1,0 +1,29 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.page-title {
+  padding-top: 15px;
+  margin: 0 0 40px;
+  &.partner-section-heading-space {
+    padding-top: 40px;
+  }
+}
+.partner-vendor-list-container {
+
+  .space-between-two {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .search-container {
+    width: 50%;
+    max-width: 270px;
+  }
+
+  .sort-selectbox {
+    width: 160px;
+  }
+}
+

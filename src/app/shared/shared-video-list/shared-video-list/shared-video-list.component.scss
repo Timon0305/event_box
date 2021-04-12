@@ -1,0 +1,27 @@
+.product-video-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    .video-section {
+      position: relative;
+      margin: 4px 11px 7px 0;
+
+      .thumb {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .play-icon {
+        position: absolute;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        top: calc(50% - 20px);
+        left: calc(50% - 20px);
+      }
+    }
+  }

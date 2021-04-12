@@ -1,0 +1,19 @@
+<div class="modal-header with-sub-header" ngbAutoFocus>
+  <h4 class="modal-title">Select an Event</h4>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label for="eventList">Event Label</label>
+      <app-shared-select id="eventList" [dataUrl]="eventsUrl" [control]="eventField"></app-shared-select>
+    </div>
+    <div class="add-button-container d-flex">
+      <button type="button" class="btn text blue-text small ml-auto" (click)="navigateToEvent()">+ Add New Event</button>
+    </div>
+    <div class="btn-space with-border">
+      <button type="button" class="btn link" (click)="activeModal.close()">Cancel</button>
+      <button [disabled]="!eventField.valid" type="button" class="btn primary"
+        (click)="getVariableInfo()">Select</button>
+    </div>
+  </form>
+</div>

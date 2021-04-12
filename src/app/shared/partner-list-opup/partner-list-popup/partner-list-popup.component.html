@@ -1,0 +1,44 @@
+<div class="modal-header with-sub-header" ngbAutoFocus>
+  <h4 class="modal-title">Partners List</h4>
+  <button type="button" class="close big-close" aria-label="Close" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<ng-container *ngIf="(partnerList$ | async)"></ng-container>
+<div class="modal-body">
+  <div class="message-user-list">
+    <div class="list-search">
+      <form class="modal-search-wrapper search-form">
+        <div class="form-group">
+          <input [formControl]="searchField" class="form-control" placeholder="Search" type="text" />
+          <input class="user-search-icon" type="submit" value="Search" />
+        </div>
+      </form>
+    </div>
+    <div class="list-data" #messageListConatiner>
+      <ng-container *ngIf="partnerListData?.length">
+        <div class="scroll-div">
+          <app-infinite-scroll (scrolled)="scrolled()" [options]="options" [isReverse]="false">
+            <div>
+              <div class="infinite-scroll-list-row"
+                *ngFor="let partner of partnerListData; let i = index;trackBy: trackByFn">
+                <p>
+                  <input type="radio" name="userType" class="form-check-input" id="userPlanner{{i}}"
+                    (click)="selectPartner(partner._id)" [formControl]="partnerIdToAssociate" [value]="partner._id" />
+                  <label class="form-check-label" for="userPlanner{{i}}">{{partner?.businessName}}</label>
+                </p>
+              </div>
+            </div>
+          </app-infinite-scroll>
+        </div>
+        <div class="list-btn-group">
+          <button class="btn primary" type="button" [disabled]="!partnerIdToAssociate.value" (click)="changeAssociation()">Proceed</button>
+        </div>
+      </ng-container>
+      <div *ngIf="!partnerListData?.length && !loader" class="no-result">
+        <img src="assets/images/no-data.svg" class="mt-5" alt="No results" />
+        <p class="mt-3">Sorry! No results found :(</p>
+      </div>
+    </div>
+  </div>
+</div>

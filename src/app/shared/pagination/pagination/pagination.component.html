@@ -1,0 +1,4 @@
+<ngb-pagination [rotate]="true" class="table-pagination" *ngIf="metaData && metaData?.totalPages > 1"
+  [collectionSize]="metaData.totalDocs" [maxSize]=paginationMaxSize [pageSize]="metaData.limit" [(page)]="metaData.page"
+  (pageChange)="onPageChange($event)">
+</ngb-pagination>

@@ -1,0 +1,45 @@
+<div class="order-summary" *ngIf="(priceAndDiscount$|async) as priceAndDiscount">
+  <h5>Promo Code(s)</h5>
+  <div class="form-group promo-input">
+    <input type="text" [formControl]="promoCode" class="form-control" placeholder="Enter Promo Code(s)" />
+    <a (click)="applyPromoCode()" *ngIf="promoCode?.value">Apply</a>
+    <div class="promo-tags-row" *ngIf="cartData?.promoCodes?.length">
+      <div class="promo-tags" *ngFor="let promo of cartData.promoCodes; trackBy: trackByFn">
+        <p>{{promo.promoCodeTitle}}</p>
+        <em>{{(promo.associatedVendors|promoAssociateVendors: cartData)}}</em>
+        <span (click)="removePromoCode(promo.promoCodeTitle)">&#x2715;</span>
+      </div>
+    </div>
+    <span class="save-amount-text" *ngIf="priceAndDiscount?.promoCodeLength > 0">Promo code(s) applied. You saved
+      {{(priceAndDiscount.totalAmount - priceAndDiscount.amountToPay)| currency:'USD'}} </span>
+  </div>
+  <h3>Price Details</h3>
+  <div class="count-row">
+    <span *ngIf="priceAndDiscount?.totalItems === 1; else cartItems">Total ({{priceAndDiscount?.totalItems}}
+      item)</span>
+    <ng-template #cartItems>
+      <span>Total ({{priceAndDiscount?.totalItems}} items)</span>
+    </ng-template>
+    <span>{{priceAndDiscount?.totalAmount | currency:'USD'}}</span>
+  </div>
+  <div class="count-row" *ngIf="priceAndDiscount.promoCodeLength">
+    <span>Promo Code(s)</span>
+    <span>-{{priceAndDiscount?.couponAmount| currency:'USD'}}</span>
+  </div>
+  <div class="count-row total">
+    <span>Grand Total</span>
+    <span>{{priceAndDiscount?.amountToPay| currency:'USD'}}</span>
+  </div>
+  <div class="promo-text">
+    <p>All applicable taxes and delivery fees are
+      included in your price quote from vendor
+    </p>
+  </div>
+  <div class="form-group">
+    <input type="checkbox" [formControl]="termsAndConditions" class="form-check-input" id="agree" />
+    <label class="form-check-label" for="agree">I agree to Event Box’s <a [routerLink]="['/content/terms-of-service']" target="_blank">Terms of
+        Service.</a></label>
+  </div>
+  <button type="button" class="btn primary btn-block" [disabled]="!termsAndConditions?.value"
+    [routerLink]="[checkoutRoute]">Proceed to Checkout</button>
+</div>

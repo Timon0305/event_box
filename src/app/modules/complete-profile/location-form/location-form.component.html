@@ -1,0 +1,56 @@
+<form [formGroup]="f">
+    <div class="company-address-container" formArrayName="location">
+        <div *ngFor="let item of f?.get('location')?.controls; let i = index">
+            <p class="subtitle" *ngIf="!addEditLocation">Location {{i+1}}</p>
+            <div [formGroupName]="i">
+                <div class="form-row">
+                    <app-google-auto-complete [index]="i" [form]="item" class="w-100" ></app-google-auto-complete>
+                  </div>
+                <div class="form-row">
+                    <div class="form-group " [ngClass]="{'col-md-6': !addEditLocation, 'col-md-12': addEditLocation}">
+                        <label for="companyAddress">Address*</label>
+                        <input
+                            [ngClass]="{'is-invalid': (item?.controls?.address?.touched && item?.controls?.address?.errors)}"
+                            type="text" class="form-control" formControlName="address" id="companyAddress"
+                            aria-describedby="companyAddressHelp" placeholder="Enter address">
+                        <div *ngIf="item?.controls?.address?.touched" class="invalid-feedback">Address is required</div>
+                    </div>
+                    <div class="form-group" [ngClass]="{'col-md-6': !addEditLocation, 'col-md-12': addEditLocation}">
+                        <label for="companyCity">City*</label>
+                        <input
+                            [ngClass]="{'is-invalid': (item?.controls?.city?.touched && item?.controls?.city?.errors)}"
+                            type="text" class="form-control" id="companyCity" formControlName="city"
+                            aria-describedby="companyCityHelp" placeholder="Enter city">
+                        <div *ngIf="item?.controls?.city?.touched" class="invalid-feedback">City is required</div>
+                    </div>
+                </div><!-- end form row -->
+
+                <div class="form-row">
+                    <div class="form-group" [ngClass]="{'col-md-6': !addEditLocation, 'col-md-12': addEditLocation}">
+                        <label for="companyState">State*</label>
+                        <app-shared-states [msgErrText]="'State'" [form]="item" [selectedField]="'state'" aria-describedby="companyStateHelp"></app-shared-states>
+                    </div>
+                    <div class="form-group" [ngClass]="{'col-md-6': !addEditLocation, 'col-md-12': addEditLocation}">
+                        <label for="companyZipCode">Zip Code*</label>
+                        <input
+                            [ngClass]="{'is-invalid': (item?.controls?.zipcode?.touched && item?.controls?.zipcode?.errors)}"
+                            type="text" class="form-control" id="companyZipCode" mask="0*" formControlName="zipcode"
+                            aria-describedby="companyZipCodeHelp" placeholder="Enter zip code" maxlength="5">
+                            <ng-container *ngIf="item?.controls?.zipcode?.touched">
+                                <div  class="invalid-feedback" *ngIf="item?.controls?.zipcode?.errors?.required">Zip Code is required
+                                </div>
+                                <div  class="invalid-feedback" *ngIf="item?.controls?.zipcode?.errors?.maxlength">Zip Code max length is 5
+                                </div>
+                            </ng-container>
+                        
+                    </div>
+                </div><!-- end form row -->
+                <div *ngIf="f?.controls?.location?.controls.length > 1" class="remove-location-container">
+                    <span class="remove-location" (click)="removeLocationControl(i)">
+                        Remove
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

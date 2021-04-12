@@ -1,0 +1,15 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.thead-data{
+  word-break: break-word;
+  &:nth-child(1){width: 25%;}
+  &:nth-child(2){width: 12%;}
+  &:nth-child(3){width: 28%;}
+  &:nth-child(4){width: 10%;}
+  &:nth-child(5){width: 12%;}
+  &:last-child{
+    width: 13%;
+    max-width:150px;
+  }
+}

@@ -1,0 +1,82 @@
+<div class="package-container fixed-footer-padding">
+    <div class="page-title" ngbAutoFocus>{{editForm ? 'Update' : 'Add New'}} User</div>
+
+    <form [formGroup]="saveAdminUserForm" (submit)="addAdminUser()" class="event-form">
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="packagePercent">First Name*</label>
+          <input type="text" class="form-control"
+            formControlName="firstName"
+            [ngClass]="{'is-invalid': (f?.controls?.firstName?.touched && f?.controls?.firstName?.errors)}"
+            aria-describedby="packagePercentHelp"
+            placeholder="Enter First Name">
+
+            <ng-container *ngIf="f?.controls?.firstName?.touched">
+                <div class="invalid-feedback" *ngIf="f?.controls?.firstName?.errors?.required">First Name is required.</div>
+            </ng-container>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="packageYearlyFee">Last Name*</label>
+          <input type="text" class="form-control"
+            formControlName="lastName"
+            [ngClass]="{'is-invalid': (f?.controls?.lastName?.touched && f?.controls?.lastName?.errors)}"
+            aria-describedby="LastName"
+            placeholder="Last Name">
+
+            <ng-container *ngIf="f?.controls?.lastName?.touched">
+                <div class="invalid-feedback" *ngIf="f?.controls?.lastName?.errors?.required">Last Name is required.</div>
+            </ng-container>
+        </div>
+      </div><!-- end form row -->
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="packageStartDate">Email Address*</label>
+          <div class="input-group">
+            <input class="form-control"
+            formControlName="email"
+            [attr.disabled]="editForm?'':null"
+            [ngClass]="{'is-invalid': (f?.controls?.email?.touched && f?.controls?.email?.errors)}"
+            aria-describedby="packageStartDateHelp" placeholder="Email Address">
+
+            <ng-container *ngIf="f?.controls?.email?.touched">
+                <div class="invalid-feedback" *ngIf="f?.controls?.email?.errors?.required">Email Addresss is required.</div>
+                <div class="invalid-feedback" *ngIf="f?.controls?.email?.errors?.email">Email Addresss format is not valid.</div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="packageSetupFee">Phone Number*</label>
+          <div class="phone-number-input-group">
+            <div class="country-input">
+              <ng-container>
+                <app-country-code-input [countryCode]="f.controls.countryCode"></app-country-code-input>
+              </ng-container>
+            </div>
+            <div class="number-input">
+              <input type="text" class="form-control"
+              formControlName="phone"
+              [ngClass]="{'is-invalid': (f?.controls?.phone?.touched && f?.controls?.phone?.errors)}"
+              aria-describedby="packageSetupFeeHelp"
+              placeholder="Phone Number" mask="(000) 000-0000">
+            </div>
+          </div>
+            <ng-container *ngIf="f?.controls?.phone?.touched">
+                <div class="invalid-feedback" *ngIf="f?.controls?.phone?.errors?.required">Phone Number is required.</div>
+                <div class="invalid-feedback" *ngIf="f?.controls?.phone?.errors?.max || f?.controls?.phone?.errors?.pattern">Phone Number is not valid.</div>
+            </ng-container>
+        </div>
+      </div><!-- end form row -->
+    </form>
+  </div>
+
+  <div class="fixed-footer">
+    <div class="container-fluid">
+      <div class="button-container">
+        <button  type="button" class="btn link mw-220" [routerLink]="['/admin/user-management']" >Cancel</button>
+        <button  type="button" *ngIf="!editForm" class="btn primary mw-220" [disabled]="!f.valid" (click)="addAdminUser()">Add User</button>
+        <button  type="button" *ngIf="editForm" class="btn primary mw-220" [disabled]="!f.valid" (click)="updateAdminUser()">Update User</button>
+      </div>
+    </div>
+  </div>

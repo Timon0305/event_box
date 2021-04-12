@@ -1,0 +1,26 @@
+.package-container{
+    .page-title{
+      padding-top: 15px;
+      margin-bottom: 40px;
+    }
+    .form-group {
+      margin-bottom: 36px;
+      @media screen and (max-width: 576px) {
+        margin-bottom: 16px;
+      }
+      label{
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+      .form-control{
+        font-size: 14px;
+        font-weight: 500;
+        &::placeholder {
+          font-size: 14px;
+        }
+      }
+    }
+    .disabled{
+      pointer-events: none;
+    }
+  }

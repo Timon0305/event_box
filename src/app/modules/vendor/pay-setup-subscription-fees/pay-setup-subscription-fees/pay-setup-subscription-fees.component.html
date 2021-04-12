@@ -1,0 +1,54 @@
+<div class="modal-header border-b" ngbAutoFocus>
+  <h4 class="modal-title">Membership Package</h4>
+  <button *ngIf="!forCanceledSubscription" type="button" class="close big-close" aria-label="Close"
+    (click)="activeModal.close(false)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="fee-box">
+    <div class="row">
+      <div class="col-6" *ngIf="!forCanceledSubscription">
+        <span>one time setup fee</span>
+        <p>{{(this.user?.company?.memberPackage?.setupFee | currency:'USD':'symbol':'1.0-2') || 0}}</p>
+      </div>
+
+      <div class="col-6" *ngIf="forCanceledSubscription">
+        <span>Commission Percent</span>
+        <p>{{this.user?.company?.memberPackage?.commissionPercent || 0}}%</p>
+      </div>
+
+
+      <div class="col-6">
+        <span>{{constant[this.user?.company?.memberPackage?.planFrequency]?.type}} fee</span>
+        <p>{{(this.user?.company?.memberPackage?.yearlySubscriptionFee | currency:'USD':'symbol':'1.0-2') || 0}}</p>
+      </div>
+      <div class="col-6">
+        <span>plan start date</span>
+        <p>{{this.user?.company?.memberPackage?.startDate  | date: 'mediumDate'}}</p>
+      </div>
+      <div class="col-6">
+        <span>Event Box %</span>
+        <p>{{this.user?.company?.memberPackage?.commissionPercent+percentSign || 0}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="order-summary" *ngIf="!forCanceledSubscription">
+    <div class="count-row">
+      <span>One Time Setup Fee:</span>
+      <span>{{(this.user?.company?.memberPackage?.setupFee | currency:'USD':'symbol':'1.0-2') || 0}}</span>
+    </div>
+    <div class="count-row">
+      <span>Membership Fee:</span>
+      <span>{{(this.user?.company?.memberPackage?.yearlySubscriptionFee | currency:'USD':'symbol':'1.0-2') || 0}}</span>
+    </div>
+  </div>
+  <div class="btn-space with-border quote-invoice-button-space" *ngIf="!forCanceledSubscription">
+    <button class="btn btn-block primary w-100" (click)="activeModal.close(true)">Proceed to Pay</button>
+  </div>
+
+  <div class="btn-space with-border quote-invoice-button-space" *ngIf="forCanceledSubscription">
+    <button class="btn btn-block primary w-100" (click)="navigateToPaymentPage()">Proceed to Pay</button>
+  </div>
+
+</div>

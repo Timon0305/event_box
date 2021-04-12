@@ -1,0 +1,204 @@
+<div class="modal-header with-sub-header" ngbAutoFocus>
+    <button type="button" (click)="dismiss()" class="close modal-close-btn-sm" aria-label="Close">
+        <span class="material-icons">
+            keyboard_backspace
+        </span> Back
+    </button>
+  <h4 class="modal-title">Create your account</h4>
+  <button type="button" class="close big-close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h5 class="modal-sub-title">Sign up as a Vendor.</h5>
+</div>
+
+<div class="modal-body">
+  <form class="signup-form" [formGroup]="vendorSignupForm" autocomplete="off" (submit)="vendorSignup()">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="firstName">First Name*</label>
+        <input type="text" class="form-control"
+          [ngClass]="{'is-invalid': (f?.controls?.firstName?.touched && f?.controls?.firstName?.errors)}" id="firstName"
+          aria-describedby="nameHelp" formControlName="firstName" placeholder="Enter your first name"
+          maxlength="{{maxLength}}">
+        <ng-container *ngIf="f?.controls?.firstName?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.firstName?.errors?.required">First name is required.
+          </div>
+        </ng-container>
+
+      </div>
+      <div class="form-group col-md-6">
+        <label for="lastName">Last Name*</label>
+        <input type="text" class="form-control" id="lastName"
+          [ngClass]="{'is-invalid': (f?.controls?.lastName?.touched && f?.controls?.lastName?.errors)}"
+          formControlName="lastName" aria-describedby="nameHelp" placeholder="Enter your last name"
+          maxlength="{{maxLength}}">
+        <div class="invalid-feedback"
+          *ngIf="(f?.controls?.lastName?.touched && f?.controls?.lastName?.errors?.required)">Last name is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="email">Email Address*</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+          placeholder="Enter email address" formControlName="email" [readonly]="socialUser?.email || email"
+          [ngClass]="{'is-invalid': (f?.controls?.email?.touched && f?.controls?.email?.errors)}">
+        <ng-container *ngIf="f?.controls?.email?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.email?.errors?.required">Email is required.
+          </div>
+          <div class="invalid-feedback" *ngIf="f?.controls?.email?.errors?.invalidEmail">Email format is not valid.
+          </div>
+        </ng-container>
+
+      </div>
+      <div class="form-group col-md-6">
+        <label for="companyName">Company Name*</label>
+        <input type="text" class="form-control" id="companyName" formControlName="companyName"
+          aria-describedby="companyHelp" placeholder="Enter company name" maxlength="{{maxLength}}"
+          [ngClass]="{'is-invalid': (f?.controls?.companyName?.touched && f?.controls?.companyName?.errors)}">
+        <ng-container *ngIf="f?.controls?.companyName?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.companyName?.errors?.required">Company name is required.
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="phoneNumber">Phone Number*</label>
+        <div class="phone-number-input-group">
+          <div class="country-input">
+            <ng-container>
+              <app-country-code-input [countryCode]="f.controls.countryCode"></app-country-code-input>
+            </ng-container>
+          </div>
+          <div class="number-input">
+            <input type="text" class="form-control" formControlName="phone" id="phoneNumber" aria-describedby="PhoneHelp"
+            placeholder="Enter phone number" mask="(000) 000-0000"
+            [ngClass]="{'is-invalid': (f?.controls?.phone?.touched && f?.controls?.phone?.errors)}">
+            <ng-container *ngIf="f?.controls?.phone?.touched">
+              <div class="invalid-feedback" *ngIf="f?.controls?.phone?.errors?.required">Phone number is required.
+              </div>
+              <div class="invalid-feedback" *ngIf="!f?.controls?.phone?.errors?.required && f?.controls?.phone?.errors">Phone number should be minimum of 10 digits.
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        
+      </div>
+      <div class="form-group col-md-6">
+        <label for="websiteAddress">Website Address</label>
+        <input type="text" class="form-control"
+          [ngClass]="{'is-invalid': (f?.controls?.website?.touched && f?.controls?.website?.errors)}"
+          formControlName="website" id="websiteAddress" aria-describedby="websiteHelp"
+          placeholder="Enter website address" maxlength="{{maxLength}}">
+        <ng-container *ngIf="f?.controls?.website?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.website?.errors?.invalidWebsite">Invalid website address
+            format.
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="instagramHandle">Instagram Handle</label>
+        <input type="text" class="form-control"
+          [ngClass]="{'is-invalid': (f?.controls?.instagram?.touched && f?.controls?.instagram?.errors)}"
+          formControlName="instagram" id="instagramHandle" aria-describedby="PhoneHelp"
+          placeholder="Enter instagram handle" >
+        <ng-container *ngIf="f?.controls?.instagram?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.instagram?.errors?.invalidInsta">Invalid instagram handle
+            format.
+          </div>
+        </ng-container>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="facebookAddress">Facebook Address</label>
+        <input type="text" class="form-control"
+          [ngClass]="{'is-invalid': (f?.controls?.facebook?.touched && f?.controls?.facebook?.errors)}"
+          formControlName="facebook" id="facebookAddress" aria-describedby="websiteHelp"
+          placeholder="Enter facebook address" >
+        <ng-container *ngIf="f?.controls?.facebook?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.facebook?.errors?.invalidWebsite">Invalid facebook address
+            format.
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6 input-with-sign">
+        <label for="Password">Password*</label>
+        <input type="{{passwordType.password}}" autocomplete="new-password" class="form-control" id="password" formControlName="password"
+          placeholder="Enter your password"
+          [ngClass]="{'is-invalid': (f?.controls?.password?.touched && f?.controls?.password?.errors)}">
+        <ng-container *ngIf="f?.controls?.password?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.password?.errors?.required">Password is required.
+          </div>
+          <div class="invalid-feedback" *ngIf="f?.controls?.password?.errors?.minlength">Password minimum length is 7
+            characters.
+          </div>
+          <div class="invalid-feedback" *ngIf="!f?.controls?.password?.errors?.minlength && f?.controls?.password?.errors?.pattern">A number,
+            special character
+            (@,!,$ etc), uppercase and lowercase letter is required.
+          </div>
+        </ng-container>
+        <em class="material-icons off" *ngIf="passwordType.password === 'password'"
+          (click)="passwordType.password = 'text'">visibility_off</em>
+        <em class="material-icons on" *ngIf="passwordType.password === 'text'"
+          (click)="passwordType.password = 'password'">visibility_on</em>
+      </div>
+      <div class="form-group col-md-6 input-with-sign">
+        <label for="confirmPassword">Confirm Password*</label>
+        <input type="{{passwordType.confirmPassword}}" autocomplete="new-password" class="form-control" id="confirmPassword"
+          formControlName="passwordConfirmation" placeholder="Enter your password"
+          [ngClass]="{'is-invalid': (f?.controls?.passwordConfirmation?.touched && (f?.controls?.passwordConfirmation?.errors || f?.errors?.mismatch))}">
+        <ng-container *ngIf="f?.controls?.passwordConfirmation?.touched">
+          <div class="invalid-feedback" *ngIf="f?.controls?.passwordConfirmation?.errors?.required">Confirm password is
+            required.
+          </div>
+          <div class="invalid-feedback" *ngIf="f?.errors?.mismatch">Confirm password must be same as password.
+          </div>
+        </ng-container>
+        <em class="material-icons off" *ngIf="passwordType.confirmPassword === 'password'"
+          (click)="passwordType.confirmPassword = 'text'">visibility_off</em>
+        <em class="material-icons on" *ngIf="passwordType.confirmPassword === 'text'"
+          (click)="passwordType.confirmPassword = 'password'">visibility_on</em>
+      </div>
+    </div>
+    <button type="submit" [disabled]="!f.valid" class="btn btn-block primary mt-3">Sign up</button>
+  </form>
+</div>
+<div class="modal-footer">
+  <div class="flex-column text-center w-100">
+    <div class="links">Already have an account? <a (click)="signin(content)" class="font-medium">Sign in</a></div>
+    <div class="divider"></div>
+    <div class="text">Or Connect with</div>
+    <div class="social-link">
+      <app-google-login [role]="vendor"></app-google-login>
+    </div>
+  </div>
+</div>
+
+<!-- Select user type Modal html start from here -->
+<div class="modal-body select-modal d-none">
+  <!-- remove "d-none" when used in Modal -->
+  <h4 class="confirm-title">Select user type</h4>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <input type="radio" name="userType" class="form-check-input" id="userPlanner" />
+      <label class="form-check-label" for="userPlanner">Are you signing up as a Planner</label>
+    </div>
+    <div class="form-group col-md-6">
+      <input type="radio" name="userType" class="form-check-input" id="userVendor" checked />
+      <label class="form-check-label" for="userVendor">Are you signing up as a Vendor</label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-block primary">Done</button>
+</div>
+
+<ng-template #content let-modal>
+  <app-login></app-login>
+</ng-template>

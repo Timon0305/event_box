@@ -1,0 +1,19 @@
+<nav aria-label="breadcrumb" *ngIf="!dynamicBreadcrumb && breadcrumbs?.length">
+  <ol class="breadcrumb">
+    <li *ngFor="let breadcrumb of breadcrumbs; trackBy: trackByFn; let i = index" class="breadcrumb-item"
+      [ngClass]="{'active': i === breadcrumbs.length -1}" (click)="navigate(breadcrumb)">
+      <a *ngIf="i !== breadcrumbs.length -1">{{breadcrumb?.text}}</a>
+      {{i === breadcrumbs.length -1? breadcrumb?.text : ''}}
+    </li>
+  </ol>
+</nav>
+
+<nav aria-label="breadcrumb" *ngIf="dynamicBreadcrumb">
+  <ol class="breadcrumb">
+    <li *ngFor="let breadcrumb of dynamicBreadcrumb; trackBy: trackByFn; let i = index" class="breadcrumb-item"
+      [ngClass]="{'active': i === dynamicBreadcrumb.length -1}" (click)="navigate(breadcrumb)">
+      <a *ngIf="i !== dynamicBreadcrumb.length -1">{{breadcrumb?.text}}</a>
+      {{i === dynamicBreadcrumb.length -1? breadcrumb?.text : ''}}
+    </li>
+  </ol>
+</nav>

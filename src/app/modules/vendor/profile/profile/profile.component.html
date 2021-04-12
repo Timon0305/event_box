@@ -1,0 +1,68 @@
+<h2 class="page-title top-first-title">Profile</h2>
+<app-profile-view [profile]="(profileDataObservable$ | async)"></app-profile-view>
+
+<div class="divider"></div>
+
+
+<app-company-location-view [locations]="(allLocationsObservable$ | async)?.data" (fetchLocations)="fetchLocations()">
+
+</app-company-location-view>
+<div class="divider"></div>
+
+<!-- Bank Details -->
+<app-view-bank-details [bankDetail]="(profileDataObservable$ | async)?.company?.bankDetail"></app-view-bank-details>
+
+<!-- Show when there are no bank -->
+
+
+<div class="divider"></div>
+
+<!-- Membership Package -->
+<div class="address-section" *ngIf="(profileDataObservable$ | async)?.company?.memberPackage as memberShip;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="section-title">Membership Package</div>
+    </div>
+    <div class="address-content">
+      <div class="col-md-6">
+        <div class="address-container bank-detail package">
+          <div class="col-md-12">
+            <div class="d-flex justify-content-end">
+            </div>
+            <div class="bank-text with-subscription">
+              <div class="commission-text">Event Box %:
+                <span>{{memberShip?.commissionPercent}}%</span>
+              </div>
+              <span (click)="openPopup()" *ngIf="memberShip?.subscriptionPaid && memberShip.yearlySubscriptionFee"
+                class="cancel-subscription-btn"><em> &#x2715;</em>Cancel Subscription</span>
+            </div>
+            <div class="bank-text">{{subsriptionConstant[memberShip?.planFrequency]?.type}} Fee:
+              <span>{{memberShip?.yearlySubscriptionFee | currency:'USD'}}</span></div>
+            <div class="bank-text">Start Date:
+              <span>{{memberShip?.startDate ? (memberShip?.startDate  | date: 'mediumDate'): '-'}}</span></div>
+            <div class="bank-text">One Time Referral Fee:
+              <span>{{memberShip?.plannerCommission| currency:'USD':'symbol':'1.0-2'}}</span></div>
+          </div>
+        </div><!-- end address-container -->
+      </div><!-- end col-md-6 -->
+    </div><!-- end address-content -->
+
+  </div><!-- end row -->
+</div><!-- end address-section -->
+<div class="divider"></div>
+<div class="review-container" *ngIf="(ratingNreviewObservable$ | async) as ratingNreviewList;">
+  <div class="title-with-button">
+    <h2 class="section-title" *ngIf="ratingNreviewList?.totalDocs">Ratings & Reviews</h2>
+    <a href="javascript:void(0)" [routerLink]="['/vendor/profile/my-product-rating-review']"
+      *ngIf="ratingNreviewList?.totalDocs > constNumber.five" class="link" title="View all">View all <img
+        src="assets/images/arrow-right.svg" alt="Arrow Righr" /></a>
+  </div>
+
+  <div class="table-listing review-table" *ngIf="ratingNreviewList?.totalDocs">
+    <app-product-rating-review-table-head [referrer]="false"></app-product-rating-review-table-head>
+
+    <app-product-rating-review-list-item [ratingNreviewData]="ratingNreviewList" [referrer]="true"
+      class="table-body-wrapper">
+    </app-product-rating-review-list-item>
+  </div>
+</div>

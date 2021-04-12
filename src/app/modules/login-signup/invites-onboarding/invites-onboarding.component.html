@@ -1,0 +1,41 @@
+<div class="modal-header with-sub-header">
+  <h4 class="modal-title">Welcome to Event Box!</h4>
+  <h5 class="modal-sub-title">
+    Event Box is an online marketplace connecting planners and vetted vendors to streamline the booking process.
+    <p>Choose whether you are a planner or vendor below:</p>
+  </h5>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email address"
+      [formControl]="email" [ngClass]="{'is-invalid': (email?.touched && email?.errors)}">
+    <ng-container *ngIf="email?.touched">
+      <div class="invalid-feedback" *ngIf="email?.errors?.required">Email address is required.
+      </div>
+      <div class="invalid-feedback" *ngIf="email?.errors?.invalidEmail">Email address format is
+        not
+        valid.
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="select-user-container" [ngClass]="{'is-invalid': true}">
+    <p >Continue as:</p>
+    <ng-container >
+      <div class="form-group">
+        <input type="radio" name="userType" [formControl]="userType" value="{{roles.PLANNER}}" class="form-check-input"
+          id="userPlanner" />
+        <label class="form-check-label" for="userPlanner">Planner</label>
+      </div>
+      <div class="form-group">
+        <input type="radio" name="userType" value="{{roles.VENDOR}}" [formControl]="userType" class="form-check-input"
+          id="userVendor" checked />
+        <label class="form-check-label" for="userVendor">Vendor</label>
+      </div>
+    </ng-container>
+  </div>
+  <div class="invalid-feedback" *ngIf="!userType.valid && submit">Please select if you are a planner or a vendor</div>
+  <div class="continue-btn">
+    <button type="button" class="btn btn-block primary" [disabled]="!email.valid" (click)="signup()">Continue</button>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.tab-content-head {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: $phone-landscape) {
+    margin-bottom: 24px;
+  }
+  .select-list-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: calc(100% - 400px);
+
+    .ng-select {
+      min-width: 200px;
+    }
+
+    .btn {
+      margin-left: 16px;
+    }
+  }
+}
+
+.partner-order-table {
+  min-height: 270px;
+  .product-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+  }
+
+  .btn {
+    width: 100px;
+    height: 35px;
+    font-size: 12px;
+    padding: 8px 5px 7px;
+
+    &+.btn {
+      margin-top: 10px;
+    }
+  }
+
+  .table-head {
+    justify-content: space-between;
+  }
+
+  .table-body {
+    justify-content: space-between;
+    align-items: flex-start;
+
+    &:hover {
+      box-shadow: 1px 5px 15px 1px rgba(80, 103, 235, 0.15);
+      border-color: #5067eb;
+      background-color: #f5f8ff;
+    }
+  }
+
+  .tbody-data {
+    color: rgba(#000000, 0.8);
+    line-height: 1.69;
+    padding: 0 0 0 12px;
+  }
+}

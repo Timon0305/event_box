@@ -1,0 +1,8 @@
+<form [formGroup]='headerSearchForm' class="header-search-container">
+    <div class="input-with-sign">
+        <app-shared-google-location [form]="headerSearchForm" class="form-control"></app-shared-google-location>
+    </div>
+    <app-shared-product-search [formType]="headerSearch" [form]="headerSearchForm" class="form-control"></app-shared-product-search>
+    <button type="button" class="btn primary" (click)="submitSearch()"><em class="icon-search"></em></button>
+
+</form>

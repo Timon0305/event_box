@@ -1,0 +1,83 @@
+<div class="container fixed-header-padding fixed-footer-padding">
+    <h4 class="main-title">Create your account</h4>
+    <p class="subtitle">Sign up as vendor sub admin.</p>
+    <div class="divider"></div>
+    <div class="vendor-detail-container">
+            <form class="signup-form pb-5" autocomplete="off" [formGroup]="subVendorSignupForm" (submit)="subVendorSignup()">
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="firstName">First Name*</label>
+                    <input type="text" class="form-control"
+                    [ngClass]="{'is-invalid': (f?.controls?.firstName?.touched && f?.controls?.firstName?.errors)}" id="firstName"
+                    aria-describedby="nameHelp" formControlName="firstName" placeholder="Enter your first name"
+                    maxlength="{{maxLength}}">
+                    <ng-container *ngIf="f?.controls?.firstName?.touched">
+                    <div class="invalid-feedback" *ngIf="f?.controls?.firstName?.errors?.required">First name is required.
+                    </div>
+                    </ng-container>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lastName">Last Name*</label>
+                    <input type="text" class="form-control" id="lastName"
+                    [ngClass]="{'is-invalid': (f?.controls?.lastName?.touched && f?.controls?.lastName?.errors)}"
+                    formControlName="lastName" aria-describedby="nameHelp" placeholder="Enter your last name"
+                    maxlength="{{maxLength}}">
+                    <div class="invalid-feedback"
+                    *ngIf="(f?.controls?.lastName?.touched && f?.controls?.lastName?.errors?.required)">Last name is required.
+                    </div>
+                </div>
+            </div><!-- end form row -->
+
+            <div class="form-row">
+                <div class="form-group col-md-6 input-with-sign">
+                    <label for="firstName">Password*</label>
+                    <input type="{{passwordType.password}}" autocomplete="new-password" class="form-control" id="password" formControlName="password"
+                    placeholder="Enter your password" maxlength="15"
+                    [ngClass]="{'is-invalid': (f?.controls?.password?.touched && f?.controls?.password?.errors)}">
+                    <ng-container *ngIf="f?.controls?.password?.touched">
+                    <div class="invalid-feedback" *ngIf="f?.controls?.password?.errors?.required">Password is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="f?.controls?.password?.errors?.minlength">Password minimum length is 7
+                        characters.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="!f?.controls?.password?.errors?.minlength && f?.controls?.password?.errors?.pattern">A number, special character
+                        (@,!,$ etc), uppercase and lowercase letter is required.
+                    </div>
+                    </ng-container>
+                    <em class="material-icons off" *ngIf="passwordType.password === 'password'"
+                    (click)="passwordType.password = 'text'">visibility_off</em>
+                    <em class="material-icons on" *ngIf="passwordType.password === 'text'"
+                    (click)="passwordType.password = 'password'">visibility_on</em>
+                </div>
+                <div class="form-group col-md-6 input-with-sign">
+                    <label for="lastName">Confirm Password*</label>
+                    <input type="{{passwordType.confirmPassword}}" autocomplete="new-password" class="form-control" id="confirmPassword"
+                    formControlName="passwordConfirmation" placeholder="Enter your password" maxlength="15"
+                    [ngClass]="{'is-invalid': (f?.controls?.passwordConfirmation?.touched && (f?.controls?.passwordConfirmation?.errors || f?.errors?.mismatch))}">
+                    <ng-container *ngIf="f?.controls?.passwordConfirmation?.touched">
+                    <div class="invalid-feedback" *ngIf="f?.controls?.passwordConfirmation?.errors?.required">Confirm password is
+                        required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="f?.errors?.mismatch">Confirm password must be same as password.
+                    </div>
+                    </ng-container>
+                    <em class="material-icons off" *ngIf="passwordType.confirmPassword === 'password'"
+                    (click)="passwordType.confirmPassword = 'text'">visibility_off</em>
+                    <em class="material-icons on" *ngIf="passwordType.confirmPassword === 'text'"
+                    (click)="passwordType.confirmPassword = 'password'">visibility_on</em>
+                </div>
+            </div><!-- end form row -->
+
+        </form>
+    </div><!-- end bank-detail-container -->
+    <div class="fixed-footer">
+        <div class="container">
+            <div class="button-container">
+                <button type="button" [disabled]="!f.valid" class="btn primary mw-200 ml-auto" (click)="subVendorSignup()">Sign
+                    up</button>
+            </div>
+        </div>
+    </div>
+
+</div><!-- end container -->

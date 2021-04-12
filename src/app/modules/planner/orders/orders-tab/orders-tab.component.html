@@ -1,0 +1,40 @@
+<div class="event-list-container">
+  <ng-container *ngIf="checRoles.isAdmin()">
+    <ng-container *ngIf="isAdminPlannerOrders; else adminAllOrders">
+      <nav aria-label="breadcrumb" *ngIf="plannerId">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" [routerLink]="['/admin/planner-management']">
+            <a>Planner Management</a>
+          </li>
+          <li class="breadcrumb-item" [routerLink]="['/admin/planner-management/view', plannerId]">
+            <a>Profile - {{plannerName}}</a>
+          </li>
+          <li class="breadcrumb-item active">
+            Orders - {{plannerName}}
+          </li>
+        </ol>
+      </nav>
+    </ng-container>
+    <ng-template #adminAllOrders>
+      <app-breadcrumbs [dynamicBreadcrumb]="dynamicBreadcrumb" class="app-breadcrumb"></app-breadcrumbs>
+    </ng-template>
+  </ng-container>
+
+  <h2 class="page-title admin-report" [ngClass]="{'top-first-title': !isAdmin}" *ngIf="!plannerId">Orders</h2>
+  <h2 class="page-title top-first-title pt-2" *ngIf="plannerId">Orders - {{plannerName}}</h2>
+
+  <div class="tab-head">
+    <ul class="nav">
+      <li class="nav-item" routerLinkActive="active" [routerLink]="['../orders/purchased']" [routerLinkActiveOptions]="{exact:
+        false}">
+        <a class="nav-link" title="Upcoming Events">Purchased Orders</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" [routerLink]="['../orders/canceled']" [routerLinkActiveOptions]="{exact:
+        false}">
+        <a class="nav-link" title="Past Events">Canceled Orders</a>
+      </li>
+    </ul>
+  </div>
+  <router-outlet></router-outlet>
+
+</div>

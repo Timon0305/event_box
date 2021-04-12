@@ -1,0 +1,50 @@
+<ng-container *ngIf="filteredMemberSectionAnalitics$|async"></ng-container>
+<div class="card-wrapper">
+  <div class="dashboard-head">
+    <h3>Member Section</h3>
+    <div class="filter-section">
+      <div class="date-range-box">
+        <app-shared-date-range [showClearAll]="true" (dateFilterEvent)="quoteDateFilter($event)">
+        </app-shared-date-range>
+      </div>
+      <app-shared-date-filter (filterDateEvent)="quoteDateFilter($event)"></app-shared-date-filter>
+    </div>
+  </div>
+  <div class="member-section-box">
+    <div class="box  no-image btn-col-5-with-space" [queryParams]="{ order: 1, sort: 'quoteExpirationDate' }"
+      [routerLink]="['/admin/reports/quotes/accept-reject-quotes/list']">
+      <div class="box-content">
+        <div class="title">{{memberSection?.acceptReject}}</div>
+        <div class="name">Accept / Reject Quotes</div>
+      </div>
+    </div>
+    <div class="box no-image btn-col-5-with-space" [queryParams]="{ order: 1, sort: 'quoteExpirationDate' }"
+      [routerLink]="['/admin/reports/quotes/awaiting-vendor-quotes/list']">
+      <div class="box-content">
+        <div class="title">{{memberSection?.awatingVendor}}</div>
+        <div class="name">Awaiting Vendor Quotes</div>
+      </div>
+    </div>
+    <div class="box no-image btn-col-5-with-space" [queryParams]="{ order: 1, sort: 'events.startdate' }"
+      [routerLink]="['/admin/reports/quotes/quote-pending-payment/list']">
+      <div class="box-content">
+        <div class="title">{{memberSection?.pendingPayment}}</div>
+        <div class="name">Quotes Pending Payment</div>
+      </div>
+    </div>
+    <div class="box no-image btn-col-5-with-space" [queryParams]="{ order: -1, sort: 'updatedAt' }"
+      [routerLink]="['/admin/reports/quotes/expired-quotes/list']">
+      <div class="box-content">
+        <div class="title">{{memberSection?.expired}}</div>
+        <div class="name">Expired Quotes</div>
+      </div>
+    </div>
+    <div class="box no-image btn-col-5-with-space" [routerLink]="['/admin/reports/quotes/expired-quotes/list']"
+      [queryParams]="{ order: -1, sort: 'updatedAt' }">
+      <div class="box-content">
+        <div class="title">{{memberSection?.rejected}}</div>
+        <div class="name">Rejected Quotes</div>
+      </div>
+    </div>
+  </div>
+</div>

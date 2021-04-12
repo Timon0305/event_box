@@ -1,0 +1,33 @@
+@import "~assets/scss/variables";
+@import "~assets/scss/table";
+
+.admin-vendor-table-container {
+  .page-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin: 15px 0 40px;
+  }
+
+  .space-between-two {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .search-container {
+    width: 50%;
+    max-width: 270px;
+  }
+  
+  .sort-selectbox {
+    width: 160px;
+  }
+}
+.sort-filter{
+  .ng-select{
+    min-width: 200px;
+  }
+}
+
+

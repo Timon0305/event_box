@@ -1,0 +1,11 @@
+<form [formGroup]="form" class="col-md-12">
+  <div class="form-group location-input">
+    <label for="landmark{{index}}">Landmark*<img src="assets/images/icon-info.svg" alt="Info Icon" class="landmark-info" placement="right" triggers="click:blur" ngbTooltip="Please select the exact location or a landmark close to that location" /></label>
+    <input id="landmark{{index}}" (blur)="onInputBlur()" class="form-control" [ngClass]="{'is-invalid': (form?.controls?.landmark?.touched && form?.controls?.landmark?.errors)}" #searchLocation formControlName="landmark" (keyup)="onSearchLocation(searchLocation, $event)"  autocomplete="true"/>
+    <button (click)="autoDetectLocation()" class="btn text locate-me-text"><img src="../../../../assets/images/gps.svg" width="24" alt="GPS" />Locate Me</button>
+    <div class="invalid-feedback" *ngIf="form?.controls?.landmark?.touched && form?.controls?.landmark?.errors">
+      Landmark is required</div>
+  </div>
+</form>
+<div class="d-none" id="hideClick{{index}}"></div>
+

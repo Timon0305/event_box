@@ -1,0 +1,20 @@
+<div class="message-user-list">
+  <div class="list-search">
+    <form class="search-form">
+      <div class="form-group">
+        <input [formControl]="searchField" class="form-control" placeholder="Search" type="text" />
+        <input class="user-search-icon icon-blue" type="submit" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="list-data" #messageListConatiner>
+    <app-infinite-scroll (scrolled)="scrolled()" [options]="options" [isReverse]="false">
+      <app-message-list-item (click)="onMessage()" [message]="message" [index]="i"
+        *ngFor="let message of messageList; let i = index;trackBy: trackByFn" (updateListPosition)="updateListPosition($event)" class="infinite-scroll-list-row"></app-message-list-item>
+    </app-infinite-scroll>
+    <div *ngIf="!messageList?.length && !loading" class="no-result">
+      <img src="assets/images/no-data.svg" class="mt-5" alt="No results" />
+      <p class="mt-3">Sorry! No messages found :(</p>
+    </div>
+  </div>
+</div>
